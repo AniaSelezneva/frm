@@ -12,7 +12,3 @@
   to = "/index.html"
   status = 200
 
-[[redirects]]
-  from = "/signup"
-  to = "https://forum-wtchs.netlify.app/signup"
-  status = 200
