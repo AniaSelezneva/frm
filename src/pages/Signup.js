@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // Fauna
 import faunadb from "faunadb";
 // GoTrue - user authentication library
