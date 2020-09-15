@@ -1,6 +1,6 @@
 exports.handler = function (event, context, callback) {
   const { user } = context.clientContext;
-  console.log(user);
+  console.log("user", user);
 
   callback(null, {
     statusCode: 200,
