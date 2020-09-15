@@ -10,7 +10,7 @@ import {
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-// store
+// Store
 import { store } from "./utils/store";
 
 function App() {
