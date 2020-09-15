@@ -1,28 +1,44 @@
-import React, { useState, useEffect } from "react";
-// GoTrue - user authentication library
-import GoTrue from "gotrue-js";
-
-// GoTrue
-const auth = new GoTrue({
-  APIUrl: "https://forum-wtchs.netlify.app/.netlify/identity",
-  audience: "",
-  setCookie: false,
-});
+import React, { useState, useContext, useEffect } from "react";
+// store
+import { store } from "../utils/store";
+// auth
+import auth from "../utils/auth";
 
 function Login() {
+  const { state, dispatch } = useContext(store);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState(undefined);
+
+  // Check if user is signed in.
+  useEffect(() => {
+    // If he is...
+    if (auth.currentUser() !== null && auth.currentUser() !== undefined) {
+      // change loggedIn property in state object.
+      dispatch({ type: "LOG_IN" });
+    }
+  }, []);
 
   // Login
   const login = async (e) => {
     e.preventDefault();
-    const res = await auth.login(email, password);
-    console.log(auth.currentUser());
+    try {
+      await auth.login(email, password, true);
+      dispatch({ type: "LOG_IN" });
+    } catch (error) {
+      if (error.message == "invalid_grant: Email not confirmed") {
+        setError("Email not confirmed");
+      } else if (
+        error.message ==
+        "invalid_grant: No user found with that email, or password invalid."
+      ) {
+        setError("No user found with that email, or password invalid");
+      } else {
+        setError("Error occured, please try again later");
+      }
+    }
   };
-
-  useEffect(() => {
-    console.log(auth.currentUser());
-  }, []);
 
   return (
     <form
@@ -38,6 +54,7 @@ function Login() {
         id="email"
         onChange={(e) => {
           setEmail(e.target.value);
+          setError(undefined);
         }}
         required="required"
       ></input>
@@ -49,9 +66,12 @@ function Login() {
         id="password"
         onChange={(e) => {
           setPassword(e.target.value);
+          setError(undefined);
         }}
         required="required"
       ></input>
+
+      {error !== undefined && <p>{error}</p>}
 
       <button type="submit">Signup</button>
     </form>

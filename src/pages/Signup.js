@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+
+// store
+import { store } from "../utils/store";
 // Fauna
 import faunadb from "faunadb";
-// GoTrue - user authentication library
-import GoTrue from "gotrue-js";
+// auth
+import auth from "../utils/auth";
 
 // Fauna
 const q = faunadb.query;
@@ -10,14 +13,9 @@ const adminClient = new faunadb.Client({
   secret: process.env.REACT_APP_SECRET,
 });
 
-// GoTrue
-const auth = new GoTrue({
-  APIUrl: "https://forum-wtchs.netlify.app/.netlify/identity",
-  audience: "",
-  setCookie: false,
-});
-
 function Signup() {
+  const { state, dispatch } = useContext(store);
+
   const [email, setEmail] = useState();
   const [handle, setHandle] = useState();
   const [password, setPassword] = useState();
@@ -27,6 +25,19 @@ function Signup() {
   const [emailUnique, setEmailUnique] = useState();
   const [passwordsMatch, setPasswordsMatch] = useState();
 
+  // General error
+  const [isError, setIsError] = useState();
+
+  // Check if user is signed in.
+  useEffect(() => {
+    // If he is...
+    if (auth.currentUser() !== null && auth.currentUser() !== undefined) {
+      // change loggedIn property in state object.
+      dispatch({ type: "LOG_IN" });
+    }
+  }, []);
+
+  // Add user to 'users' collection in db.
   const addUserToDb = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -46,38 +57,49 @@ function Signup() {
     });
   };
 
+  // Check if user handle doesn't exist in db already.
   const isHandleUnique = () => {
     return new Promise(async (resolve, reject) => {
-      const res = await adminClient.query(
-        q.Exists(q.Match(q.Index("users_by_handle"), q.Casefold(handle)))
-      );
+      try {
+        const res = await adminClient.query(
+          q.Exists(q.Match(q.Index("users_by_handle"), q.Casefold(handle)))
+        );
 
-      if (res === true) {
-        setHandleUnique(false);
-        resolve(false);
-      } else {
-        setHandleUnique(true);
-        resolve(true);
+        if (res === true) {
+          setHandleUnique(false);
+          resolve(false);
+        } else {
+          setHandleUnique(true);
+          resolve(true);
+        }
+      } catch (error) {
+        reject(error);
       }
     });
   };
 
+  // Check if user email doesn't exist in db already.
   const isEmailUnique = () => {
     return new Promise(async (resolve, reject) => {
-      const res = await adminClient.query(
-        q.Exists(q.Match(q.Index("users_by_email"), q.Casefold(email)))
-      );
+      try {
+        const res = await adminClient.query(
+          q.Exists(q.Match(q.Index("users_by_email"), q.Casefold(email)))
+        );
 
-      if (res === true) {
-        setEmailUnique(false);
-        resolve(false);
-      } else {
-        setEmailUnique(true);
-        resolve(true);
+        if (res === true) {
+          setEmailUnique(false);
+          resolve(false);
+        } else {
+          setEmailUnique(true);
+          resolve(true);
+        }
+      } catch (error) {
+        reject(error);
       }
     });
   };
 
+  // Check if password and confirmPassword match.
   const doPasswordsMatch = () => {
     if (password === confirmPassword) {
       setPasswordsMatch(true);
@@ -89,13 +111,18 @@ function Signup() {
   };
 
   const signup = async (e) => {
-    e.preventDefault();
-    const handleUnique = await isHandleUnique();
-    const emailUnique = await isEmailUnique();
+    try {
+      e.preventDefault();
+      const handleUnique = await isHandleUnique();
+      const emailUnique = await isEmailUnique();
 
-    if (handleUnique && emailUnique && doPasswordsMatch()) {
-      await auth.signup(email, password);
-      await addUserToDb();
+      if (handleUnique && emailUnique && doPasswordsMatch()) {
+        await auth.signup(email, password);
+        await addUserToDb();
+      }
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
     }
   };
 
@@ -113,6 +140,7 @@ function Signup() {
         id="email"
         onChange={(e) => {
           setEmailUnique(undefined);
+          setIsError(false);
           setEmail(e.target.value);
         }}
         required="required"
@@ -127,6 +155,7 @@ function Signup() {
         id="handle"
         onChange={(e) => {
           setHandleUnique(undefined);
+          setIsError(false);
           setHandle(e.target.value);
         }}
         required="required"
@@ -141,6 +170,7 @@ function Signup() {
         id="password"
         onChange={(e) => {
           setPassword(e.target.value);
+          setIsError(false);
           setPasswordsMatch(true);
         }}
         required="required"
@@ -153,11 +183,14 @@ function Signup() {
         id="confirmPassword"
         onChange={(e) => {
           setConfirmPassword(e.target.value);
+          setIsError(false);
           setPasswordsMatch(true);
         }}
         required="required"
       ></input>
       {passwordsMatch === false ? <p>Passwords don't match</p> : null}
+
+      {isError && <p>Error occured, please try again later</p>}
 
       <button type="submit">Signup</button>
     </form>
