@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // Components
-import Signup from "./components/Signup";
+import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 
 function App() {

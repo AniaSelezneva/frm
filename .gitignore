@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+# graphql schema
+.gql
 
 # misc
 .DS_Store
