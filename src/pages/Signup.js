@@ -96,27 +96,30 @@ function Signup() {
     if (handleUnique && emailUnique && doPasswordsMatch()) {
       await auth.signup(email, password);
       await addUserToDb();
+
+      const user = auth.currentUser();
+      console.log("user after signing in", user);
     }
 
-    // (async () => {
-    //   const res = await fetch("/api/hey");
-    //   const response = await res.json();
-    //   console.log(response);
-    // })();
+    (async () => {
+      const res = await fetch("/api/hey");
+      const response = await res.json();
+      console.log(response);
+    })();
   };
 
-  // useEffect(() => {
-  //   const user = auth.currentUser();
-  //   console.log(user);
+  useEffect(() => {
+    const user = auth.currentUser();
+    console.log("user on page load", user);
 
-  //   const smth = async () => {
-  //     const res = await fetch("/api/hey");
-  //     const response = await res.json();
-  //     console.log(response);
-  //   };
+    const smth = async () => {
+      const res = await fetch("/api/hey");
+      const response = await res.json();
+      console.log(response);
+    };
 
-  //   smth();
-  // }, []);
+    smth();
+  }, []);
 
   return (
     <form
