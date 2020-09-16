@@ -26,6 +26,7 @@ function Home({ setIsLoading }) {
     return new Promise(async (resolve, reject) => {
       const res = await fetch("/.netlify/functions/yes");
       const data = await res.json();
+      console.log(data);
       resolve(data);
     });
   };
