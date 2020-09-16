@@ -22,16 +22,21 @@ function Home({ setIsLoading }) {
     setIsLoading(false);
   };
 
-  const test = async () => {
-    console.log("hey");
-    const res = await fetch("yes");
-    const data = await res.json();
-    console.log(data);
+  const test = () => {
+    return new Promise(async (resolve, reject) => {
+      const res = await fetch("/.netlify/functions/yes");
+      console.log(res);
+      resolve(res);
+    });
   };
 
   useEffect(() => {
-    test();
-    getAllPosts();
+    const smth = async () => {
+      await test();
+      await getAllPosts();
+    };
+
+    smth();
   }, []);
 
   return (
