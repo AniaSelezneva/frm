@@ -14,9 +14,9 @@ function User({ setIsLoading }) {
   const [email, setEmail] = useState();
 
   const getUserInfo = async () => {
-    const data = await fetch("api/avatar");
+    const data = await fetch("/.netlify/functions/avatar");
     const data1 = await JSON.parse(data);
-    console.log(data1);
+    console.log(data);
 
     setIsLoading(true);
     const res = await adminClient.query(
