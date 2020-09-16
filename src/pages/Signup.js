@@ -1,19 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
-
 // store
 import { store } from "../utils/store";
-// Fauna
-import faunadb from "faunadb";
+// faunaDB
+import { q, adminClient } from "../utils/faunaDB";
 // auth
 import auth from "../utils/auth";
+// withLoader hoc
+import WithLoader from "../HOCs/WithLoader";
 
-// Fauna
-const q = faunadb.query;
-const adminClient = new faunadb.Client({
-  secret: process.env.REACT_APP_SECRET,
-});
-
-function Signup() {
+function Signup({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
 
   const [email, setEmail] = useState();
@@ -35,6 +30,7 @@ function Signup() {
       // change loggedIn property in state object.
       dispatch({ type: "LOG_IN" });
     }
+    setIsLoading(false);
   }, []);
 
   // Add user to 'users' collection in db.
@@ -110,7 +106,9 @@ function Signup() {
     }
   };
 
+  // Signup and login at the same time.
   const signup = async (e) => {
+    setIsLoading(true);
     try {
       e.preventDefault();
       const handleUnique = await isHandleUnique();
@@ -119,11 +117,14 @@ function Signup() {
       if (handleUnique && emailUnique && doPasswordsMatch()) {
         await auth.signup(email, password);
         await addUserToDb();
+        await auth.login(email, password, true);
+        dispatch({ type: "LOG_IN" });
       }
     } catch (error) {
       console.log(error);
       setIsError(true);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -197,4 +198,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default WithLoader(Signup, "loading");

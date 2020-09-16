@@ -3,8 +3,10 @@ import React, { useState, useContext, useEffect } from "react";
 import { store } from "../utils/store";
 // auth
 import auth from "../utils/auth";
+// withLoader hoc
+import WithLoader from "../HOCs/WithLoader";
 
-function Login() {
+function Login({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
 
   const [email, setEmail] = useState();
@@ -18,10 +20,12 @@ function Login() {
       // change loggedIn property in state object.
       dispatch({ type: "LOG_IN" });
     }
+    setIsLoading(false);
   }, []);
 
   // Login
   const login = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     try {
       await auth.login(email, password, true);
@@ -38,6 +42,7 @@ function Login() {
         setError("Error occured, please try again later");
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -73,9 +78,9 @@ function Login() {
 
       {error !== undefined && <p>{error}</p>}
 
-      <button type="submit">Signup</button>
+      <button type="submit">Login</button>
     </form>
   );
 }
 
-export default Login;
+export default WithLoader(Login, "wait");

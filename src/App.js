@@ -23,7 +23,9 @@ function App() {
         <Route path="/signup" component={Signup}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>
-        <Route path="/login" component={Login} />
+        <Route path="/login" component={Login}>
+          {state.loggedIn && <Redirect to="/" />}
+        </Route>
       </Switch>
     </Router>
   );

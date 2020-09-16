@@ -1,6 +1,9 @@
 import React, { createContext, useReducer } from "react";
 
-const initialState = { loggedIn: false, user: null };
+const initialState = {
+  loggedIn: false,
+  user: { email: null, handle: null, imageUrl: null },
+};
 // store has Provider and Consumer components
 const store = createContext(initialState);
 const { Provider } = store;
@@ -10,6 +13,9 @@ const StateProvider = ({ children }) => {
     switch (action.type) {
       case "LOG_IN":
         return { ...state, loggedIn: true };
+      case "FETCH_USER": {
+        return { ...state, user: action.payload };
+      }
       default:
         return state;
     }
