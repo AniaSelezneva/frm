@@ -23,7 +23,8 @@ function Home({ setIsLoading }) {
   };
 
   const test = async () => {
-    const res = await fetch("/.netlify/functions/yes");
+    console.log("hey");
+    const res = await fetch("yes");
     const data = await res.json();
     console.log(data);
   };
