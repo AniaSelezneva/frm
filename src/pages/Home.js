@@ -23,14 +23,9 @@ function Home({ setIsLoading }) {
   };
 
   const test = async () => {
-    console.log("yes");
-    let url = "/api/yes";
-    fetch(url)
-      .then((resp) => resp.json())
-      .then((content) => {
-        console.log(content);
-      })
-      .catch((err) => console.error);
+    const res = await fetch("/.netlify/functions/");
+    const data = await res.json();
+    console.log(data);
   };
 
   useEffect(() => {
