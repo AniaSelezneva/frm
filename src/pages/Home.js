@@ -22,7 +22,19 @@ function Home({ setIsLoading }) {
     setIsLoading(false);
   };
 
+  const test = async () => {
+    console.log("yes");
+    let url = "/api/yes";
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((content) => {
+        console.log(content);
+      })
+      .catch((err) => console.error);
+  };
+
   useEffect(() => {
+    test();
     getAllPosts();
   }, []);
 

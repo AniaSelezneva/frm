@@ -14,10 +14,6 @@ function User({ setIsLoading }) {
   const [email, setEmail] = useState();
 
   const getUserInfo = async () => {
-    const data = await fetch("/.netlify/functions/avatar");
-    const data1 = await JSON.parse(data);
-    console.log(data);
-
     setIsLoading(true);
     const res = await adminClient.query(
       q.Get(q.Match(q.Index("users_by_email"), q.Casefold(email)))
