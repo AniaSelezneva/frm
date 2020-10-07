@@ -9,8 +9,6 @@ import bell from "../../img/svgs/bell.svg";
 import activeBell from "../../img/svgs/bell-green.svg";
 import arrow from "../../img/svgs/arrow.svg";
 import remove from "../../img/svgs/remove.svg";
-// withLoader hoc
-import WithLoader from "../../HOCs/WithLoader";
 
 function Notifications() {
   const { state, dispatch } = useContext(store);
