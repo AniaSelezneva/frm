@@ -92,13 +92,13 @@ function User({ path, handle }) {
     }
   }, [isCardOpen]);
 
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 800) {
-      setIsCardOpen(true);
-    } else if (window.innerWidth <= 800) {
-      setIsCardOpen(false);
-    }
-  });
+  // window.addEventListener("resize", () => {
+  //   if (window.innerWidth > 800) {
+  //     setIsCardOpen(true);
+  //   } else if (window.innerWidth <= 800) {
+  //     setIsCardOpen(false);
+  //   }
+  // });
 
   return (
     <div className={userCardStyles.container}>
