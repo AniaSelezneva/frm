@@ -28,9 +28,7 @@ $margin: 1.2rem;
 // User on the right
 .user {
   font-family: "Alegreya SC", serif, Arial, sans-serif;
-
   line-height: 1.8rem;
-
   margin: $margin;
   border-radius: 0.2rem;
   background: $card-color;
@@ -38,11 +36,17 @@ $margin: 1.2rem;
   flex: 1 2 100px;
   height: max-content;
   padding: $margin;
+  flex-direction: column;
+  min-width: 280px;
+
+  @media (max-width: 800px) {
+    margin: 10px;
+    margin-bottom: 0;
+    display: none;
+    align-items: center;
+  }
 
   display: flex;
-  flex-direction: column;
-
-  min-width: 280px;
 
   // User name
   & > :nth-child(2) {
@@ -68,15 +72,6 @@ $margin: 1.2rem;
     :first-child {
       line-height: 90%;
     }
-  }
-
-  @media (max-width: 800px) {
-    margin: 10px;
-    margin-bottom: 0;
-
-    display: none;
-
-    align-items: center;
   }
 
   button {
