@@ -8,10 +8,11 @@ import { q, adminClient } from "../../utils/faunaDB";
 import bell from "../../img/svgs/bell.svg";
 import activeBell from "../../img/svgs/bell-green.svg";
 import arrow from "../../img/svgs/arrow.svg";
+import remove from "../../img/svgs/remove.svg";
 // withLoader hoc
 import WithLoader from "../../HOCs/WithLoader";
 
-function Notifications({ setIsLoading }) {
+function Notifications() {
   const { state, dispatch } = useContext(store);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -182,7 +183,6 @@ function Notifications({ setIsLoading }) {
     const dealWithNotifications = async () => {
       await countNotifications();
       await getUserNotifications();
-      setIsLoading(false);
     };
 
     dealWithNotifications();
@@ -236,9 +236,10 @@ function Notifications({ setIsLoading }) {
                     <Link to={`/post/${notification.data.postId}`}>
                       your post
                     </Link>
-                    &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <button
                       tabIndex="0"
+                      className="remove_notification_button"
                       onClick={() => {
                         removeNotification(
                           notification.ref,
@@ -246,7 +247,7 @@ function Notifications({ setIsLoading }) {
                         );
                       }}
                     >
-                      x
+                      <img src={remove} />
                     </button>
                   </li>
                 ))}
@@ -315,4 +316,4 @@ function Notifications({ setIsLoading }) {
   );
 }
 
-export default WithLoader(Notifications, "loading...");
+export default Notifications;

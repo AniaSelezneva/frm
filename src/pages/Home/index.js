@@ -152,10 +152,10 @@ function Home(props) {
     // Don't use background if window is small.
     if (window.innerWidth > 1055) {
       const body = document.getElementsByTagName("body")[0];
-      body.setAttribute("id", `${homeStyles.home_background}`);
+      body.setAttribute("id", `home_background`);
 
       const root = document.getElementById("root");
-      root.setAttribute("class", `${homeStyles.home_root_background}`);
+      root.setAttribute("class", `home_root_background`);
     }
   }, []);
 

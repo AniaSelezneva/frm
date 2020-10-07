@@ -66,10 +66,14 @@ function User({ path, handle }) {
 
   // Toggle card's open/closed state.
   const toggleOpenCard = () => {
+    const card = document.getElementById("user_card");
+
     if (isCardOpen) {
       setIsCardOpen(false);
+      card.style.display = "flex";
     } else {
       setIsCardOpen(true);
+      card.style.display = "none";
     }
   };
 
@@ -81,16 +85,6 @@ function User({ path, handle }) {
       setIsCardOpen(false);
     }
   }, []);
-
-  // Open or close card.
-  useEffect(() => {
-    const card = document.getElementById("user_card");
-    if (isCardOpen) {
-      card.style.display = "flex";
-    } else if (!isCardOpen) {
-      card.style.display = "none";
-    }
-  }, [isCardOpen]);
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 800) {

@@ -77,11 +77,18 @@ img {
 // Loading message
 #loading_message {
   position: absolute;
-  background: green;
+  background: hsla(0, 0%, 100%, 0.5);
+
+  border: 15px solid deeppink;
+
   left: 50%;
   top: 30%;
   transform: translate(-50%);
   z-index: 100;
+
+  font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
+  font-size: 2rem;
+  color: orange;
 }
 
 p {
@@ -261,21 +268,13 @@ p {
     background: rgba(0, 147, 147, 1);
     z-index: 20;
     right: -10px;
-    padding: 1rem;
+    padding: 1.5rem;
+    padding-bottom: none;
 
     box-shadow: 0 0 0 15px rgba(255, 225, 39, 0.42);
 
     display: flex;
     align-items: center;
-
-    // disabled 'mark all notifications read' button
-    .disabled {
-      color: white;
-
-      & > button:disabled {
-        text-decoration: none;
-      }
-    }
 
     // Little triangle
     &::before {
@@ -326,8 +325,48 @@ p {
 
     #close_notifications {
       align-self: flex-end;
+      position: relative;
+      left: 10px;
+      top: 10px;
     }
   }
+
+  // Remove notification button with image
+  .remove_notification_button {
+    position: relative;
+    top: 2px;
+
+    &:hover > img {
+      scale: 1.2;
+      transition-duration: 0.3s;
+    }
+
+    img {
+      border: none;
+      transition-duration: 0.3s;
+    }
+  }
+
+  // disabled 'mark all notifications read' button
+  .disabled {
+    color: white;
+
+    & > button:disabled {
+      text-decoration: none;
+    }
+  }
+}
+
+// home page background
+#home_background {
+  background: url(../img/roses.jpg);
+  backdrop-filter: blur(5px);
+  background-size: cover;
+}
+
+// root background on home page
+.home_root_background {
+  background: $background;
 }
 
 // Error message
@@ -335,4 +374,11 @@ p {
   color: red;
   font-family: "Alegreya SC", serif, Arial, sans-serif;
   text-align: center;
+}
+
+#mark_all_read,
+#close_notifications {
+  &:hover {
+    text-decoration: underline;
+  }
 }
