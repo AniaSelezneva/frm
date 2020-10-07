@@ -1,0 +1,176 @@
+@import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
+
+$margin: 1.2rem;
+$post_height: 8rem;
+$comment_height: 10rem;
+
+.container {
+  display: flex;
+  max-width: 1000px;
+  margin-left: $margin;
+  margin-right: $margin;
+
+  // Place user card on top
+  @media (max-width: 800px) {
+    flex-wrap: wrap-reverse;
+    margin: 0;
+  }
+}
+
+// Content on the left
+.content {
+  flex: 2 1 700px;
+  min-width: 290px;
+  margin-top: $margin;
+
+  @media (max-width: 320px) {
+    margin-left: 0;
+  }
+
+  // Post itself
+  .post {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 0.2rem;
+
+    border: 1px solid black;
+
+    .post_main_body {
+      display: flex;
+      // Main post image
+      & > img {
+        max-width: 200px;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+        border-radius: 0.2rem;
+      }
+
+      // main text of the post
+      & > p {
+        padding: 1rem;
+      }
+    }
+
+    // Info on the bottom right corner
+    .post_info {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      width: 100%;
+      align-items: flex-end;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding-right: 1rem;
+      justify-content: space-evenly;
+
+      // User name
+      h6 {
+        text-align: end;
+      }
+
+      // user image at the bottom of post
+      .user_image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+// Comment
+.comment {
+  border: 1px solid black;
+  margin-top: $margin;
+  border-radius: 0.2rem;
+  height: max-content;
+
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  padding-bottom: 0.5rem;
+
+  // User info
+  .comment_info {
+    display: flex;
+
+    & > button {
+      align-self: flex-end;
+    }
+  }
+
+  // User info link
+  .comment_info > a {
+    margin-top: auto;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    margin-left: auto;
+
+    & > h6 {
+      align-self: flex-end;
+    }
+
+    // User image in comment
+    & > img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+  }
+}
+
+// New comment form
+.new_comment_form {
+  height: 8rem;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  border-radius: 0.2rem;
+  background: pink;
+  padding: $margin / 2;
+  margin-top: $margin;
+  border: 1px solid black;
+
+  & > textarea {
+    border-radius: 0.2rem;
+  }
+
+  & > button {
+    font-size: 120%;
+    align-self: flex-end;
+  }
+}
+
+// Login or signup paragraph
+.posts_header {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
+  color: #15489f;
+
+  & > a {
+    color: inherit;
+
+    &:hover,
+    &:active {
+      text-decoration: underline;
+      text-decoration-color: rgba(241, 89, 36, 1);
+    }
+  }
+}
+
+// Pagination
+.pagination_container {
+  margin: 1.2rem;
+  display: flex;
+  justify-content: center;
+  grid-gap: 2rem;
+  gap: 2rem;
+
+  & > button {
+    font-size: 130%;
+  }
+}

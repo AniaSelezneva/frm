@@ -1,0 +1,94 @@
+@import url(//fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Suez+One&display=swap);
+
+$background: rgba(236, 234, 213, 1);
+$margin: 1rem;
+
+#form {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+  margin-left: 10rem;
+
+  padding: 6rem;
+  transition-duration: 0.2s;
+
+  @media (max-width: 830px) {
+    margin-left: 0;
+    transition-duration: 0.2s;
+  }
+
+  @media (max-width: 450px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    transition-duration: 0.2s;
+  }
+
+  label {
+    margin-top: $margin;
+    font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
+  }
+
+  input {
+    width: 100%;
+    background: $background;
+    font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
+
+    &:focus {
+      border: 1px solid rgba(48, 136, 135, 1);
+    }
+
+    @media (max-width: 350px) {
+      width: 90vw;
+    }
+  }
+
+  button {
+    border: 1px solid black;
+    margin-top: $margin;
+    font-family: "Suez One", Arial, sans-serif;
+    box-shadow: 5px 5px 5px grey;
+    transition-duration: 0.2s;
+
+    &:active {
+      box-shadow: 3px 3px 3px grey;
+      transition-duration: 0.2s;
+    }
+  }
+
+  input,
+  button {
+    padding: 3px;
+    border-radius: 0.2rem;
+  }
+
+  // Error message
+  p {
+    margin-top: $margin;
+    color: rgba(211, 56, 49, 1);
+  }
+}
+#picture {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  background-image: url(../../../img/roses.jpg);
+  background-size: cover;
+  z-index: -1;
+  filter: blur(5px);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to right, $background, transparent);
+    z-index: 10;
+  }
+}

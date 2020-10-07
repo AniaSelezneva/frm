@@ -5,7 +5,7 @@ function WithLoader(ComponentToWrap, loadingMessage) {
     const [isLoading, setIsLoading] = useState(true);
     return (
       <>
-        {isLoading && <h1>{loadingMessage}</h1>}
+        {isLoading && <h1 id="loading_message">{loadingMessage}</h1>}
         <ComponentToWrap {...props} setIsLoading={setIsLoading} />
       </>
     );

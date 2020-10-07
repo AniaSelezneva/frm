@@ -1,0 +1,90 @@
+$post_height: 200px;
+$margin: 1.2rem;
+$post_background: rgba(253, 202, 172, 1);
+
+// Posts container on the left
+.posts {
+  // post
+  .post {
+    border: 1px solid black;
+    border-radius: 0.2rem;
+    height: $post_height;
+    margin-top: $margin;
+    background: $post_background;
+
+    display: flex;
+    height: $post_height;
+
+    // Everything except image
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      width: 100%;
+      margin-left: 1rem;
+      margin-top: 1rem;
+
+      // Post text
+      & > p {
+        word-break: break-all;
+        margin-right: 1rem;
+      }
+
+      // User info, likes, comments
+      & > div {
+        padding-top: 1rem;
+        margin-top: auto;
+        text-align: end;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    // image container
+    .image_container {
+      width: 40%;
+      height: 100%;
+      overflow: hidden;
+      border-right: 1px solid black;
+      border-radius: 0.2rem;
+    }
+
+    // main post image
+    .post_image {
+      border: none;
+      background: pink;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+
+      transition-duration: 0.5s;
+
+      &:hover {
+        transform: scale(1.5);
+        transition-duration: 0.5s;
+      }
+    }
+    // user image at the bottom of post
+    .user_image {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+  }
+}
+
+// Pagination
+.pagination_container {
+  margin: $margin;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+
+  & > button {
+    font-size: 130%;
+  }
+
+  & > button:disabled {
+    text-decoration: none;
+  }
+}

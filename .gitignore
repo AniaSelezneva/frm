@@ -8,8 +8,8 @@
 # testing
 /coverage
 
-# graphql schema
-.gql
+# google admin sdk
+watch-forum-firebase-adminsdk-f6jmj-9a9febe651.json
 
 # misc
 .DS_Store
