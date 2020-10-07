@@ -40,11 +40,11 @@ function Index() {
       ) : (
         <p className={postStyles.posts_header}>
           <Link to="/login">
-            <strong>login</strong>
+            <strong>login </strong>
           </Link>
           or
           <Link to="/signup">
-            <strong>signup</strong>
+            <strong> signup </strong>
           </Link>
           to leave a comment
         </p>

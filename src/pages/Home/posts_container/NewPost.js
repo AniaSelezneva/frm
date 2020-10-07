@@ -120,6 +120,7 @@ function NewPost({ setIsLoading }) {
         }}
       />
 
+      {error !== undefined && <p className="error_message">{error}</p>}
       <div className={homeStyles.new_post_buttons_container}>
         <div className={homeStyles.choose_image_container}>
           <label htmlFor="image" className="custom_file_upload">
@@ -164,7 +165,6 @@ function NewPost({ setIsLoading }) {
         />
         <button type="submit">Submit</button>
       </div>
-      {error !== undefined && <p className="error_message">{error}</p>}
     </form>
   );
 }

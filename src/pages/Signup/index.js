@@ -115,8 +115,8 @@ function Signup({ setIsLoading }) {
       if (handleUnique && emailUnique && doPasswordsMatch()) {
         await auth.signup(email, password);
         await addUserToDb();
-        await auth.login(email, password, true);
-        dispatch({ type: "LOG_IN" });
+        //await auth.login(email, password, true);
+        //dispatch({ type: "LOG_IN" });
       }
     } catch (error) {
       console.log(error);

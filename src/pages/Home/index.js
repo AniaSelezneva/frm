@@ -13,6 +13,8 @@ import AllPosts from "./posts_container";
 import NewPost from "./posts_container/NewPost";
 // Styles
 import homeStyles from "./styles/Home.module.scss";
+// auth
+import auth from "../../utils/auth";
 
 // HOME PAGE
 function Home(props) {
@@ -157,6 +159,23 @@ function Home(props) {
       const root = document.getElementById("root");
       root.setAttribute("class", `home_root_background`);
     }
+  }, []);
+
+  useEffect(() => {
+    let token = decodeURIComponent(window.location.search)
+      .substring(1)
+      .split("confirmation_token=")[1];
+
+    console.log(token);
+
+    auth
+      .confirm(token, true)
+      .then(function (response) {
+        console.log("Confirmation email sent", JSON.stringify({ response }));
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
   }, []);
 
   return (

@@ -73,8 +73,8 @@ function NewComment({ setIsLoading }) {
           setComment(e.target.value);
         }}
       />
-      <button type="submit">Send</button>
       {error !== undefined && <p className="error_message">{error}</p>}
+      <button type="submit">Send</button>
     </form>
   );
 }
