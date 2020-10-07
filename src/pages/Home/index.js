@@ -106,9 +106,12 @@ function Home(props) {
   const searchInPosts = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), query)), {
-          size,
-        }),
+        q.Paginate(
+          q.Reverse(q.Match(q.Index("posts_by_words7"), q.Casefold(query))),
+          {
+            size,
+          }
+        ),
         q.Lambda("ref", q.Get(q.Var("ref")))
       )
     );
@@ -149,10 +152,10 @@ function Home(props) {
     // Don't use background if window is small.
     if (window.innerWidth > 1055) {
       const body = document.getElementsByTagName("body")[0];
-      body.setAttribute("id", `home_background`);
+      body.setAttribute("id", `${homeStyles.home_background}`);
 
       const root = document.getElementById("root");
-      root.setAttribute("class", `home_root_background`);
+      root.setAttribute("class", `${homeStyles.home_root_background}`);
     }
   }, []);
 

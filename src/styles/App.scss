@@ -49,10 +49,6 @@ input[type="file"] {
 
 button {
   font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 input {
@@ -332,17 +328,6 @@ p {
       align-self: flex-end;
     }
   }
-}
-
-// home page background
-#home_background {
-  background: url(../img/roses.jpg);
-  backdrop-filter: blur(5px);
-}
-
-// root background on home page
-.home_root_background {
-  background: $background;
 }
 
 // Error message

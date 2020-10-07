@@ -93,3 +93,15 @@ $new_post_height: 14rem;
     }
   }
 }
+
+// home page background
+#home_background {
+  background: url(../../../img/roses.jpg);
+  backdrop-filter: blur(5px);
+  background-size: cover;
+}
+
+// root background on home page
+.home_root_background {
+  background: $background;
+}
