@@ -6,8 +6,9 @@ import {
   Redirect,
 } from "react-router-dom";
 // Components
-import Signup from "./pages/Signup/index";
-import Home from "./pages/Home/index";
+import GetInvitation from "./pages/GetInvitation/index";
+import Home from "./pages/Home/Home";
+import Signup from "./pages/Signup/SignupWithInvitation";
 import Login from "./pages/Login/index";
 import Post from "./pages/Post/index";
 // Store
@@ -34,7 +35,8 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/search/" component={Home} />
-        <Route exact path="/signup" component={Signup}>
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/invite" component={GetInvitation}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>
         <Route exact path="/login" component={Login}>

@@ -10,13 +10,26 @@ import Search from "./Search";
 function Header() {
   const { state, dispatch } = useContext(store);
 
+  // Check if the location pathname is 'login', 'signup' or 'invite'
+  const isLoginOrSignup = () => {
+    if (
+      window.location.pathname === "/signup" ||
+      window.location.pathname === "/signup/" ||
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/login/" ||
+      window.location.pathname === "/invite/" ||
+      window.location.pathname === "/invite"
+    )
+      return true;
+    else {
+      return false;
+    }
+  };
+
   return (
     <>
       <ul className="header">
-        {window.location.pathname === "/signup" ||
-        window.location.pathname === "/login" ||
-        window.location.pathname === "/signup/" ||
-        window.location.pathname === "/login/" ? null : (
+        {!isLoginOrSignup() && (
           <li>
             <Search />
           </li>
@@ -31,22 +44,33 @@ function Header() {
               Home
             </Link>
           </li>
-
+          {/* If user is logged in... */}
           {state.loggedIn ? (
-            <li>
-              <Link
-                to="/profile"
-                className={
-                  window.location.pathname === "/profile" ||
-                  window.location.pathname === "/profile/"
-                    ? "active"
-                    : null
-                }
-              >
-                My posts
-              </Link>
-            </li>
+            <>
+              {" "}
+              <li>
+                {/* ... link to profile... */}
+                <Link
+                  to="/profile"
+                  // Add style to 'active' header link (underline).
+                  className={
+                    window.location.pathname === "/profile" ||
+                    window.location.pathname === "/profile/"
+                      ? "active"
+                      : null
+                  }
+                >
+                  My posts
+                </Link>
+              </li>
+              {/* ... and show notifications. */}
+              <li id="with_dropdown">
+                <Notifications />
+              </li>
+            </>
           ) : (
+            // If user is not logged in...
+            // ... links to signup and login.
             <>
               <li>
                 <Link
@@ -61,13 +85,12 @@ function Header() {
                   Login
                 </Link>
               </li>
-
               <li>
                 <Link
-                  to="/signup"
+                  to="/invite"
                   className={
-                    window.location.pathname === "/signup" ||
-                    window.location.pathname === "/signup/"
+                    window.location.pathname === "/invite" ||
+                    window.location.pathname === "/invite/"
                       ? "active"
                       : null
                   }
@@ -77,20 +100,10 @@ function Header() {
               </li>
             </>
           )}
-
-          {state.loggedIn && (
-            <li id="with_dropdown">
-              <Notifications />
-            </li>
-          )}
         </ul>
       </ul>
-      {window.location.pathname === "/signup" ||
-      window.location.pathname === "/signup/" ||
-      window.location.pathname === "/login" ||
-      window.location.pathname === "/login/" ? (
-        <div id="header_bottom_border" />
-      ) : null}
+      {/* Border on the bottom of the header only on signup and login pages. */}
+      {isLoginOrSignup() && <div id="header_bottom_border" />}
     </>
   );
 }

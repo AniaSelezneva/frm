@@ -1,14 +1,18 @@
 import React, { useContext, useEffect } from "react";
-
-// faunaDB
+// FaunaDB
 import { q, adminClient } from "../../../../utils/faunaDB";
-// store
+// Store
 import { store } from "../../../../utils/store";
 
+// Navigate through posts on the home page.
 function HomePagination() {
   const { state, dispatch } = useContext(store);
 
-  const goToNextPage = async (size) => {
+  // Number of posts per page.
+  const size = 5;
+
+  // Next page
+  const goToNextPage = async () => {
     const res = await adminClient.query(
       q.Map(
         q.Paginate(q.Reverse(q.Match(q.Index("all_posts"))), {
@@ -20,10 +24,11 @@ function HomePagination() {
     );
 
     dispatch({ type: "SET_POSTS", payload: res });
-    window.scrollTo(0, 350);
+    window.scrollTo(0, 0);
   };
 
-  const goToPrevPage = async (size) => {
+  // Previous page
+  const goToPrevPage = async () => {
     const res = await adminClient.query(
       q.Map(
         q.Paginate(q.Reverse(q.Match(q.Index("all_posts"))), {
@@ -35,7 +40,7 @@ function HomePagination() {
     );
 
     dispatch({ type: "SET_POSTS", payload: res });
-    window.scrollTo(0, 350);
+    window.scrollTo(0, 0);
   };
 
   // Disable prev or forward buttons.
@@ -62,7 +67,7 @@ function HomePagination() {
       <button
         onClick={(e) => {
           e.preventDefault();
-          goToPrevPage(5);
+          goToPrevPage();
         }}
         id="prev_btn"
       >
@@ -72,7 +77,7 @@ function HomePagination() {
       <button
         onClick={(e) => {
           e.preventDefault();
-          goToNextPage(5);
+          goToNextPage();
         }}
         id="next_btn"
       >

@@ -1,14 +1,17 @@
 import React, { useContext, useEffect } from "react";
-
-// faunaDB
+// FaunaDB
 import { q, adminClient } from "../../../../utils/faunaDB";
-// store
+// Store
 import { store } from "../../../../utils/store";
 
 function SearchPagination() {
   const { state, dispatch } = useContext(store);
 
-  const goToNextPage = async (size) => {
+  // Number of posts per page
+  const size = 5;
+
+  // Next page
+  const goToNextPage = async () => {
     const res = await adminClient.query(
       q.Map(
         q.Paginate(
@@ -23,10 +26,11 @@ function SearchPagination() {
     );
 
     dispatch({ type: "SET_POSTS", payload: res });
-    window.scrollTo(0, 350);
+    window.scrollTo(0, 0);
   };
 
-  const goToPrevPage = async (size) => {
+  // Previous page
+  const goToPrevPage = async () => {
     const res = await adminClient.query(
       q.Map(
         q.Paginate(
@@ -41,7 +45,7 @@ function SearchPagination() {
     );
 
     dispatch({ type: "SET_POSTS", payload: res });
-    window.scrollTo(0, 350);
+    window.scrollTo(0, 0);
   };
 
   // Disable prev or forward buttons.

@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // Styles
-import postsContainerStyles from "../../styles/Posts_container.module.scss";
+import postsContainerStyles from "../styles/Posts_container.module.scss";
 
-function index({ userImageUrl, userHandle, commentCount }) {
+function PostInfo({ userImageUrl, userHandle, commentCount }) {
   return (
     <div className={postsContainerStyles.post_info}>
       <Link to={`/user/${userHandle}`}>
@@ -15,4 +15,4 @@ function index({ userImageUrl, userHandle, commentCount }) {
   );
 }
 
-export default index;
+export default PostInfo;

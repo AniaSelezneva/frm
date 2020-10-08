@@ -15,7 +15,6 @@ import Layout from "../../HOCs/Layout";
 function Signup({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
 
-  const [email, setEmail] = useState();
   const [handle, setHandle] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
@@ -24,8 +23,15 @@ function Signup({ setIsLoading }) {
   const [emailUnique, setEmailUnique] = useState();
   const [passwordsMatch, setPasswordsMatch] = useState();
 
+  const [confirmationSent, setConfirmationSent] = useState(false);
+
   // General error
   const [isError, setIsError] = useState();
+
+  // Invite token
+  let inviteToken = decodeURIComponent(window.location.hash)
+    .substring(1)
+    .split("invite_token=")[1];
 
   // Loading = false
   useEffect(() => {
@@ -33,19 +39,19 @@ function Signup({ setIsLoading }) {
   }, []);
 
   // Add user to 'users' collection in db.
-  const addUserToDb = () => {
+  const addUserToDb = (email) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const ret = await adminClient.query(
+        const res = await adminClient.query(
           q.Create(q.Collection("users"), {
             data: {
-              handle: handle,
-              email: email,
+              handle,
+              email,
               imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/dandelion.jpg?alt=media`,
             },
           })
         );
-        resolve(ret);
+        resolve(res);
       } catch (error) {
         reject(error);
       }
@@ -73,27 +79,6 @@ function Signup({ setIsLoading }) {
     });
   };
 
-  // Check if user email doesn't exist in db already.
-  const isEmailUnique = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await adminClient.query(
-          q.Exists(q.Match(q.Index("users_by_email"), q.Casefold(email)))
-        );
-
-        if (res === true) {
-          setEmailUnique(false);
-          resolve(false);
-        } else {
-          setEmailUnique(true);
-          resolve(true);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
   // Check if password and confirmPassword match.
   const doPasswordsMatch = () => {
     if (password === confirmPassword) {
@@ -110,13 +95,24 @@ function Signup({ setIsLoading }) {
     setIsLoading(true);
     try {
       const handleUnique = await isHandleUnique();
-      const emailUnique = await isEmailUnique();
 
-      if (handleUnique && emailUnique && doPasswordsMatch()) {
-        await auth.signup(email, password);
-        await addUserToDb();
+      if (handleUnique && doPasswordsMatch()) {
+        auth
+          .acceptInvite(inviteToken, password, true)
+          .then((response) => {
+            return addUserToDb(response.email);
+          })
+          .then((res) => {
+            console.log(res);
+          })
+
+          .catch((error) => {
+            console.log(error);
+            setIsError(true);
+          });
+
         //await auth.login(email, password, true);
-        //dispatch({ type: "LOG_IN" });
+        dispatch({ type: "LOG_IN" });
       }
     } catch (error) {
       console.log(error);
@@ -163,18 +159,18 @@ function Signup({ setIsLoading }) {
     }
   }, [handleUnique]);
 
-  // Change color of email label and input if there is error.
-  useEffect(() => {
-    const input = document.getElementsByName("email")[0];
-    const label = document.getElementById("email_label");
-    if (emailUnique || emailUnique === undefined) {
-      input.style.border = "1px solid black";
-      label.style.color = "black";
-    } else if (!emailUnique) {
-      input.style.border = "1px solid rgba(211, 56, 49, 1)";
-      label.style.color = "rgba(211, 56, 49, 1)";
-    }
-  }, [emailUnique]);
+  // // Change color of email label and input if there is error.
+  // useEffect(() => {
+  //   const input = document.getElementsByName("email")[0];
+  //   const label = document.getElementById("email_label");
+  //   if (emailUnique || emailUnique === undefined) {
+  //     input.style.border = "1px solid black";
+  //     label.style.color = "black";
+  //   } else if (!emailUnique) {
+  //     input.style.border = "1px solid rgba(211, 56, 49, 1)";
+  //     label.style.color = "rgba(211, 56, 49, 1)";
+  //   }
+  // }, [emailUnique]);
 
   // Change color of passwords label and input if there is error.
   useEffect(() => {
@@ -210,83 +206,89 @@ function Signup({ setIsLoading }) {
   return (
     <Layout>
       <div id={signupStyles.picture} />
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          signup(e);
-        }}
-        method="post"
-        id={signupStyles.form}
-      >
-        <label htmlFor="email" id="email_label">
-          Email:
-        </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          onChange={(e) => {
-            setEmailUnique(undefined);
-            setIsError(false);
-            setEmail(e.target.value);
+      {!confirmationSent ? (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            signup(e);
           }}
-          required="required"
-        ></input>
+          method="post"
+          id={signupStyles.form}
+        >
+          {/* <label htmlFor="email" id="email_label">
+            Email:
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            onChange={(e) => {
+              setEmailUnique(undefined);
+              setIsError(false);
+              setEmail(e.target.value);
+            }}
+            required="required"
+          ></input> */}
 
-        {emailUnique === false ? <p>This email is already in use</p> : null}
+          {/* // {emailUnique === false ? <p>This email is already in use</p> : null} */}
 
-        <label htmlFor="handle" id="handle_label">
-          Username:
-        </label>
-        <input
-          type="text"
-          name="handle"
-          id="handle"
-          onChange={(e) => {
-            setHandleUnique(undefined);
-            setIsError(false);
-            setHandle(e.target.value);
-          }}
-          required="required"
-        ></input>
+          <label htmlFor="handle" id="handle_label">
+            Username:
+          </label>
+          <input
+            type="text"
+            name="handle"
+            id="handle"
+            onChange={(e) => {
+              setHandleUnique(undefined);
+              setIsError(false);
+              setHandle(e.target.value);
+            }}
+            required="required"
+          ></input>
 
-        {handleUnique === false ? <p>This handle is already in use</p> : null}
+          {handleUnique === false ? <p>This handle is already in use</p> : null}
 
-        <label htmlFor="password" id="password_label">
-          Password:
-        </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setIsError(false);
-            setPasswordsMatch(true);
-          }}
-          required="required"
-        ></input>
+          <label htmlFor="password" id="password_label">
+            Password:
+          </label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setIsError(false);
+              setPasswordsMatch(true);
+            }}
+            required="required"
+          ></input>
 
-        <label htmlFor="confirmPassword" id="confirm_password_label">
-          Confirm password:
-        </label>
-        <input
-          type="password"
-          name="confirmPassword"
-          id="confirmPassword"
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            setIsError(false);
-            setPasswordsMatch(true);
-          }}
-          required="required"
-        ></input>
-        {passwordsMatch === false ? <p>Passwords don't match</p> : null}
+          <label htmlFor="confirmPassword" id="confirm_password_label">
+            Confirm password:
+          </label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setIsError(false);
+              setPasswordsMatch(true);
+            }}
+            required="required"
+          ></input>
+          {passwordsMatch === false ? <p>Passwords don't match</p> : null}
 
-        {isError && <p>Error occured, please try again later</p>}
+          {isError && <p>Error occured, please try again later</p>}
 
-        <button type="submit">Signup</button>
-      </form>
+          <button type="submit">Signup</button>
+        </form>
+      ) : (
+        <p id={signupStyles.confirmation_message}>
+          Confirmation letter is sent to your email
+        </p>
+      )}
     </Layout>
   );
 }

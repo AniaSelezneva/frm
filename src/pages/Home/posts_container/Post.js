@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";
 // Components
-import PostInfo from "./post_info";
+import PostInfo from "./PostInfo";
 
-function Post({ index, post, isSearch }) {
-  // Cut body of the post in case it's too long.
+function Post({ post }) {
   const [body, setBody] = useState();
 
   // Limit length of the post body if it's too long.

@@ -1,23 +1,23 @@
 import React, { useState, useContext, useEffect } from "react";
 // uuid
 import uuid from "react-uuid";
-// firebase
+// Firebase
 import firebase from "firebase";
-// config for firebase
+// Config for firebase
 import config from "../../../utils/config";
-// store
+// Store
 import { store } from "../../../utils/store";
 import WithLoader from "../../../HOCs/WithLoader";
 // Styles
 import homeStyles from "../styles/Home.module.scss";
 
 function NewPost({ setIsLoading }) {
-  const { state, dispatch } = useContext(store);
+  const { state } = useContext(store);
   const [body, setBody] = useState("");
   const [image, setImage] = useState();
-  const [imageName, setImageName] = useState();
+  const [imageDbName, setImageDbName] = useState(); // image name created with uuid
+  const [imageName, setImageName] = useState(); // image name from file system
   const [error, setError] = useState(undefined);
-  const [imageFileName, setImageFileName] = useState();
 
   // Loading = false on component load.
   useEffect(() => {
@@ -33,33 +33,34 @@ function NewPost({ setIsLoading }) {
         // Root reference.
         var storageRef = firebase.storage().ref();
         // Reference to new file.
-        var imageRef = storageRef.child(imageName);
+        var imageRef = storageRef.child(imageDbName);
 
         await imageRef.put(image);
         resolve("success");
       } catch (error) {
         console.log(error);
+        setError("Something went wrong, please try again later");
         reject(error);
       }
     });
   };
 
-  // Set imageName when image is chosen in the browser.
+  // Set imageDbName when image is chosen in the browser.
   useEffect(() => {
     if (image !== undefined && image !== null) {
       const imageExtension = image.name.split(".").pop();
-
-      const imageFileName = `${uuid()}.${imageExtension}`;
-
-      setImageName(imageFileName);
+      const imageName = `${uuid()}.${imageExtension}`;
+      setImageDbName(imageName);
     }
   }, [image]);
 
-  // Make post (bind image and post in db together).
+  // Create post (bind image and post in db together).
   const submitPost = async (e) => {
     setIsLoading(true);
 
+    // If image is chosen...
     if (image !== null && image !== undefined) {
+      // ... upload it.
       await uploadImage();
     }
 
@@ -75,17 +76,17 @@ function NewPost({ setIsLoading }) {
           body: body.trim(),
           imageUrl:
             image !== null && image !== undefined
-              ? `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/${imageName}?alt=media`
+              ? `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/${imageDbName}?alt=media`
               : undefined,
         }),
       });
 
       if (res.status === 404) {
         setError("Something went wrong, try again later");
+      } else {
+        window.location.reload();
       }
-
       setIsLoading(false);
-      window.location.reload();
     } catch (error) {
       setError("Something went wrong, try again later");
       setIsLoading(false);
@@ -102,7 +103,7 @@ function NewPost({ setIsLoading }) {
           submitPost(e);
         } else {
           setError("Must not be empty");
-          // Red border
+          // Red border around the textarea.
           document.getElementById("post_body").style.border = "2px solid red";
         }
       }}
@@ -119,29 +120,27 @@ function NewPost({ setIsLoading }) {
           setError(undefined);
         }}
       />
-
+      {/* Show error message if there is an error */}
       {error !== undefined && <p className="error_message">{error}</p>}
+
       <div className={homeStyles.new_post_buttons_container}>
         <div className={homeStyles.choose_image_container}>
           <label htmlFor="image" className="custom_file_upload">
             Image:
             <span>
-              {imageFileName === undefined
-                ? " choose an image"
-                : ` ${imageFileName}`}
+              {imageName === undefined ? " choose an image" : ` ${imageName}`}
             </span>
           </label>
 
+          {/* Button to remove previously chosen image. */}
           <button
             onClick={(e) => {
               e.preventDefault();
-              // Remove previously chosen image.
-              setImageFileName(undefined);
               setImageName(undefined);
+              setImageDbName(undefined);
               setImage(undefined);
               document.getElementById("post_body").style.border =
                 "1px solid black";
-              setError(undefined);
             }}
           >
             remove
@@ -155,7 +154,7 @@ function NewPost({ setIsLoading }) {
           accept="image/png, image/jpeg"
           onChange={(e) => {
             if (e.target.files[0] !== undefined) {
-              setImageFileName(e.target.files[0].name);
+              setImageName(e.target.files[0].name);
               setImage(e.target.files[0]);
               setError(undefined);
               document.getElementById("post_body").style.border =
