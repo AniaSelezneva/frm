@@ -21,6 +21,8 @@ function Home({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
   const [path, setPath] = useState();
   const [error, setError] = useState(undefined);
+
+  const [ready, setReady] = useState(false);
   // Number of posts per page
   const size = 5;
 
@@ -257,7 +259,7 @@ function Home({ setIsLoading }) {
 
           {/* Search path */}
           {path === "search" &&
-            (state.posts.data !== undefined ? (
+            (ready ? (
               <>
                 {state.posts.data.length > 0 ? (
                   <p className={homeStyles.posts_header}>
@@ -293,7 +295,7 @@ function Home({ setIsLoading }) {
           )}
 
           {/* All posts */}
-          <PostsContainer path={path} />
+          <PostsContainer path={path} setReady={setReady} />
         </div>
 
         {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}

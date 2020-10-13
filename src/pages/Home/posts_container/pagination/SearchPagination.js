@@ -4,7 +4,7 @@ import { q, adminClient } from "../../../../utils/faunaDB";
 // Store
 import { store } from "../../../../utils/store";
 
-function SearchPagination() {
+function SearchPagination({ setReady }) {
   const { state, dispatch } = useContext(store);
 
   // Number of posts per page
@@ -82,13 +82,14 @@ function SearchPagination() {
         }}
         id="prev_btn"
       >
-        {state.query}
+        back
       </button>
 
       <button
         onClick={async (e) => {
           e.preventDefault();
           await goToNextPage();
+          setReady(true);
         }}
         id="next_btn"
       >
