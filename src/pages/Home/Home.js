@@ -256,19 +256,20 @@ function Home({ setIsLoading }) {
             ))}
 
           {/* Search path */}
-          {path === "search" && (
-            <>
-              {state.posts.data !== undefined && state.posts.data.length > 0 ? (
-                <p className={homeStyles.posts_header}>
-                  Search results for: {state.query}
-                </p>
-              ) : (
-                <p className={homeStyles.posts_header}>
-                  nothing was found: {state.query}
-                </p>
-              )}
-            </>
-          )}
+          {path === "search" &&
+            (state.posts.data !== undefined ? (
+              <>
+                {state.posts.data.length > 0 ? (
+                  <p className={homeStyles.posts_header}>
+                    Search results for: {state.query}
+                  </p>
+                ) : (
+                  <p className={homeStyles.posts_header}>
+                    nothing was found: {state.query}
+                  </p>
+                )}
+              </>
+            ) : null)}
 
           {/* Profile path */}
           {path === "profile" && state.loggedIn && (
