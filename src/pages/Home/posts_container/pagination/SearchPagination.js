@@ -12,6 +12,7 @@ function SearchPagination() {
 
   // Next page
   const goToNextPage = async () => {
+    console.log("going to next page");
     const res = await adminClient.query(
       q.Map(
         q.Paginate(
@@ -24,7 +25,6 @@ function SearchPagination() {
         q.Lambda("X", q.Get(q.Var("X")))
       )
     );
-    console.log(res);
     dispatch({ type: "SET_POSTS", payload: res });
     window.scrollTo(0, 0);
   };
