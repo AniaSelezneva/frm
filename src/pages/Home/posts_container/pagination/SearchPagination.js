@@ -47,7 +47,7 @@ function SearchPagination() {
         q.Lambda("X", q.Get(q.Var("X")))
       )
     );
-
+    console.log("hi");
     dispatch({ type: "SET_POSTS", payload: res });
     window.scrollTo(0, 0);
   };
