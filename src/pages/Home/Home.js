@@ -116,7 +116,7 @@ function Home({ setIsLoading }) {
           q.Paginate(
             q.Reverse(q.Match(q.Index("posts_by_words7"), q.Casefold(query))),
             {
-              size,
+              size: 3,
             }
           ),
           q.Lambda("ref", q.Get(q.Var("ref")))
