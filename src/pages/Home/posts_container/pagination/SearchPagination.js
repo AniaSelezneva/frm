@@ -18,7 +18,7 @@ function SearchPagination() {
           q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
           {
             size,
-            after: state.posts.after[0],
+            after: state.posts.after[1],
           }
         ),
         q.Lambda("X", q.Get(q.Var("X")))
@@ -37,7 +37,7 @@ function SearchPagination() {
           q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
           {
             size,
-            before: state.posts.before[0],
+            before: state.posts.before[1],
           }
         ),
         q.Lambda("X", q.Get(q.Var("X")))
