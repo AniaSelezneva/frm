@@ -87,10 +87,10 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/invite"
+                  to="/signup"
                   className={
-                    window.location.pathname === "/invite" ||
-                    window.location.pathname === "/invite/"
+                    window.location.pathname === "/signup" ||
+                    window.location.pathname === "/signup/"
                       ? "active"
                       : null
                   }

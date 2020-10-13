@@ -8,7 +8,8 @@ import {
 // Components
 import GetInvitation from "./pages/GetInvitation/index";
 import Home from "./pages/Home/Home";
-import Signup from "./pages/Signup/SignupWithInvitation";
+import SignupWithInvitation from "./pages/Signup/SignupWithInvitation";
+import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/index";
 import Post from "./pages/Post/index";
 // Store
@@ -35,10 +36,12 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/search/" component={Home} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/invite" component={GetInvitation}>
+        <Route exact path="/signup" component={Signup}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>
+        {/* <Route exact path="/invite" component={GetInvitation}>
+          {state.loggedIn && <Redirect to="/" />}
+        </Route> */}
         <Route exact path="/login" component={Login}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>

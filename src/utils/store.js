@@ -8,6 +8,7 @@ const initialState = {
     imageUrl: null,
     userDbRef: null,
     notifications: [],
+    likes: [],
     totalNotifications: null,
   },
   posts: [],
@@ -23,12 +24,13 @@ const StateProvider = ({ children }) => {
     switch (action.type) {
       case "LOG_IN":
         return { ...state, loggedIn: true };
-      case "SET_USER": {
-        return { ...state, user: action.payload };
+      case "SET_USER_DATA": {
+        return { ...state, user: { ...state.user, ...action.payload } };
       }
       case "CHANGE_IMAGE": {
         return { ...state, user: action.payload };
       }
+      // remove that
       case "SET_REF": {
         return { ...state, user: { ...state.user, userDbRef: action.payload } };
       }
@@ -37,6 +39,9 @@ const StateProvider = ({ children }) => {
       }
       case "SET_CURRENT_POST": {
         return { ...state, post: action.payload };
+      }
+      case "SET_LIKES": {
+        return { ...state, user: { ...state.user, likes: action.payload } };
       }
       case "SET_NOTIFICATIONS": {
         return {
@@ -48,6 +53,92 @@ const StateProvider = ({ children }) => {
         return {
           ...state,
           query: action.payload,
+        };
+      }
+
+      case "CHANGE_LIKE_COUNT": {
+        const { newLikeCount, postId } = action.payload;
+
+        let postsData;
+        if (
+          state.posts !== undefined &&
+          state.posts !== null &&
+          state.posts.length !== 0
+        ) {
+          postsData = state.posts.data;
+          const postIndex = state.posts.data.findIndex((post) => {
+            return post.data.postId === postId;
+          });
+
+          if (postIndex >= 0) {
+            postsData[postIndex].data.likeCount = newLikeCount;
+          }
+        } else {
+          postsData = [];
+        }
+
+        // Refresh total likeCount in post in store if it's there.
+        if (state.post !== null && state.post !== undefined) {
+          return {
+            ...state,
+            post: {
+              ...state.post,
+              data: {
+                ...state.post.data,
+                likeCount: newLikeCount,
+              },
+            },
+            posts: { ...state.posts, data: postsData },
+          };
+        } else {
+          return {
+            ...state,
+            posts: { ...state.posts, data: postsData },
+          };
+        }
+      }
+
+      case "LIKE_POST": {
+        const { like, postId } = action.payload;
+
+        // Add new like.
+        const likes = state.user.likes;
+        // If it's not already there...
+        const index = likes.findIndex((like) => {
+          return like.data.postId === postId;
+        });
+        if (index < 0) {
+          likes.push(like);
+        }
+
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            likes,
+          },
+        };
+      }
+      case "UNLIKE_POST": {
+        const { postId } = action.payload;
+
+        // Find like ref.
+        const likeIndex = state.user.likes.findIndex((like) => {
+          return like.data.postId === postId;
+        });
+
+        const likes = state.user.likes;
+        // Remove like if it exists.
+        if (likeIndex >= 0) {
+          likes.splice(likeIndex, 1);
+        }
+
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            likes,
+          },
         };
       }
       case "REMOVE_NOTIFICATION": {

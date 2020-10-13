@@ -4,7 +4,7 @@ const uuid = require("react-uuid");
 
 const q = faunadb.query;
 const adminClient = new faunadb.Client({
-  secret: process.env.REACT_APP_SECRET,
+  secret: process.env.REACT_APP_FAUNA_SECRET,
 });
 
 exports.handler = async (event, context) => {
@@ -23,6 +23,8 @@ exports.handler = async (event, context) => {
               body,
               imageUrl,
               commentCount: 0,
+              likeCount: 0,
+              createdAt: Date.now(),
             },
           })
         );

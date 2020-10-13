@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-// store
-import { store } from "../../utils/store";
+import React, { useState, useEffect } from "react";
+
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // auth
@@ -13,8 +12,6 @@ import signupStyles from "./styles/Signup.module.scss";
 import Layout from "../../HOCs/Layout";
 
 function Signup({ setIsLoading }) {
-  const { state, dispatch } = useContext(store);
-
   const [email, setEmail] = useState();
   const [handle, setHandle] = useState();
   const [password, setPassword] = useState();
@@ -41,8 +38,8 @@ function Signup({ setIsLoading }) {
         const ret = await adminClient.query(
           q.Create(q.Collection("users"), {
             data: {
-              handle,
-              email,
+              handle: q.LowerCase(handle),
+              email: q.LowerCase(email),
               imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/dandelion.jpg?alt=media`,
             },
           })

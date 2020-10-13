@@ -1,7 +1,7 @@
 @import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
 
 $header_height: 100px;
-$background: rgba(236, 234, 213, 1);
+$background: rgba(210, 225, 202, 1);
 
 // Reset
 * {
@@ -226,10 +226,11 @@ p {
   animation: 1s ease-out 0s 1 opacityChange;
 
   // Bell
-  & > div {
+  & > #notifications_bell {
     display: flex;
     justify-content: center;
     outline: none;
+    width: 38px;
 
     & > img {
       border: none;
@@ -239,9 +240,18 @@ p {
     // Number
     p {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: -0.5rem;
+      right: 0;
+
+      border-radius: 50%;
+      text-align: center;
+      word-break: keep-all;
+      min-width: 20px;
+      height: min-content;
+      background: rgba(238, 39, 106, 1);
+
+      font-size: 70%;
+
       animation: 1s ease-out 0s 1 opacityChange;
     }
 

@@ -5,8 +5,8 @@ import { store } from "../../utils/store";
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // svgs
-import bell from "../../img/svgs/bell.svg";
-import activeBell from "../../img/svgs/bell-green.svg";
+import bellTransparent from "../../img/svgs/bell-transparent.svg";
+import bellYellow from "../../img/svgs/bell-yellow.svg";
 import arrow from "../../img/svgs/arrow.svg";
 import remove from "../../img/svgs/remove.svg";
 
@@ -212,10 +212,10 @@ function Notifications() {
             }}
           >
             {totalNotifications === 0 ? (
-              <img src={bell} />
+              <img src={bellTransparent} />
             ) : (
               <>
-                <img src={activeBell} />
+                <img src={bellYellow} />
                 <p>{totalNotifications}</p>
               </>
             )}
@@ -229,8 +229,10 @@ function Notifications() {
               <ul id="notifications_container">
                 {state.user.notifications.data.map((notification) => (
                   <li key={notification.data.id}>
-                    {notification.data.sender} {`${notification.data.type}ed `}
-                    {notification.data.type === "comment" && "on "}
+                    {notification.data.sender}{" "}
+                    {notification.data.type === "like"
+                      ? "liked "
+                      : "commented on "}
                     <Link to={`/post/${notification.data.postId}`}>
                       your post
                     </Link>

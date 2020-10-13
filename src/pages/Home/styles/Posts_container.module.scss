@@ -1,6 +1,6 @@
 $post_height: 200px;
 $margin: 1.2rem;
-$post_background: rgba(253, 202, 172, 1);
+$post_background: rgba(29, 150, 172, 0.56);
 
 // Posts container on the left
 .posts {
@@ -8,67 +8,49 @@ $post_background: rgba(253, 202, 172, 1);
   .post {
     border: 1px solid black;
     border-radius: 0.2rem;
-    height: $post_height;
+    height: max-content;
     margin-top: $margin;
     background: $post_background;
 
     display: flex;
-    height: $post_height;
+    flex-direction: column;
 
-    // Everything except image
-    & > div {
+    .post_main_body {
       display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-      width: 100%;
-      margin-left: 1rem;
-      margin-top: 1rem;
+      max-height: 200px;
 
       // Post text
-      & > p {
+      & > a > p {
         word-break: break-all;
-        margin-right: 1rem;
+        padding: 1rem;
       }
 
-      // User info, likes, comments
-      & > div {
-        padding-top: 1rem;
-        margin-top: auto;
-        text-align: end;
-        margin-right: 0.5rem;
-        margin-bottom: 0.5rem;
+      // Post image
+      .image_container {
+        overflow: hidden;
+        border: 1px solid black;
+        border-top: none;
+        border-left: none;
+        border-radius: 0.2rem;
+        height: 100%;
+        width: 200px;
+
+        // main post image
+        & > img {
+          border: none;
+          background: pink;
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+
+          transition-duration: 0.5s;
+
+          &:hover {
+            transform: scale(1.5);
+            transition-duration: 0.5s;
+          }
+        }
       }
-    }
-
-    // image container
-    .image_container {
-      width: 40%;
-      height: 100%;
-      overflow: hidden;
-      border-right: 1px solid black;
-      border-radius: 0.2rem;
-    }
-
-    // main post image
-    .post_image {
-      border: none;
-      background: pink;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-
-      transition-duration: 0.5s;
-
-      &:hover {
-        transform: scale(1.5);
-        transition-duration: 0.5s;
-      }
-    }
-    // user image at the bottom of post
-    .user_image {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
     }
   }
 }
@@ -86,5 +68,23 @@ $post_background: rgba(253, 202, 172, 1);
 
   & > button:disabled {
     text-decoration: none;
+  }
+}
+
+// Like buttons
+#red_heart,
+#blue_heart {
+  border: none;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.inactive_like {
+  scale: 1 !important;
+}
+
+#blue_heart {
+  &:hover {
+    scale: 1.08;
   }
 }

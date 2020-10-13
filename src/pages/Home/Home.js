@@ -24,6 +24,13 @@ function Home({ setIsLoading }) {
   // Number of posts per page
   const size = 5;
 
+  // User name for any user's route
+  let userName = window.location.pathname
+    .split("/")
+    .pop()
+    .split("%20")
+    .join(" ");
+
   // Search query
   const urlParams = new URLSearchParams(window.location.search);
   const query = urlParams.get("query");
@@ -54,7 +61,7 @@ function Home({ setIsLoading }) {
       window.location.pathname === "/profile/"
     ) {
       setPath("profile");
-    } else if (window.location.pathname.slice(0, 6)) {
+    } else if (window.location.pathname.slice(0, 5) === "/user") {
       setPath("user");
     }
   };
@@ -129,17 +136,9 @@ function Home({ setIsLoading }) {
   const getUserPosts = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(
-          q.Reverse(
-            q.Match(
-              q.Index("posts_by_user"),
-              window.location.pathname.split("/").pop()
-            )
-          ),
-          {
-            size,
-          }
-        ),
+        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_user"), userName)), {
+          size,
+        }),
         q.Lambda("X", q.Get(q.Var("X")))
       )
     );
@@ -197,9 +196,8 @@ function Home({ setIsLoading }) {
       state.user.handle !== undefined
     ) {
       getOwnPosts();
-    } else {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }, [path, state.user.handle]);
 
   // Check path on page load.
@@ -248,8 +246,13 @@ function Home({ setIsLoading }) {
           {/* Profile path */}
           {path === "profile" && state.loggedIn && (
             <>
-              <NewPost />
-              <h2 className={homeStyles.posts_header}>My posts</h2>
+              {state.posts.data !== undefined && state.posts.data.length > 0 ? (
+                <h2 className={homeStyles.posts_header}>My posts</h2>
+              ) : (
+                <h2 className={homeStyles.posts_header}>
+                  You haven't posted yet
+                </h2>
+              )}
             </>
           )}
 
@@ -257,7 +260,7 @@ function Home({ setIsLoading }) {
           {path === "user" && (
             <h2 className={homeStyles.posts_header}>
               {/* User's name from pathname */}
-              {window.location.pathname.split("/")[2]}
+              {userName}
             </h2>
           )}
 
@@ -267,7 +270,7 @@ function Home({ setIsLoading }) {
 
         {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
         {path !== "confirm" && path !== "invite" && (
-          <User path={path} handle={window.location.pathname.split("/")[2]} />
+          <User path={path} handle={userName} />
         )}
       </div>
     </Layout>

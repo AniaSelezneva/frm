@@ -68,6 +68,8 @@ $margin: 1rem;
   p {
     margin-top: $margin;
     color: rgba(211, 56, 49, 1);
+    word-break: keep-all;
+    text-align: center;
   }
 }
 #picture {

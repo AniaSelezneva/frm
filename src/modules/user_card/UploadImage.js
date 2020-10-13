@@ -6,7 +6,7 @@ import { q, adminClient } from "../../utils/faunaDB";
 // withLoader hoc
 import WithLoader from "../../HOCs/WithLoader";
 // firebase
-import firebase from "firebase";
+import { initializeApp, storage } from "firebase";
 // config for firebase
 import config from "../../utils/config";
 // uuid
@@ -25,14 +25,14 @@ function UploadImage({ setIsLoading }) {
     setIsLoading(true);
 
     try {
-      firebase.initializeApp(config);
+      initializeApp(config);
 
       const imageExtension = image.name.split(".").pop();
 
       const imageFileName = `${uuid()}.${imageExtension}`;
 
       // Root reference.
-      var storageRef = firebase.storage().ref();
+      var storageRef = storage().ref();
       // Reference to new file.
       var imageRef = storageRef.child(imageFileName);
 
@@ -170,6 +170,10 @@ function UploadImage({ setIsLoading }) {
           if (imageFileName === undefined) {
             const message = document.getElementsByClassName("choose_image")[0];
             message.style.color = "red";
+
+            setTimeout(() => {
+              message.style.color = "grey";
+            }, 3000);
           } else {
             uploadImage(e);
           }

@@ -45,8 +45,8 @@ function Signup({ setIsLoading }) {
         const res = await adminClient.query(
           q.Create(q.Collection("users"), {
             data: {
-              handle,
-              email,
+              handle: q.LowerCase(handle),
+              email: q.LowerCase(email),
               imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/dandelion.jpg?alt=media`,
             },
           })

@@ -1,22 +1,25 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-// faunaDB
+// FaunaDB
 import { q, adminClient } from "../../utils/faunaDB";
-// withLoader hoc
+// WithLoader hoc
 import WithLoader from "../../HOCs/WithLoader";
-// styles
+// Styles
 import postStyles from "./styles/Post.module.scss";
-// components
+// Components
 import Layout from "../../HOCs/Layout";
 import User from "../../modules/user_card/index";
 import Comments from "./comments_container";
-// store
+// Store
 import { store } from "../../utils/store";
+import PostInfo from "../../modules/post_info/PostInfo";
 
 function Post(props) {
   const { state, dispatch } = useContext(store);
   const { postId } = props.match.params;
   const { setIsLoading } = props;
+
+  const [showModal, setShowModal] = useState(undefined);
 
   // Fetch post.
   const getPost = () => {
@@ -41,19 +44,6 @@ function Post(props) {
     });
   };
 
-  // Apply class to body to change background image on home page.
-  // Apply class to root to have background only on home page.
-  useEffect(() => {
-    // Don't use background if window is small.
-    if (window.innerWidth > 1055) {
-      const body = document.getElementsByTagName("body")[0];
-      body.setAttribute("id", `home_background`);
-
-      const root = document.getElementById("root");
-      root.setAttribute("class", `home_root_background`);
-    }
-  }, []);
-
   // Get comments.
   const getComments = () => {
     return new Promise(async (resolve, reject) => {
@@ -76,19 +66,6 @@ function Post(props) {
       }
     });
   };
-
-  // Get post with comments.
-  useEffect(() => {
-    (async () => {
-      try {
-        await getPost();
-        await getComments();
-      } catch (error) {
-        console.log(error);
-      }
-      setIsLoading(false);
-    })();
-  }, [window.location.pathname]);
 
   // Delete post.
   const deletePost = async () => {
@@ -119,6 +96,94 @@ function Post(props) {
     window.location.replace("/");
   };
 
+  // Show delete post modal.
+  const appendModal = () => {
+    const modalOverlay = document.createElement("div");
+    modalOverlay.setAttribute("class", `${postStyles.modal_container}`);
+    modalOverlay.setAttribute("id", `modal`);
+    modalOverlay.addEventListener("click", () => {
+      setShowModal(false);
+    });
+
+    const modalWindow = document.createElement("div");
+    modalWindow.setAttribute("class", `${postStyles.modal_window}`);
+    modalWindow.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    const text = document.createElement("p");
+    text.innerHTML = "Are you sure you want to remove the post permanently?";
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.setAttribute("class", `${postStyles.button_container}`);
+
+    const yesButton = document.createElement("button");
+    yesButton.innerHTML = "yes";
+    yesButton.addEventListener("click", () => {
+      deletePost();
+    });
+
+    const noButton = document.createElement("button");
+    noButton.innerHTML = "no";
+    noButton.addEventListener("click", () => {
+      setShowModal(false);
+    });
+
+    buttonContainer.appendChild(yesButton);
+    buttonContainer.appendChild(noButton);
+
+    modalWindow.appendChild(text);
+    modalWindow.appendChild(buttonContainer);
+    modalOverlay.appendChild(modalWindow);
+
+    const root = document.getElementById("root");
+    root.appendChild(modalOverlay);
+  };
+
+  // Hide modal window.
+  const hideModal = () => {
+    document
+      .getElementById("root")
+      .removeChild(document.getElementById("modal"));
+  };
+
+  // Show or hide modal.
+  useEffect(() => {
+    if (showModal !== undefined) {
+      if (showModal) {
+        appendModal();
+      } else {
+        hideModal();
+      }
+    }
+  }, [showModal]);
+
+  // Get post with comments.
+  useEffect(() => {
+    (async () => {
+      try {
+        await getPost();
+        await getComments();
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    })();
+  }, [window.location.pathname]);
+
+  // Apply class to body to change background image on home page.
+  // Apply class to root to have background only on home page.
+  useEffect(() => {
+    // Don't use background if window is small.
+    if (window.innerWidth > 1055) {
+      const body = document.getElementsByTagName("body")[0];
+      body.setAttribute("id", `home_background`);
+
+      const root = document.getElementById("root");
+      root.setAttribute("class", `home_root_background`);
+    }
+  }, []);
+
   return (
     <Layout>
       <div className={postStyles.container}>
@@ -137,24 +202,14 @@ function Post(props) {
 
                 <p>{state.post.data.body}</p>
               </div>
-              <div className={postStyles.post_info}>
-                <Link to={`/user/${state.post.data.userHandle}`}>
-                  <img
-                    src={state.post.data.userImageUrl}
-                    width="50"
-                    className={postStyles.user_image}
-                  />
-                  <h6>{state.post.data.userHandle}</h6>
-                </Link>
-                <p>{state.post.data.commentCount} comments</p>
-              </div>
+              <PostInfo post={state.post} />
             </div>
           )}
           {state.post !== null &&
             state.post.data.userHandle === state.user.handle && (
               <button
                 onClick={() => {
-                  deletePost();
+                  setShowModal(true);
                 }}
               >
                 delete post

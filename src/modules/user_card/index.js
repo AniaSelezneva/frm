@@ -25,21 +25,52 @@ function User({ path, handle }) {
       const res = await adminClient.query(
         q.Get(q.Match(q.Index("users_by_email"), q.Casefold(email)))
       );
-      await dispatch({ type: "SET_USER", payload: res.data });
+      await dispatch({ type: "SET_USER_DATA", payload: res.data });
       dispatch({ type: "SET_REF", payload: res.ref });
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Get user's likes.
+  const getLikes = async () => {
+    try {
+      const userLikes = await adminClient.query(
+        q.Map(
+          q.Paginate(
+            q.Reverse(
+              q.Match(q.Index("likes_by_user"), q.Casefold(state.user.handle))
+            ),
+            { size: 1000 }
+          ),
+          q.Lambda("X", q.Get(q.Var("X")))
+        )
+      );
+      dispatch({ type: "SET_LIKES", payload: userLikes.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Get user's likes.
+  useEffect(() => {
+    if (state.user.handle !== null && state.user.handle !== undefined) {
+      getLikes();
+    }
+  }, [state.user.handle, window.location.pathname]);
+
   // Get other user info.
   const getUserInfo = async () => {
-    const res = await adminClient.query(
-      q.Get(q.Match(q.Index("users_by_handle"), q.Casefold(handle)))
-    );
+    try {
+      const res = await adminClient.query(
+        q.Get(q.Match(q.Index("users_by_handle"), q.Casefold(handle)))
+      );
 
-    dispatch({ type: "SET_USER", payload: res.data });
-    dispatch({ type: "SET_REF", payload: res.ref });
+      dispatch({ type: "SET_USER_DATA", payload: res.data });
+      dispatch({ type: "SET_REF", payload: res.ref });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -100,7 +131,7 @@ function User({ path, handle }) {
           toggleOpenCard();
         }}
       >
-        open card
+        user info
       </button>
       <div className={userCardStyles.user} id="user_card">
         {isAddInfoOpen && <AddInfo setIsAddInfoOpen={setIsAddInfoOpen} />}

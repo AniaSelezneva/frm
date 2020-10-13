@@ -18,11 +18,15 @@ function GetInvitation({ setIsLoading }) {
   const isEmailUnique = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await adminClient.query(
-          q.Exists(q.Match(q.Index("emails"), q.Casefold(email)))
+        const emailExists = await adminClient.query(
+          q.Exists(q.Match(q.Index("emails_to_invite"), q.Casefold(email)))
         );
 
-        if (res === true) {
+        const emailExistsInUsers = await adminClient.query(
+          q.Exists(q.Match(q.Index("users_by_email"), q.Casefold(email)))
+        );
+
+        if (emailExists || emailExistsInUsers) {
           setError("Email already in use");
           resolve(false);
         } else {
@@ -40,18 +44,22 @@ function GetInvitation({ setIsLoading }) {
   const addUser = async () => {
     setIsLoading(true);
 
-    const result = await isEmailUnique();
+    try {
+      const result = await isEmailUnique();
 
-    if (result === true) {
-      await adminClient.query(
-        q.Create(q.Collection("emails"), {
-          data: {
-            email,
-          },
-        })
-      );
-    } else if (result === false) {
-      setError("Email already in use");
+      if (result === true) {
+        await adminClient.query(
+          q.Create(q.Collection("emails_to_invite"), {
+            data: {
+              email,
+            },
+          })
+        );
+      } else if (result === false) {
+        setError("Email already in use");
+      }
+    } catch (error) {
+      console.log(error);
     }
 
     setIsLoading(false);

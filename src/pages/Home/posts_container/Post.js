@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";
 // Components
-import PostInfo from "./PostInfo";
+import PostInfo from "../../../modules/post_info/PostInfo";
 
 function Post({ post }) {
   const [body, setBody] = useState();
@@ -20,29 +20,24 @@ function Post({ post }) {
 
   return (
     <div className={postsContainerStyles.post}>
-      {post.data.imageUrl !== undefined && (
-        <Link
-          to={`/post/${post.data.postId}`}
-          className={postsContainerStyles.image_container}
-        >
-          <img
-            src={post.data.imageUrl}
-            className={postsContainerStyles.post_image}
-          />
-        </Link>
-      )}
+      <div className={postsContainerStyles.post_main_body}>
+        {post.data.imageUrl !== undefined && (
+          <Link to={`/post/${post.data.postId}`}>
+            <div className={postsContainerStyles.image_container}>
+              <img
+                src={post.data.imageUrl}
+                className={postsContainerStyles.post_image}
+              />
+            </div>
+          </Link>
+        )}
 
-      <div>
         <Link to={`/post/${post.data.postId}`}>
           <p>{body}</p>
         </Link>
-
-        <PostInfo
-          userImageUrl={post.data.userImageUrl}
-          userHandle={post.data.userHandle}
-          commentCount={post.data.commentCount}
-        />
       </div>
+
+      <PostInfo post={post} />
     </div>
   );
 }

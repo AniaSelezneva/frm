@@ -2,11 +2,12 @@ const faunadb = require("faunadb");
 
 const q = faunadb.query;
 const adminClient = new faunadb.Client({
-  secret: process.env.REACT_APP_SECRET,
+  secret: process.env.REACT_APP_FAUNA_SECRET,
 });
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   const { location, hobbies, occupation, userHandle } = JSON.parse(event.body);
+  console.log(location, hobbies, occupation, userHandle);
 
   return adminClient
     .query(q.Get(q.Match(q.Index("users_by_handle"), userHandle)))

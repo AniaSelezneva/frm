@@ -46,8 +46,8 @@ function Login({ setIsLoading }) {
       } else {
         setError("Error occured, please try again later");
       }
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   // Loading = false

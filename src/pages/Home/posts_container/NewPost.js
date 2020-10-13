@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 // uuid
 import uuid from "react-uuid";
 // Firebase
-import firebase from "firebase";
+import { initializeApp, storage } from "firebase";
 // Config for firebase
 import config from "../../../utils/config";
 // Store
@@ -28,10 +28,10 @@ function NewPost({ setIsLoading }) {
   const uploadImage = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        firebase.initializeApp(config);
+        initializeApp(config);
 
         // Root reference.
-        var storageRef = firebase.storage().ref();
+        var storageRef = storage().ref();
         // Reference to new file.
         var imageRef = storageRef.child(imageDbName);
 

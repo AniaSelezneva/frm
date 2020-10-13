@@ -5,7 +5,7 @@ import { store } from "../../utils/store";
 import userCardStyles from "./styles/index.module.scss";
 
 function AddInfo({ setIsAddInfoOpen }) {
-  const { state, dispatch } = useContext(store);
+  const { state } = useContext(store);
   const [location, setLocation] = useState(state.user.location);
   const [hobbies, setHobbies] = useState(state.user.hobbies);
   const [occupation, setOccupation] = useState(state.user.occupation);
