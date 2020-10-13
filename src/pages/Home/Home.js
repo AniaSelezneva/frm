@@ -21,13 +21,9 @@ function Home({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
   const [path, setPath] = useState();
   const [error, setError] = useState(undefined);
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(true);
   // Number of posts per page
   const size = 5;
-
-  window.addEventListener("load", (event) => {
-    setReady(true);
-  });
 
   // User name for any user's route
   let userName = window.location.pathname
@@ -98,50 +94,58 @@ function Home({ setIsLoading }) {
   };
 
   // Fetch logged in user's posts.
-  const getOwnPosts = async () => {
-    try {
-      const res = await adminClient.query(
-        q.Map(
-          q.Paginate(
-            q.Reverse(q.Match(q.Index("posts_by_user"), state.user.handle)),
-            {
-              size,
-            }
-          ),
-          q.Lambda("X", q.Get(q.Var("X")))
-        )
-      );
+  const getOwnPosts = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await adminClient.query(
+          q.Map(
+            q.Paginate(
+              q.Reverse(q.Match(q.Index("posts_by_user"), state.user.handle)),
+              {
+                size,
+              }
+            ),
+            q.Lambda("X", q.Get(q.Var("X")))
+          )
+        );
 
-      dispatch({ type: "SET_POSTS", payload: res });
-      setIsLoading(false);
-    } catch (error) {
-      setError("Something went wrong, please try again later");
-      setIsLoading(false);
-    }
+        dispatch({ type: "SET_POSTS", payload: res });
+        setIsLoading(false);
+        resolve("success");
+      } catch (error) {
+        setError("Something went wrong, please try again later");
+        setIsLoading(false);
+        reject(error);
+      }
+    });
   };
 
   // Search in posts.
-  const searchInPosts = async () => {
-    try {
-      const res = await adminClient.query(
-        q.Map(
-          q.Paginate(
-            q.Reverse(q.Match(q.Index("posts_by_words7"), q.Casefold(query))),
-            {
-              size,
-            }
-          ),
-          q.Lambda("ref", q.Get(q.Var("ref")))
-        )
-      );
+  const searchInPosts = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await adminClient.query(
+          q.Map(
+            q.Paginate(
+              q.Reverse(q.Match(q.Index("posts_by_words7"), q.Casefold(query))),
+              {
+                size,
+              }
+            ),
+            q.Lambda("ref", q.Get(q.Var("ref")))
+          )
+        );
 
-      dispatch({ type: "SET_POSTS", payload: res });
+        dispatch({ type: "SET_POSTS", payload: res });
 
-      setIsLoading(false);
-    } catch (error) {
-      setError("Something went wrong, please try again later");
-      setIsLoading(false);
-    }
+        setIsLoading(false);
+        resolve("success");
+      } catch (error) {
+        setError("Something went wrong, please try again later");
+        setIsLoading(false);
+        reject(error);
+      }
+    });
   };
 
   // Get other user's posts.
@@ -196,20 +200,28 @@ function Home({ setIsLoading }) {
   // Get posts.
   useEffect(() => {
     setIsLoading(true);
-    if (path === "home") {
-      getAllPosts();
-    } else if (path === "search") {
-      searchInPosts();
-    } else if (path === "user") {
-      getUserPosts();
-    } else if (
-      path === "profile" &&
-      state.user.handle !== null &&
-      state.user.handle !== undefined
-    ) {
-      getOwnPosts();
-    }
-    setIsLoading(false);
+    (async () => {
+      if (path === "home") {
+        await getAllPosts();
+        setReady(true);
+      } else if (path === "search") {
+        setReady(false);
+        await searchInPosts();
+        setReady(true);
+      } else if (path === "user") {
+        getUserPosts();
+        setReady(true);
+      } else if (
+        path === "profile" &&
+        state.user.handle !== null &&
+        state.user.handle !== undefined
+      ) {
+        setReady(false);
+        await getOwnPosts();
+        setReady(true);
+      }
+      setIsLoading(false);
+    })();
   }, [path, state.user.handle]);
 
   // Check path on page load.
