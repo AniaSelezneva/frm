@@ -18,7 +18,7 @@ function ProfilePagination() {
           q.Reverse(q.Match(q.Index("posts_by_user"), state.user.handle)),
           {
             size,
-            after: state.posts.after,
+            after: state.posts.after[0],
           }
         ),
         q.Lambda("X", q.Get(q.Var("X")))
@@ -37,7 +37,7 @@ function ProfilePagination() {
           q.Reverse(q.Match(q.Index("posts_by_user"), state.user.handle)),
           {
             size,
-            before: state.posts.before,
+            before: state.posts.before[0],
           }
         ),
         q.Lambda("X", q.Get(q.Var("X")))

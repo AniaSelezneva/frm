@@ -73,6 +73,9 @@ $comment_background: rgba(29, 150, 172, 0.56);
   .comment_info {
     display: flex;
 
+    border-top: 5px solid;
+    border-image: linear-gradient(to left, red 70%, black);
+
     & > button {
       align-self: flex-end;
     }

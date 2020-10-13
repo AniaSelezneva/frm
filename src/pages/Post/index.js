@@ -93,7 +93,8 @@ function Post(props) {
     await Promise.all(promises);
     // delete post itself
     await adminClient.query(q.Delete(state.post.ref));
-    window.location.replace("/");
+    setShowModal(false);
+    window.history.back();
   };
 
   // Show delete post modal.
