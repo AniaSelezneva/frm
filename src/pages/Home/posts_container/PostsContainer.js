@@ -15,6 +15,7 @@ function PostsContainer({ path }) {
   return (
     <div className={postsContainerStyles.posts}>
       {state.posts.data !== undefined &&
+        state.posts.data.length > 0 &&
         state.posts.data.map((post, index) => <Post key={index} post={post} />)}
       <div className={postsContainerStyles.pagination_container}>
         {path === "search" ? (
