@@ -16,13 +16,10 @@ function SearchPagination() {
       try {
         const res = await adminClient.query(
           q.Map(
-            q.Paginate(
-              q.Reverse(q.Match(q.Index("posts_by_words7"), "hello")),
-              {
-                size,
-                after: state.posts.after,
-              }
-            ),
+            q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), " ")), {
+              size,
+              after: state.posts.after,
+            }),
             q.Lambda("X", q.Get(q.Var("X")))
           )
         );
@@ -39,7 +36,7 @@ function SearchPagination() {
   const goToPrevPage = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), "hello")), {
+        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), " ")), {
           size,
           before: state.posts.before,
         }),
