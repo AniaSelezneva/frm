@@ -21,8 +21,15 @@ function Home({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
   const [path, setPath] = useState();
   const [error, setError] = useState(undefined);
+  const [ready, setReady] = useState(false);
   // Number of posts per page
   const size = 5;
+
+  useEffect(() => {
+    if (state.posts.data !== undefined && state.posts.data.length !== 0) {
+      setReady(true);
+    }
+  }, [state.posts.data]);
 
   // User name for any user's route
   let userName = window.location.pathname
@@ -226,72 +233,76 @@ function Home({ setIsLoading }) {
 
   return (
     <Layout>
-      <div id={homeStyles.container}>
-        <div id={homeStyles.posts_container}>
-          {/* Confirm email path */}
-          {path === "confirm" &&
-            (error === undefined ? (
-              <p className={homeStyles.posts_header}>Email confirmed</p>
-            ) : (
-              <p className="error_message">{error}</p>
-            ))}
-
-          {/* Home path */}
-          {path === "home" &&
-            // If logged in...
-            (state.loggedIn ? (
-              <NewPost />
-            ) : (
-              // If not logged in...
-              <p className={homeStyles.posts_header}>
-                <Link to="/login">
-                  <strong>login </strong>
-                </Link>
-                or
-                <Link to="/signup">
-                  <strong> signup </strong>
-                </Link>
-                to create a post
-              </p>
-            ))}
-
-          {/* Search path */}
-          {path === "search" && (
-            <p className={homeStyles.posts_header}>
-              Search results for: {state.query}
-            </p>
-          )}
-
-          {/* Profile path */}
-          {path === "profile" && state.loggedIn && (
-            <>
-              {state.posts.data !== undefined && state.posts.data.length > 0 ? (
-                <h2 className={homeStyles.posts_header}>My posts</h2>
+      {" "}
+      {ready && (
+        <div id={homeStyles.container}>
+          <div id={homeStyles.posts_container}>
+            {/* Confirm email path */}
+            {path === "confirm" &&
+              (error === undefined ? (
+                <p className={homeStyles.posts_header}>Email confirmed</p>
               ) : (
-                <h2 className={homeStyles.posts_header}>
-                  You haven't posted yet
-                </h2>
-              )}
-            </>
-          )}
+                <p className="error_message">{error}</p>
+              ))}
 
-          {/* Other user's path */}
-          {path === "user" && (
-            <h2 className={homeStyles.posts_header}>
-              {/* User's name from pathname */}
-              {userName}
-            </h2>
-          )}
+            {/* Home path */}
+            {path === "home" &&
+              // If logged in...
+              (state.loggedIn ? (
+                <NewPost />
+              ) : (
+                // If not logged in...
+                <p className={homeStyles.posts_header}>
+                  <Link to="/login">
+                    <strong>login </strong>
+                  </Link>
+                  or
+                  <Link to="/signup">
+                    <strong> signup </strong>
+                  </Link>
+                  to create a post
+                </p>
+              ))}
 
-          {/* All posts */}
-          <PostsContainer path={path} />
+            {/* Search path */}
+            {path === "search" && (
+              <p className={homeStyles.posts_header}>
+                Search results for: {query}
+              </p>
+            )}
+
+            {/* Profile path */}
+            {path === "profile" && state.loggedIn && (
+              <>
+                {state.posts.data !== undefined &&
+                state.posts.data.length > 0 ? (
+                  <h2 className={homeStyles.posts_header}>My posts</h2>
+                ) : (
+                  <h2 className={homeStyles.posts_header}>
+                    You haven't posted yet
+                  </h2>
+                )}
+              </>
+            )}
+
+            {/* Other user's path */}
+            {path === "user" && (
+              <h2 className={homeStyles.posts_header}>
+                {/* User's name from pathname */}
+                {userName}
+              </h2>
+            )}
+
+            {/* All posts */}
+            <PostsContainer path={path} />
+          </div>
+
+          {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
+          {path !== "confirm" && path !== "invite" && (
+            <User path={path} handle={userName} />
+          )}
         </div>
-
-        {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
-        {path !== "confirm" && path !== "invite" && (
-          <User path={path} handle={userName} />
-        )}
-      </div>
+      )}
     </Layout>
   );
 }

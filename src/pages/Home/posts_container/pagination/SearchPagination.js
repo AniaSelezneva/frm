@@ -26,7 +26,7 @@ function SearchPagination({ setReady }) {
             q.Lambda("X", q.Get(q.Var("X")))
           )
         );
-        dispatch({ type: "SET_POSTS", payload: res });
+        await dispatch({ type: "SET_POSTS", payload: res });
         window.scrollTo(0, 0);
         resolve("success");
       } catch (error) {
@@ -50,7 +50,7 @@ function SearchPagination({ setReady }) {
       )
     );
 
-    dispatch({ type: "SET_POSTS", payload: res });
+    await dispatch({ type: "SET_POSTS", payload: res });
     window.scrollTo(0, 0);
   };
 
