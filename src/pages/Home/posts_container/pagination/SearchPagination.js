@@ -12,40 +12,60 @@ function SearchPagination() {
 
   // Next page
   const goToNextPage = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await adminClient.query(
-          q.Map(
-            q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), " ")), {
-              size,
-              after: state.posts.after,
-            }),
-            q.Lambda("X", q.Get(q.Var("X")))
-          )
-        );
-        dispatch({ type: "SET_POSTS", payload: res });
-        window.scrollTo(0, 0);
-        resolve("success");
-      } catch (error) {
-        reject(error);
-      }
-    });
+    if (
+      state.query !== null &&
+      state.query !== undefined &&
+      state.query !== "" &&
+      state.query !== " "
+    ) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const res = await adminClient.query(
+            q.Map(
+              q.Paginate(
+                q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+                {
+                  size,
+                  after: state.posts.after,
+                }
+              ),
+              q.Lambda("X", q.Get(q.Var("X")))
+            )
+          );
+          dispatch({ type: "SET_POSTS", payload: res });
+          window.scrollTo(0, 0);
+          resolve("success");
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
   };
 
   // Previous page
   const goToPrevPage = async () => {
-    const res = await adminClient.query(
-      q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), " ")), {
-          size,
-          before: state.posts.before,
-        }),
-        q.Lambda("X", q.Get(q.Var("X")))
-      )
-    );
+    if (
+      state.query !== null &&
+      state.query !== undefined &&
+      state.query !== "" &&
+      state.query !== " "
+    ) {
+      const res = await adminClient.query(
+        q.Map(
+          q.Paginate(
+            q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+            {
+              size,
+              before: state.posts.before,
+            }
+          ),
+          q.Lambda("X", q.Get(q.Var("X")))
+        )
+      );
 
-    dispatch({ type: "SET_POSTS", payload: res });
-    window.scrollTo(0, 0);
+      dispatch({ type: "SET_POSTS", payload: res });
+      window.scrollTo(0, 0);
+    }
   };
 
   // Disable prev or forward buttons.
