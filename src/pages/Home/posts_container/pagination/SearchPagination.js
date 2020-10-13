@@ -4,7 +4,7 @@ import { q, adminClient } from "../../../../utils/faunaDB";
 // Store
 import { store } from "../../../../utils/store";
 
-function SearchPagination() {
+function SearchPagination({ query }) {
   const { state, dispatch } = useContext(store);
 
   // Number of posts per page
@@ -14,7 +14,7 @@ function SearchPagination() {
   const goToNextPage = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), "hello")), {
+        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), query)), {
           size,
           after: state.posts.after,
         }),
@@ -30,7 +30,7 @@ function SearchPagination() {
   const goToPrevPage = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), "hello")), {
+        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), query)), {
           size,
           before: state.posts.before,
         }),

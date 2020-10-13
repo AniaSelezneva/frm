@@ -279,7 +279,10 @@ function Home({ setIsLoading }) {
           )}
 
           {/* All posts */}
-          <PostsContainer path={path} />
+          <PostsContainer
+            path={path}
+            query={path === "search" ? query : null}
+          />
         </div>
 
         {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}

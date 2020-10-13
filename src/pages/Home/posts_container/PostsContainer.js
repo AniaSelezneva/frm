@@ -9,7 +9,7 @@ import { store } from "../../../utils/store";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";
 
-function PostsContainer({ path }) {
+function PostsContainer({ path, query }) {
   const { state } = useContext(store);
 
   return (
@@ -18,7 +18,7 @@ function PostsContainer({ path }) {
         state.posts.data.map((post, index) => <Post key={index} post={post} />)}
       <div className={postsContainerStyles.pagination_container}>
         {path === "search" ? (
-          <SearchPagination />
+          <SearchPagination query={query} />
         ) : path === "profile" ? (
           state.loggedIn && <ProfilePagination />
         ) : (
