@@ -17,7 +17,7 @@ function HomePagination() {
       q.Map(
         q.Paginate(q.Reverse(q.Match(q.Index("all_posts"))), {
           size,
-          after: state.posts.after[0],
+          after: state.posts.after,
         }),
         q.Lambda("X", q.Get(q.Var("X")))
       )
@@ -33,7 +33,7 @@ function HomePagination() {
       q.Map(
         q.Paginate(q.Reverse(q.Match(q.Index("all_posts"))), {
           size,
-          before: state.posts.before[0],
+          before: state.posts.before,
         }),
         q.Lambda("X", q.Get(q.Var("X")))
       )

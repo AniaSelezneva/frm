@@ -18,7 +18,7 @@ function SearchPagination() {
           q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
           {
             size,
-            after: state.posts.after[0],
+            after: state.posts.after,
           }
         ),
         q.Lambda("X", q.Get(q.Var("X")))
@@ -37,7 +37,7 @@ function SearchPagination() {
           q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
           {
             size,
-            before: state.posts.before[0],
+            before: state.posts.before,
           }
         ),
         q.Lambda("X", q.Get(q.Var("X")))
@@ -72,7 +72,7 @@ function SearchPagination() {
       <button
         onClick={(e) => {
           e.preventDefault();
-          goToPrevPage(3);
+          goToPrevPage();
         }}
         id="prev_btn"
       >
@@ -82,7 +82,7 @@ function SearchPagination() {
       <button
         onClick={(e) => {
           e.preventDefault();
-          goToNextPage(3);
+          goToNextPage();
         }}
         id="next_btn"
       >
