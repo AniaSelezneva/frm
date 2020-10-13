@@ -12,60 +12,46 @@ function SearchPagination() {
 
   // Next page
   const goToNextPage = () => {
-    if (
-      state.query !== null &&
-      state.query !== undefined &&
-      state.query !== "" &&
-      state.query !== " "
-    ) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const res = await adminClient.query(
-            q.Map(
-              q.Paginate(
-                q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
-                {
-                  size,
-                  after: state.posts.after,
-                }
-              ),
-              q.Lambda("X", q.Get(q.Var("X")))
-            )
-          );
-          dispatch({ type: "SET_POSTS", payload: res });
-          window.scrollTo(0, 0);
-          resolve("success");
-        } catch (error) {
-          reject(error);
-        }
-      });
-    }
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await adminClient.query(
+          q.Map(
+            q.Paginate(
+              q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+              {
+                size,
+                after: state.posts.after,
+              }
+            ),
+            q.Lambda("X", q.Get(q.Var("X")))
+          )
+        );
+        dispatch({ type: "SET_POSTS", payload: res });
+        window.scrollTo(0, 0);
+        resolve("success");
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
 
   // Previous page
   const goToPrevPage = async () => {
-    if (
-      state.query !== null &&
-      state.query !== undefined &&
-      state.query !== "" &&
-      state.query !== " "
-    ) {
-      const res = await adminClient.query(
-        q.Map(
-          q.Paginate(
-            q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
-            {
-              size,
-              before: state.posts.before,
-            }
-          ),
-          q.Lambda("X", q.Get(q.Var("X")))
-        )
-      );
+    const res = await adminClient.query(
+      q.Map(
+        q.Paginate(
+          q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+          {
+            size,
+            before: state.posts.before,
+          }
+        ),
+        q.Lambda("X", q.Get(q.Var("X")))
+      )
+    );
 
-      dispatch({ type: "SET_POSTS", payload: res });
-      window.scrollTo(0, 0);
-    }
+    dispatch({ type: "SET_POSTS", payload: res });
+    window.scrollTo(0, 0);
   };
 
   // Disable prev or forward buttons.
@@ -96,7 +82,7 @@ function SearchPagination() {
         }}
         id="prev_btn"
       >
-        back
+        {state.query}
       </button>
 
       <button
