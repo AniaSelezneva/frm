@@ -5,7 +5,7 @@ import WithLoader from "../../HOCs/WithLoader";
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // store
-import { store } from "../../utils/store";
+import { StateProvider, store } from "../../utils/store";
 // Components
 import User from "../../modules/user_card";
 import Layout from "../../HOCs/Layout";
@@ -237,11 +237,16 @@ function Home({ setIsLoading }) {
             ))}
 
           {/* Search path */}
-          {path === "search" && (
-            <p className={homeStyles.posts_header}>
-              Search results for: {query}
-            </p>
-          )}
+          {path === "search" &&
+            state.posts !== undefined &&
+            state.posts.data !== undefined &&
+            (state.posts.data.length > 0 ? (
+              <p className={homeStyles.posts_header}>
+                Search results for: {query}
+              </p>
+            ) : (
+              <p className={homeStyles.posts_header}>Nothing was found</p>
+            ))}
 
           {/* Profile path */}
           {path === "profile" && state.loggedIn && (

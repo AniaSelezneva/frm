@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 // Components
 import Post from "./Post";
 import HomePagination from "./pagination/HomePagination";
