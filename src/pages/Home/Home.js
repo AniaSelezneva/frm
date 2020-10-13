@@ -245,9 +245,7 @@ function Home({ setIsLoading }) {
 
           {/* Search path */}
           {path === "search" &&
-            state.posts !== undefined &&
-            state.posts.data !== undefined &&
-            (state.posts.data.length > 0 ? (
+            (state.posts.data !== undefined && state.posts.data.length > 0 ? (
               <p className={homeStyles.posts_header}>
                 Search results for: {state.query}
               </p>
@@ -279,9 +277,7 @@ function Home({ setIsLoading }) {
           )}
 
           {/* All posts */}
-          {state.posts !== undefined &&
-            state.posts.data !== undefined &&
-            state.posts.data.length > 0 && <PostsContainer path={path} />}
+          <PostsContainer path={path} />
         </div>
 
         {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
