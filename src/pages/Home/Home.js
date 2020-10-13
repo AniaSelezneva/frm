@@ -43,6 +43,13 @@ function Home({ setIsLoading }) {
     .substring(1)
     .split("invite_token=")[1];
 
+  // Dispatch 'set query'
+  useEffect(() => {
+    if (query !== undefined && query !== null) {
+      dispatch({ type: "SET_QUERY", payload: query });
+    }
+  }, [query]);
+
   // Check which route it is.
   const checkPath = () => {
     if (confirmationToken !== undefined) {
@@ -124,7 +131,7 @@ function Home({ setIsLoading }) {
       );
 
       dispatch({ type: "SET_POSTS", payload: res });
-      dispatch({ type: "SET_QUERY", payload: query });
+
       setIsLoading(false);
     } catch (error) {
       setError("Something went wrong, please try again later");
@@ -242,10 +249,12 @@ function Home({ setIsLoading }) {
             state.posts.data !== undefined &&
             (state.posts.data.length > 0 ? (
               <p className={homeStyles.posts_header}>
-                Search results for: {query}
+                Search results for: {state.query}
               </p>
             ) : (
-              <p className={homeStyles.posts_header}>Nothing was found</p>
+              <p className={homeStyles.posts_header}>
+                nothing was found: {state.query}
+              </p>
             ))}
 
           {/* Profile path */}
