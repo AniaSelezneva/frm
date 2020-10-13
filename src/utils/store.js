@@ -11,7 +11,7 @@ const initialState = {
     likes: [],
     totalNotifications: null,
   },
-  posts: [],
+  posts: { data: [] },
   post: null,
   query: "",
 };
