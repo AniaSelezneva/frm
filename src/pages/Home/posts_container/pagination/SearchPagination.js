@@ -4,7 +4,7 @@ import { q, adminClient } from "../../../../utils/faunaDB";
 // Store
 import { store } from "../../../../utils/store";
 
-function SearchPagination({ query }) {
+function SearchPagination() {
   const { state, dispatch } = useContext(store);
 
   // Number of posts per page
@@ -14,14 +14,17 @@ function SearchPagination({ query }) {
   const goToNextPage = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), query)), {
-          size,
-          after: state.posts.after,
-        }),
+        q.Paginate(
+          q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+          {
+            size,
+            after: state.posts.after,
+          }
+        ),
         q.Lambda("X", q.Get(q.Var("X")))
       )
     );
-
+    console.log(res);
     dispatch({ type: "SET_POSTS", payload: res });
     window.scrollTo(0, 0);
   };
@@ -30,10 +33,13 @@ function SearchPagination({ query }) {
   const goToPrevPage = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), query)), {
-          size,
-          before: state.posts.before,
-        }),
+        q.Paginate(
+          q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+          {
+            size,
+            before: state.posts.before,
+          }
+        ),
         q.Lambda("X", q.Get(q.Var("X")))
       )
     );
