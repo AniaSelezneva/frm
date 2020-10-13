@@ -9,17 +9,23 @@ import { store } from "../../../utils/store";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";
 
-function PostsContainer({ path, setReady }) {
+function PostsContainer({ path }) {
   const { state } = useContext(store);
 
   return (
     <div className={postsContainerStyles.posts}>
       {state.posts.data !== undefined &&
-        state.posts.data.length > 0 &&
-        state.posts.data.map((post, index) => <Post key={index} post={post} />)}
+        (state.posts.data.length > 0 ? (
+          state.posts.data.map((post, index) => (
+            <Post key={index} post={post} />
+          ))
+        ) : (
+          <p>kukish</p>
+        ))}
+
       <div className={postsContainerStyles.pagination_container}>
         {path === "search" ? (
-          <SearchPagination setReady={setReady} />
+          <SearchPagination />
         ) : path === "profile" ? (
           state.loggedIn && <ProfilePagination />
         ) : (

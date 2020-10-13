@@ -89,7 +89,6 @@ function SearchPagination({ setReady }) {
         onClick={async (e) => {
           e.preventDefault();
           await goToNextPage();
-          setReady(true);
         }}
         id="next_btn"
       >
