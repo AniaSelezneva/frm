@@ -14,10 +14,15 @@ function SearchPagination() {
   const goToNextPage = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), "hhh")), {
-          size,
-          after: state.posts.after,
-        }),
+        q.Paginate(
+          q.Reverse(
+            q.Match(q.Index("posts_by_words7"), q.Casefold(state.query))
+          ),
+          {
+            size,
+            after: state.posts.after,
+          }
+        ),
         q.Lambda("X", q.Get(q.Var("X")))
       )
     );
@@ -30,10 +35,15 @@ function SearchPagination() {
   const goToPrevPage = async () => {
     const res = await adminClient.query(
       q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_words7"), "hhh")), {
-          size,
-          before: state.posts.before,
-        }),
+        q.Paginate(
+          q.Reverse(
+            q.Match(q.Index("posts_by_words7"), q.Casefold(state.query))
+          ),
+          {
+            size,
+            before: state.posts.before,
+          }
+        ),
         q.Lambda("X", q.Get(q.Var("X")))
       )
     );
