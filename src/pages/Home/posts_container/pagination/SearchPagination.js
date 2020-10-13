@@ -4,35 +4,29 @@ import { q, adminClient } from "../../../../utils/faunaDB";
 // Store
 import { store } from "../../../../utils/store";
 
-function SearchPagination({ setReady }) {
+function SearchPagination() {
   const { state, dispatch } = useContext(store);
 
   // Number of posts per page
   const size = 5;
 
   // Next page
-  const goToNextPage = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await adminClient.query(
-          q.Map(
-            q.Paginate(
-              q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
-              {
-                size,
-                after: state.posts.after,
-              }
-            ),
-            q.Lambda("X", q.Get(q.Var("X")))
-          )
-        );
-        await dispatch({ type: "SET_POSTS", payload: res });
-        window.scrollTo(0, 0);
-        resolve("success");
-      } catch (error) {
-        reject(error);
-      }
-    });
+  const goToNextPage = async () => {
+    const res = await adminClient.query(
+      q.Map(
+        q.Paginate(
+          q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+          {
+            size,
+            after: state.posts.after,
+          }
+        ),
+        q.Lambda("X", q.Get(q.Var("X")))
+      )
+    );
+
+    dispatch({ type: "SET_POSTS", payload: res });
+    window.scrollTo(0, 0);
   };
 
   // Previous page
@@ -50,7 +44,7 @@ function SearchPagination({ setReady }) {
       )
     );
 
-    await dispatch({ type: "SET_POSTS", payload: res });
+    dispatch({ type: "SET_POSTS", payload: res });
     window.scrollTo(0, 0);
   };
 
@@ -78,7 +72,7 @@ function SearchPagination({ setReady }) {
       <button
         onClick={(e) => {
           e.preventDefault();
-          goToPrevPage();
+          goToPrevPage(3);
         }}
         id="prev_btn"
       >
@@ -86,9 +80,9 @@ function SearchPagination({ setReady }) {
       </button>
 
       <button
-        onClick={async (e) => {
+        onClick={(e) => {
           e.preventDefault();
-          await goToNextPage();
+          goToNextPage();
         }}
         id="next_btn"
       >

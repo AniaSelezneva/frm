@@ -5,7 +5,7 @@ import WithLoader from "../../HOCs/WithLoader";
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // store
-import { StateProvider, store } from "../../utils/store";
+import { store } from "../../utils/store";
 // Components
 import User from "../../modules/user_card";
 import Layout from "../../HOCs/Layout";
@@ -21,15 +21,8 @@ function Home({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
   const [path, setPath] = useState();
   const [error, setError] = useState(undefined);
-  const [ready, setReady] = useState(false);
   // Number of posts per page
   const size = 5;
-
-  useEffect(() => {
-    if (state.posts.data !== undefined && state.posts.data.length !== 0) {
-      setReady(true);
-    }
-  }, [state.posts.data]);
 
   // User name for any user's route
   let userName = window.location.pathname
@@ -49,13 +42,6 @@ function Home({ setIsLoading }) {
   let inviteToken = decodeURIComponent(window.location.hash)
     .substring(1)
     .split("invite_token=")[1];
-
-  // Dispatch 'set query'
-  useEffect(() => {
-    if (query !== undefined && query !== null) {
-      dispatch({ type: "SET_QUERY", payload: query });
-    }
-  }, [query]);
 
   // Check which route it is.
   const checkPath = () => {
@@ -100,58 +86,50 @@ function Home({ setIsLoading }) {
   };
 
   // Fetch logged in user's posts.
-  const getOwnPosts = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await adminClient.query(
-          q.Map(
-            q.Paginate(
-              q.Reverse(q.Match(q.Index("posts_by_user"), state.user.handle)),
-              {
-                size,
-              }
-            ),
-            q.Lambda("X", q.Get(q.Var("X")))
-          )
-        );
+  const getOwnPosts = async () => {
+    try {
+      const res = await adminClient.query(
+        q.Map(
+          q.Paginate(
+            q.Reverse(q.Match(q.Index("posts_by_user"), state.user.handle)),
+            {
+              size,
+            }
+          ),
+          q.Lambda("X", q.Get(q.Var("X")))
+        )
+      );
 
-        dispatch({ type: "SET_POSTS", payload: res });
-        setIsLoading(false);
-        resolve("success");
-      } catch (error) {
-        setError("Something went wrong, please try again later");
-        setIsLoading(false);
-        reject(error);
-      }
-    });
+      dispatch({ type: "SET_POSTS", payload: res });
+      setIsLoading(false);
+    } catch (error) {
+      setError("Something went wrong, please try again later");
+      setIsLoading(false);
+    }
   };
 
   // Search in posts.
-  const searchInPosts = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await adminClient.query(
-          q.Map(
-            q.Paginate(
-              q.Reverse(q.Match(q.Index("posts_by_words7"), q.Casefold(query))),
-              {
-                size,
-              }
-            ),
-            q.Lambda("ref", q.Get(q.Var("ref")))
-          )
-        );
+  const searchInPosts = async () => {
+    try {
+      const res = await adminClient.query(
+        q.Map(
+          q.Paginate(
+            q.Reverse(q.Match(q.Index("posts_by_words7"), q.Casefold(query))),
+            {
+              size,
+            }
+          ),
+          q.Lambda("ref", q.Get(q.Var("ref")))
+        )
+      );
 
-        dispatch({ type: "SET_POSTS", payload: res });
-
-        setIsLoading(false);
-        resolve("success");
-      } catch (error) {
-        setError("Something went wrong, please try again later");
-        setIsLoading(false);
-        reject(error);
-      }
-    });
+      dispatch({ type: "SET_POSTS", payload: res });
+      dispatch({ type: "SET_QUERY", payload: query });
+      setIsLoading(false);
+    } catch (error) {
+      setError("Something went wrong, please try again later");
+      setIsLoading(false);
+    }
   };
 
   // Get other user's posts.
@@ -206,24 +184,20 @@ function Home({ setIsLoading }) {
   // Get posts.
   useEffect(() => {
     setIsLoading(true);
-    console.log(path);
-
-    (async () => {
-      if (path === "home") {
-        await getAllPosts();
-      } else if (path === "search") {
-        await searchInPosts();
-      } else if (path === "user") {
-        getUserPosts();
-      } else if (
-        path === "profile" &&
-        state.user.handle !== null &&
-        state.user.handle !== undefined
-      ) {
-        await getOwnPosts();
-      }
-      setIsLoading(false);
-    })();
+    if (path === "home") {
+      getAllPosts();
+    } else if (path === "search") {
+      searchInPosts();
+    } else if (path === "user") {
+      getUserPosts();
+    } else if (
+      path === "profile" &&
+      state.user.handle !== null &&
+      state.user.handle !== undefined
+    ) {
+      getOwnPosts();
+    }
+    setIsLoading(false);
   }, [path, state.user.handle]);
 
   // Check path on page load.
@@ -233,76 +207,72 @@ function Home({ setIsLoading }) {
 
   return (
     <Layout>
-      {" "}
-      {ready && (
-        <div id={homeStyles.container}>
-          <div id={homeStyles.posts_container}>
-            {/* Confirm email path */}
-            {path === "confirm" &&
-              (error === undefined ? (
-                <p className={homeStyles.posts_header}>Email confirmed</p>
-              ) : (
-                <p className="error_message">{error}</p>
-              ))}
+      <div id={homeStyles.container}>
+        <div id={homeStyles.posts_container}>
+          {/* Confirm email path */}
+          {path === "confirm" &&
+            (error === undefined ? (
+              <p className={homeStyles.posts_header}>Email confirmed</p>
+            ) : (
+              <p className="error_message">{error}</p>
+            ))}
 
-            {/* Home path */}
-            {path === "home" &&
-              // If logged in...
-              (state.loggedIn ? (
-                <NewPost />
-              ) : (
-                // If not logged in...
-                <p className={homeStyles.posts_header}>
-                  <Link to="/login">
-                    <strong>login </strong>
-                  </Link>
-                  or
-                  <Link to="/signup">
-                    <strong> signup </strong>
-                  </Link>
-                  to create a post
-                </p>
-              ))}
-
-            {/* Search path */}
-            {path === "search" && (
+          {/* Home path */}
+          {path === "home" &&
+            // If logged in...
+            (state.loggedIn ? (
+              <NewPost />
+            ) : (
+              // If not logged in...
               <p className={homeStyles.posts_header}>
-                Search results for: {query}
+                <Link to="/login">
+                  <strong>login </strong>
+                </Link>
+                or
+                <Link to="/signup">
+                  <strong> signup </strong>
+                </Link>
+                to create a post
               </p>
-            )}
+            ))}
 
-            {/* Profile path */}
-            {path === "profile" && state.loggedIn && (
-              <>
-                {state.posts.data !== undefined &&
-                state.posts.data.length > 0 ? (
-                  <h2 className={homeStyles.posts_header}>My posts</h2>
-                ) : (
-                  <h2 className={homeStyles.posts_header}>
-                    You haven't posted yet
-                  </h2>
-                )}
-              </>
-            )}
-
-            {/* Other user's path */}
-            {path === "user" && (
-              <h2 className={homeStyles.posts_header}>
-                {/* User's name from pathname */}
-                {userName}
-              </h2>
-            )}
-
-            {/* All posts */}
-            <PostsContainer path={path} />
-          </div>
-
-          {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
-          {path !== "confirm" && path !== "invite" && (
-            <User path={path} handle={userName} />
+          {/* Search path */}
+          {path === "search" && (
+            <p className={homeStyles.posts_header}>
+              Search results for: {query}
+            </p>
           )}
+
+          {/* Profile path */}
+          {path === "profile" && state.loggedIn && (
+            <>
+              {state.posts.data !== undefined && state.posts.data.length > 0 ? (
+                <h2 className={homeStyles.posts_header}>My posts</h2>
+              ) : (
+                <h2 className={homeStyles.posts_header}>
+                  You haven't posted yet
+                </h2>
+              )}
+            </>
+          )}
+
+          {/* Other user's path */}
+          {path === "user" && (
+            <h2 className={homeStyles.posts_header}>
+              {/* User's name from pathname */}
+              {userName}
+            </h2>
+          )}
+
+          {/* All posts */}
+          <PostsContainer path={path} />
         </div>
-      )}
+
+        {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
+        {path !== "confirm" && path !== "invite" && (
+          <User path={path} handle={userName} />
+        )}
+      </div>
     </Layout>
   );
 }

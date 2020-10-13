@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 // Components
 import Post from "./Post";
 import HomePagination from "./pagination/HomePagination";
@@ -15,14 +15,8 @@ function PostsContainer({ path }) {
   return (
     <div className={postsContainerStyles.posts}>
       {state.posts.data !== undefined &&
-        (state.posts.data.length > 0 ? (
-          state.posts.data.map((post, index) => (
-            <Post key={index} post={post} />
-          ))
-        ) : (
-          <p>kukish</p>
-        ))}
-
+        state.posts.data.length > 0 &&
+        state.posts.data.map((post, index) => <Post key={index} post={post} />)}
       <div className={postsContainerStyles.pagination_container}>
         {path === "search" ? (
           <SearchPagination />
