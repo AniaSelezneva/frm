@@ -11,22 +11,28 @@ function SearchPagination() {
   const size = 5;
 
   // Next page
-  const goToNextPage = async () => {
-    console.log("going to next page");
-    const res = await adminClient.query(
-      q.Map(
-        q.Paginate(
-          q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
-          {
-            size,
-            after: state.posts.after,
-          }
-        ),
-        q.Lambda("X", q.Get(q.Var("X")))
-      )
-    );
-    dispatch({ type: "SET_POSTS", payload: res });
-    window.scrollTo(0, 0);
+  const goToNextPage = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await adminClient.query(
+          q.Map(
+            q.Paginate(
+              q.Reverse(q.Match(q.Index("posts_by_words7"), state.query)),
+              {
+                size,
+                after: state.posts.after,
+              }
+            ),
+            q.Lambda("X", q.Get(q.Var("X")))
+          )
+        );
+        dispatch({ type: "SET_POSTS", payload: res });
+        window.scrollTo(0, 0);
+        resolve("success");
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
 
   // Previous page
@@ -80,9 +86,9 @@ function SearchPagination() {
       </button>
 
       <button
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
-          goToNextPage();
+          await goToNextPage();
         }}
         id="next_btn"
       >
