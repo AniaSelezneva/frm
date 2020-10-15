@@ -21,6 +21,7 @@ function Home({ setIsLoading }) {
   const { state, dispatch } = useContext(store);
   const [path, setPath] = useState();
   const [error, setError] = useState(undefined);
+
   // Number of posts per page
   const size = 5;
 

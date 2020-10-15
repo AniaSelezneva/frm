@@ -66,7 +66,21 @@ const StateProvider = ({ children }) => {
       }
 
       case "SET_POSTS": {
-        return { ...state, posts: action.payload };
+        return {
+          ...state,
+          posts: action.payload,
+        };
+      }
+      case "ADD_POSTS": {
+        console.log(action.payload);
+        return {
+          ...state,
+          posts: {
+            ...state.posts,
+            data: [...state.posts.data, ...action.payload.data],
+            after: action.payload.after,
+          },
+        };
       }
       case "SET_CURRENT_POST": {
         return { ...state, post: action.payload };

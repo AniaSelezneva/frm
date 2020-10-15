@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import postsContainerStyles from "../styles/Posts_container.module.scss";
 // Components
 import PostInfo from "../../../modules/post_info/PostInfo";
+import { StateProvider } from "../../../utils/store";
 
 function Post({ post }) {
   const [body, setBody] = useState();
@@ -29,17 +30,28 @@ function Post({ post }) {
     <div className={postsContainerStyles.post}>
       <div className={postsContainerStyles.post_main_body}>
         {post.data.imageUrl !== undefined && (
-          <Link to={`/post/${post.data.postId}`}>
+          <Link
+            to={`/post/${post.data.postId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div className={postsContainerStyles.image_container}>
               <img
                 src={post.data.imageUrl}
                 className={postsContainerStyles.post_image}
+                loading="lazy"
+                width="200"
+                height="200"
               />
             </div>
           </Link>
         )}
 
-        <Link to={`/post/${post.data.postId}`}>
+        <Link
+          to={`/post/${post.data.postId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <p>{body}</p>
         </Link>
       </div>

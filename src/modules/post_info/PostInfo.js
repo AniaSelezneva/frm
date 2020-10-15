@@ -32,14 +32,12 @@ function PostInfo({ post }) {
   // Check if this post is liked by the user.
   useEffect(() => {
     setIsLiked(false);
-
     if (
       state.user.likes !== undefined &&
       state.user.likes !== null &&
       state.user.likes.length !== 0
     ) {
       state.user.likes.forEach((like) => {
-        console.log(like.data.postId, post.data.postId);
         if (like.data.postId === post.data.postId) {
           setIsLiked(true);
         }
@@ -67,30 +65,37 @@ function PostInfo({ post }) {
         });
 
         const newLikeCount = post.data.likeCount + 1;
+        const like = await res.json();
 
         if (isSubscribed) {
-          if (res.status < 400) {
-            const like = await res.json();
-
-            if (isSubscribed) {
-              dispatch({
-                type: "LIKE_POST",
-                payload: { like, postId: post.data.postId },
-              });
-            }
-
+          if (like === "Already liked") {
             dispatch({
-              type: "CHANGE_LIKE_COUNT",
-              payload: { newLikeCount, postId: post.data.postId },
+              type: "LIKE_POST",
+              payload: {
+                like: {
+                  data: {
+                    postId: post.data.postId,
+                    userHandle: post.data.userHandle,
+                  },
+                },
+                postId: post.data.postId,
+              },
             });
-
-            resolve("success");
           } else {
             dispatch({
-              type: "CHANGE_LIKE_COUNT",
-              payload: { newLikeCount, postId: post.data.postId },
+              type: "LIKE_POST",
+              payload: { like, postId: post.data.postId },
             });
+          }
 
+          dispatch({
+            type: "CHANGE_LIKE_COUNT",
+            payload: { newLikeCount, postId: post.data.postId },
+          });
+
+          if (res.status < 400) {
+            resolve("success");
+          } else if (res.status >= 400) {
             reject("Already liked");
           }
         }
@@ -115,30 +120,26 @@ function PostInfo({ post }) {
             userHandle: state.user.handle,
             postId: post.data.postId,
             likeCount: post.data.likeCount - 1,
+            recepient: post.data.userHandle,
           }),
         });
 
         const newLikeCount = post.data.likeCount - 1;
 
         if (isSubscribed) {
+          dispatch({
+            type: "UNLIKE_POST",
+            payload: { postId: post.data.postId },
+          });
+
+          dispatch({
+            type: "CHANGE_LIKE_COUNT",
+            payload: { newLikeCount, postId: post.data.postId },
+          });
+
           if (res.status < 400) {
-            dispatch({
-              type: "UNLIKE_POST",
-              payload: { postId: post.data.postId },
-            });
-
-            dispatch({
-              type: "CHANGE_LIKE_COUNT",
-              payload: { newLikeCount, postId: post.data.postId },
-            });
-
             resolve("success");
-          } else {
-            dispatch({
-              type: "CHANGE_LIKE_COUNT",
-              payload: { newLikeCount, postId: post.data.postId },
-            });
-
+          } else if (res.status >= 400) {
             reject("Post isn't liked");
           }
         }
@@ -170,6 +171,7 @@ function PostInfo({ post }) {
                 try {
                   setIsLiked(false);
                   await unlikePost();
+
                   setReady(true);
                 } catch (error) {
                   setReady(true);
@@ -188,6 +190,7 @@ function PostInfo({ post }) {
                   if (!isLiked) {
                     setIsLiked(true);
                     await likePost();
+
                     setReady(true);
                   }
                 } catch (error) {

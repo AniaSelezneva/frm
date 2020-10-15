@@ -8,7 +8,7 @@ const adminClient = new faunadb.Client({
 });
 
 exports.handler = async (event) => {
-  let { userHandle, postId, likeCount } = JSON.parse(event.body);
+  let { userHandle, postId, likeCount, recepient } = JSON.parse(event.body);
 
   // Check if this like exists.
   const checkIfLiked = () => {
@@ -38,16 +38,20 @@ exports.handler = async (event) => {
   const deleteNotification = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const notification = await adminClient.query(
-          q.Get(
-            q.Match(q.Index("like_notification_by_sender_and_postid"), [
-              userHandle,
-              postId,
-            ])
-          )
-        );
-        await adminClient.query(q.Delete(notification.ref));
-        resolve("notification deleted");
+        if (recepient !== userHandle) {
+          const notification = await adminClient.query(
+            q.Get(
+              q.Match(q.Index("like_notification_by_sender_and_postid"), [
+                userHandle,
+                postId,
+              ])
+            )
+          );
+          await adminClient.query(q.Delete(notification.ref));
+          resolve("notification deleted");
+        } else {
+          resolve("No notification created");
+        }
       } catch (error) {
         reject(error);
       }
