@@ -29,13 +29,12 @@ $new_post_height: 14rem;
     display: flex;
     flex-direction: column;
     border-radius: 0.2rem;
-    border: 1px solid black;
     background: $new_post_background;
     padding: $margin / 2;
 
     & > textarea {
       border-radius: 0.2rem;
-      border: 1px solid black;
+
       flex: 0 1 60%;
     }
 

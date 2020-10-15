@@ -7,7 +7,6 @@ const adminClient = new faunadb.Client({
 
 exports.handler = async (event) => {
   const { location, hobbies, occupation, userHandle } = JSON.parse(event.body);
-  console.log(location, hobbies, occupation, userHandle);
 
   return adminClient
     .query(q.Get(q.Match(q.Index("users_by_handle"), userHandle)))
@@ -15,9 +14,16 @@ exports.handler = async (event) => {
       return adminClient.query(
         q.Update(res.ref, {
           data: {
-            location: location.trim() === "" ? null : location,
-            hobbies: hobbies.trim() === "" ? null : hobbies,
-            occupation: occupation.trim() === "" ? null : occupation,
+            location:
+              location === undefined || location.trim() === ""
+                ? null
+                : location,
+            hobbies:
+              hobbies === undefined || hobbies.trim() === "" ? null : hobbies,
+            occupation:
+              occupation === undefined || occupation.trim() === ""
+                ? null
+                : occupation,
           },
         })
       );

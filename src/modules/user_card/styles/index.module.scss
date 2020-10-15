@@ -19,7 +19,7 @@ $margin: 1.2rem;
   @media (max-width: 800px) {
     display: block;
     padding: 10px;
-    border: 1px solid black;
+
     width: 100%;
     margin-top: $margin;
   }
@@ -32,7 +32,6 @@ $margin: 1.2rem;
   margin: $margin;
   border-radius: 0.2rem;
   background: $card-color;
-  border: 1px solid black;
   flex: 1 2 100px;
   height: max-content;
   padding: $margin;
@@ -61,7 +60,6 @@ $margin: 1.2rem;
     object-fit: cover;
 
     border-radius: 0.2rem;
-    border: 1px solid black;
   }
 
   & > form {

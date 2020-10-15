@@ -159,7 +159,7 @@ function PostInfo({ post }) {
         />
         <h6>{post.data.userHandle}</h6>
       </Link>
-      <p>{time}</p>
+      <p lang="en">{time}</p>
       <p>{post.data.commentCount} comments</p>
       <div className={postsInfoStyles.likes}>
         {isLiked ? (

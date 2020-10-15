@@ -11,7 +11,7 @@ const initialState = {
     likes: [],
     totalNotifications: null,
   },
-  posts: { data: [] },
+  posts: {},
   post: null,
   query: "",
 };
@@ -72,7 +72,6 @@ const StateProvider = ({ children }) => {
         };
       }
       case "ADD_POSTS": {
-        console.log(action.payload);
         return {
           ...state,
           posts: {

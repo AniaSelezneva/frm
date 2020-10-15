@@ -6,7 +6,6 @@ $post_background: rgba(29, 150, 172, 0.56);
 .posts {
   // post
   .post {
-    border: 1px solid black;
     border-radius: 0.2rem;
     height: max-content;
     margin-top: $margin;
@@ -17,7 +16,14 @@ $post_background: rgba(29, 150, 172, 0.56);
 
     .post_main_body {
       display: flex;
-      max-height: 200px;
+      max-height: $post_height;
+      margin: 1rem;
+
+      @media (max-width: 350px) {
+        flex-direction: column;
+        align-items: center;
+        max-height: none;
+      }
 
       // Post text
       & > a > p {
@@ -28,16 +34,13 @@ $post_background: rgba(29, 150, 172, 0.56);
       // Post image
       .image_container {
         overflow: hidden;
-        border: 1px solid black;
-        border-top: none;
-        border-left: none;
+
         border-radius: 0.2rem;
         height: 100%;
         width: 200px;
 
         // main post image
         & > img {
-          border: none;
           background: pink;
           height: 100%;
           width: 100%;
@@ -55,20 +58,16 @@ $post_background: rgba(29, 150, 172, 0.56);
   }
 }
 
-// Pagination
-.pagination_container {
-  margin: $margin;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
+// 'Loading...' message at the bottom
+.loading_message {
+  text-align: center;
+  padding: 1rem;
+  font-family: "Alegreya SC", serif, Arial, sans-serif;
+}
 
-  & > button {
-    font-size: 130%;
-  }
-
-  & > button:disabled {
-    text-decoration: none;
-  }
+// Hidden message at the end
+.end_message {
+  visibility: hidden;
 }
 
 // Like buttons

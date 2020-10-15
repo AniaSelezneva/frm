@@ -56,6 +56,14 @@ function AddInfo({ setIsAddInfoOpen }) {
         });
       }
 
+      if (info === "location") {
+        setLocation(undefined);
+      } else if (info === "hobbies") {
+        setHobbies(undefined);
+      } else if (info === "occupation") {
+        setOccupation(undefined);
+      }
+
       if (isSubscribed) {
         dispatch({
           type: "REMOVE_INFO",

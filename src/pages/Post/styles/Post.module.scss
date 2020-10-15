@@ -37,15 +37,12 @@ $comment_background: rgba(29, 150, 172, 0.56);
     width: 100%;
     border-radius: 0.2rem;
     background: $post_background;
-    border: 1px solid black;
 
     .post_main_body {
       display: flex;
       // Main post image
       & > img {
         max-width: 200px;
-        border-right: 1px solid black;
-        border-bottom: 1px solid black;
         border-radius: 0.2rem;
       }
 
@@ -59,7 +56,6 @@ $comment_background: rgba(29, 150, 172, 0.56);
 
 // Comment
 .comment {
-  border: 1px solid black;
   margin-top: $margin;
   border-radius: 0.2rem;
   height: max-content;
@@ -72,9 +68,6 @@ $comment_background: rgba(29, 150, 172, 0.56);
   // User info
   .comment_info {
     display: flex;
-
-    border-top: 5px solid;
-    border-image: linear-gradient(to left, red 70%, black);
 
     & > button {
       align-self: flex-end;
@@ -118,7 +111,6 @@ $comment_background: rgba(29, 150, 172, 0.56);
   background: $new_comment_background;
   padding: $margin / 2;
   margin-top: $margin;
-  border: 1px solid black;
 
   & > textarea {
     border-radius: 0.2rem;

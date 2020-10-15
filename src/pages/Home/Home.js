@@ -245,19 +245,17 @@ function Home({ setIsLoading }) {
           )}
 
           {/* Profile path */}
-          {path === "profile" &&
-            state.loggedIn &&
-            state.posts.data !== undefined && (
-              <>
-                {state.posts.data.length > 0 ? (
-                  <h2 className={homeStyles.posts_header}>My posts</h2>
-                ) : (
-                  <h2 className={homeStyles.posts_header}>
-                    You haven't posted yet
-                  </h2>
-                )}
-              </>
-            )}
+          {path === "profile" && state.loggedIn && state.posts.data && (
+            <>
+              {state.posts.data.length > 0 ? (
+                <h2 className={homeStyles.posts_header}>My posts</h2>
+              ) : (
+                <h2 className={homeStyles.posts_header}>
+                  You haven't posted yet
+                </h2>
+              )}
+            </>
+          )}
 
           {/* Other user's path */}
           {path === "user" && (
