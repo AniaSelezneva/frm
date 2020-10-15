@@ -11,7 +11,7 @@ import Layout from "../../HOCs/Layout";
 import loginStyles from "./styles/Login.module.scss";
 
 function Login({ setIsLoading }) {
-  const { state, dispatch } = useContext(store);
+  const { dispatch } = useContext(store);
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();

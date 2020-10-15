@@ -13,14 +13,13 @@ import signupStyles from "./styles/Signup.module.scss";
 import Layout from "../../HOCs/Layout";
 
 function Signup({ setIsLoading }) {
-  const { state, dispatch } = useContext(store);
+  const { dispatch } = useContext(store);
 
   const [handle, setHandle] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
 
   const [handleUnique, setHandleUnique] = useState();
-  const [emailUnique, setEmailUnique] = useState();
   const [passwordsMatch, setPasswordsMatch] = useState();
 
   const [confirmationSent, setConfirmationSent] = useState(false);

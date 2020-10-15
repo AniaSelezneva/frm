@@ -13,26 +13,29 @@ import Logout from "./Logout";
 // Styles
 import userCardStyles from "./styles/index.module.scss";
 
+// 'User' path means we don't want to load logged in user's info,
+// we just want to load short info on the needed user. Any other
+// path (where user's card component is available) will show logged
+// in user's full info if he's logged in or links to log in or sign up.
+
 function User({ path, handle }) {
   const { state, dispatch } = useContext(store);
-  const [email, setEmail] = useState();
   const [isAddInfoOpen, setIsAddInfoOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
 
   // Get logged in user info.
-  const getOwnUserInfo = async () => {
+  const getOwnUserInfo = async (email) => {
     try {
       const res = await adminClient.query(
         q.Get(q.Match(q.Index("users_by_email"), q.Casefold(email)))
       );
-      await dispatch({ type: "SET_USER_DATA", payload: res.data });
-      dispatch({ type: "SET_REF", payload: res.ref });
+      dispatch({ type: "SET_USER", payload: { data: res.data, ref: res.ref } });
     } catch (error) {
       console.log(error);
     }
   };
 
-  // Get user's likes.
+  // Get user's likes function.
   const getLikes = async () => {
     try {
       const userLikes = await adminClient.query(
@@ -52,13 +55,6 @@ function User({ path, handle }) {
     }
   };
 
-  // Get user's likes.
-  useEffect(() => {
-    if (state.user.handle !== null && state.user.handle !== undefined) {
-      getLikes();
-    }
-  }, [state.user.handle, window.location.pathname]);
-
   // Get other user info.
   const getUserInfo = async () => {
     try {
@@ -66,34 +62,11 @@ function User({ path, handle }) {
         q.Get(q.Match(q.Index("users_by_handle"), q.Casefold(handle)))
       );
 
-      dispatch({ type: "SET_USER_DATA", payload: res.data });
-      dispatch({ type: "SET_REF", payload: res.ref });
+      dispatch({ type: "SET_USER", payload: { data: res.data, ref: res.ref } });
     } catch (error) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (path === "user") {
-      getUserInfo();
-    } else if (
-      path === "home" ||
-      path === "profile" ||
-      path === "search" ||
-      path === "post"
-    ) {
-      // Check if user is signed in.
-      if (auth.currentUser() !== null && auth.currentUser() !== undefined) {
-        setEmail(auth.currentUser().email);
-      }
-    }
-  }, [path]);
-
-  useEffect(() => {
-    if (email !== null && email !== undefined) {
-      getOwnUserInfo();
-    }
-  }, [email]);
 
   // Toggle card's open/closed state.
   const toggleOpenCard = () => {
@@ -104,6 +77,29 @@ function User({ path, handle }) {
     }
   };
 
+  // Get user's likes.
+  useEffect(() => {
+    if (state.user.handle !== null && state.user.handle !== undefined) {
+      getLikes();
+    }
+  }, [state.user.handle, window.location.pathname]);
+
+  // Get user's info.
+  useEffect(() => {
+    // If path is 'user'...
+    if (path === "user") {
+      getUserInfo();
+      // If path is 'profile', 'home', 'post' ...
+    } else {
+      // Check if user is signed in...
+      if (auth.currentUser() !== null && auth.currentUser() !== undefined) {
+        const email = auth.currentUser().email;
+
+        getOwnUserInfo(email);
+      }
+    }
+  }, [path]);
+
   // Check if user card should be shown in the beginning.
   useEffect(() => {
     if (window.innerWidth > 800) {
@@ -113,7 +109,7 @@ function User({ path, handle }) {
     }
   }, []);
 
-  // Open or close card.
+  // Open/close card.
   useEffect(() => {
     const card = document.getElementById("user_card");
     if (isCardOpen) {
@@ -134,8 +130,9 @@ function User({ path, handle }) {
         user info
       </button>
       <div className={userCardStyles.user} id="user_card">
+        {/* Add info */}
         {isAddInfoOpen && <AddInfo setIsAddInfoOpen={setIsAddInfoOpen} />}
-        {/* User's own page */}
+        {/* Logged in user's card */}
         {path !== "user" && state.loggedIn && !isAddInfoOpen && (
           <>
             <img src={state.user.imageUrl} alt="profile image" />
@@ -168,12 +165,16 @@ function User({ path, handle }) {
             <Logout />
           </>
         )}
+
+        {/* User is not logged in and it's not 'user' path */}
         {!state.loggedIn && path !== "user" && (
           <div id={userCardStyles.login_signup_buttons_container}>
             <Link to="/login">Login</Link>
             <Link to="/signup">Signup</Link>
           </div>
         )}
+
+        {/* Other user's card */}
         {path === "user" && (
           <>
             <img src={state.user.imageUrl} alt="profile image" />

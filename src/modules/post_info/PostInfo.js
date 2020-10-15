@@ -21,6 +21,8 @@ function PostInfo({ post }) {
   const [time, setTime] = useState();
   const [isLiked, setIsLiked] = useState(false);
 
+  let isSubscribed = true;
+
   // Set time of the post submission.
   useEffect(() => {
     const d = dayjs(post.data.createdAt).fromNow();
@@ -37,12 +39,15 @@ function PostInfo({ post }) {
       state.user.likes.length !== 0
     ) {
       state.user.likes.forEach((like) => {
+        console.log(like.data.postId, post.data.postId);
         if (like.data.postId === post.data.postId) {
           setIsLiked(true);
         }
       });
     }
-  }, [state.user.likes, window.location.pathname]);
+
+    return () => (isSubscribed = false);
+  }, [state.user.likes, state.posts, window.location.pathname]);
 
   // Like post
   const likePost = () => {
@@ -63,28 +68,31 @@ function PostInfo({ post }) {
 
         const newLikeCount = post.data.likeCount + 1;
 
-        setIsLiked(true);
+        if (isSubscribed) {
+          if (res.status < 400) {
+            const like = await res.json();
 
-        if (res.status < 300) {
-          const like = await res.json();
+            if (isSubscribed) {
+              dispatch({
+                type: "LIKE_POST",
+                payload: { like, postId: post.data.postId },
+              });
+            }
 
-          dispatch({
-            type: "LIKE_POST",
-            payload: { like, postId: post.data.postId },
-          });
+            dispatch({
+              type: "CHANGE_LIKE_COUNT",
+              payload: { newLikeCount, postId: post.data.postId },
+            });
 
-          dispatch({
-            type: "CHANGE_LIKE_COUNT",
-            payload: { newLikeCount, postId: post.data.postId },
-          });
+            resolve("success");
+          } else {
+            dispatch({
+              type: "CHANGE_LIKE_COUNT",
+              payload: { newLikeCount, postId: post.data.postId },
+            });
 
-          resolve("success");
-        } else {
-          dispatch({
-            type: "CHANGE_LIKE_COUNT",
-            payload: { newLikeCount, postId: post.data.postId },
-          });
-          reject("Already liked");
+            reject("Already liked");
+          }
         }
       } catch (error) {
         console.log(error);
@@ -112,19 +120,30 @@ function PostInfo({ post }) {
 
         const newLikeCount = post.data.likeCount - 1;
 
-        dispatch({
-          type: "UNLIKE_POST",
-          payload: { postId: post.data.postId },
-        });
+        if (isSubscribed) {
+          if (res.status < 400) {
+            dispatch({
+              type: "UNLIKE_POST",
+              payload: { postId: post.data.postId },
+            });
 
-        dispatch({
-          type: "CHANGE_LIKE_COUNT",
-          payload: { newLikeCount, postId: post.data.postId },
-        });
+            dispatch({
+              type: "CHANGE_LIKE_COUNT",
+              payload: { newLikeCount, postId: post.data.postId },
+            });
 
-        resolve("success");
+            resolve("success");
+          } else {
+            dispatch({
+              type: "CHANGE_LIKE_COUNT",
+              payload: { newLikeCount, postId: post.data.postId },
+            });
+
+            reject("Post isn't liked");
+          }
+        }
       } catch (error) {
-        console.log("hello", error);
+        console.log(error);
         reject(error);
       }
     });
@@ -153,7 +172,6 @@ function PostInfo({ post }) {
                   await unlikePost();
                   setReady(true);
                 } catch (error) {
-                  console.log(error);
                   setReady(true);
                 }
               }
@@ -173,7 +191,6 @@ function PostInfo({ post }) {
                     setReady(true);
                   }
                 } catch (error) {
-                  console.log(error);
                   setReady(true);
                 }
               }

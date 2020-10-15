@@ -6,8 +6,8 @@ const adminClient = new faunadb.Client({
 });
 
 exports.handler = async (event) => {
-  const { location, hobbies, occupation, userHandle } = JSON.parse(event.body);
-  console.log(location, hobbies, occupation, userHandle);
+  const fieldToRemove = event.headers["info-to-remove"];
+  const userHandle = event.headers["user-handle"];
 
   return adminClient
     .query(q.Get(q.Match(q.Index("users_by_handle"), userHandle)))
@@ -15,9 +15,7 @@ exports.handler = async (event) => {
       return adminClient.query(
         q.Update(res.ref, {
           data: {
-            location: location.trim() === "" ? null : location,
-            hobbies: hobbies.trim() === "" ? null : hobbies,
-            occupation: occupation.trim() === "" ? null : occupation,
+            [fieldToRemove]: null,
           },
         })
       );
@@ -25,7 +23,7 @@ exports.handler = async (event) => {
     .then(() => {
       return {
         statusCode: 200,
-        body: JSON.stringify(`Info successfully updated`),
+        body: JSON.stringify(`Info successfully removed`),
       };
     })
     .catch((error) => {

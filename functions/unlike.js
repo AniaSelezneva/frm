@@ -110,10 +110,16 @@ exports.handler = async (event) => {
       };
     })
     .catch((error) => {
-      console.log("error", error);
+      console.log("Error: ", error);
+      if (error == `Like doesn't exist`) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify(error),
+        };
+      }
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: "Error occured" }),
+        body: JSON.stringify(error),
       };
     });
 };

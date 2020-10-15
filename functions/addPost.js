@@ -40,7 +40,7 @@ exports.handler = async (event, context) => {
     .then(() => {
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: `Post added successfully` }),
+        body: JSON.stringify(`Post added successfully`),
       };
     })
     .catch((error) => {

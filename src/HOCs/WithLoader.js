@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function WithLoader(ComponentToWrap, loadingMessage) {
+const WithLoader = (ComponentToWrap, loadingMessage) => {
   return function ComponentWithLoader(props) {
     const [isLoading, setIsLoading] = useState(true);
     return (
@@ -10,6 +10,10 @@ function WithLoader(ComponentToWrap, loadingMessage) {
       </>
     );
   };
-}
+};
 
 export default WithLoader;
+
+// WithLoader returns a functional component ComponentWithLoader.
+// ComponentWithLoader returns ComponentToWrap and passes
+// setIsLoading to it, so ComponentToWrap can control it.

@@ -24,16 +24,47 @@ const StateProvider = ({ children }) => {
     switch (action.type) {
       case "LOG_IN":
         return { ...state, loggedIn: true };
-      case "SET_USER_DATA": {
-        return { ...state, user: { ...state.user, ...action.payload } };
+      case "SET_USER": {
+        const { data, ref } = action.payload;
+        return { ...state, user: { ...state.user, ...data, userDbRef: ref } };
       }
       case "CHANGE_IMAGE": {
         return { ...state, user: action.payload };
       }
-      // remove that
-      case "SET_REF": {
-        return { ...state, user: { ...state.user, userDbRef: action.payload } };
+      case "ADD_INFO": {
+        const { location, hobbies, occupation } = action.payload;
+
+        const newState = {
+          ...state,
+          user: { ...state.user, location, hobbies, occupation },
+        };
+
+        // If empty...
+        if (location === undefined || location.trim() === "") {
+          delete newState.user.location;
+        }
+        if (hobbies === undefined || hobbies.trim() === "") {
+          delete newState.user.hobbies;
+        }
+        if (occupation === undefined || occupation.trim() === "") {
+          delete newState.user.occupation;
+        }
+
+        return newState;
       }
+
+      case "REMOVE_INFO": {
+        const fieldToRemove = action.payload;
+
+        const newState = {
+          ...state,
+        };
+
+        delete newState.user[fieldToRemove];
+
+        return newState;
+      }
+
       case "SET_POSTS": {
         return { ...state, posts: action.payload };
       }
@@ -103,11 +134,15 @@ const StateProvider = ({ children }) => {
 
         // Add new like.
         const likes = state.user.likes;
-        // If it's not already there...
-        const index = likes.findIndex((like) => {
-          return like.data.postId === postId;
-        });
-        if (index < 0) {
+        if (likes.length > 0) {
+          // If it's not already there...
+          const index = likes.findIndex((like) => {
+            return like.data.postId === postId;
+          });
+          if (index < 0) {
+            likes.push(like);
+          }
+        } else {
           likes.push(like);
         }
 
@@ -174,6 +209,14 @@ const StateProvider = ({ children }) => {
         return {
           ...state,
           post: { ...state.post, comments: action.payload },
+        };
+      }
+
+      case "CHANGE_AVATAR": {
+        const { imageUrl } = action.payload;
+        return {
+          ...state,
+          user: { ...state.user, imageUrl },
         };
       }
       case "SET_POST_ID": {

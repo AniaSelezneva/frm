@@ -7,13 +7,13 @@ import { store } from "../../utils/store";
 import userCardStyles from "./styles/index.module.scss";
 
 function Logout() {
-  const { state, dispatch } = useContext(store);
+  const { dispatch } = useContext(store);
 
   const logout = async () => {
     try {
       const user = auth.currentUser();
-      await user.logout();
-      await dispatch({ type: "LOGOUT" });
+      user.logout();
+      dispatch({ type: "LOGOUT" });
       window.location.reload();
     } catch (error) {
       console.log(error);

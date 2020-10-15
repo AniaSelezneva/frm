@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 // store
 import { store } from "../../utils/store";
 
-function Search(props) {
+function Search() {
   const { state, dispatch } = useContext(store);
 
   // const setPosts = async (searchWord, size) => {

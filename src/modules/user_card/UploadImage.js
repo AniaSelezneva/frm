@@ -6,7 +6,8 @@ import { q, adminClient } from "../../utils/faunaDB";
 // withLoader hoc
 import WithLoader from "../../HOCs/WithLoader";
 // firebase
-import { initializeApp, storage } from "firebase";
+import firebase from "firebase/app";
+import "firebase/storage";
 // config for firebase
 import config from "../../utils/config";
 // uuid
@@ -20,19 +21,21 @@ function UploadImage({ setIsLoading }) {
   const [isError, setIsError] = useState();
   const [imageFileName, setImageFileName] = useState(undefined);
 
+  let imageUrl;
+
   // Upload avatar (bundler function)
   const uploadImage = async (e) => {
     setIsLoading(true);
 
     try {
-      initializeApp(config);
+      firebase.initializeApp(config);
 
       const imageExtension = image.name.split(".").pop();
 
       const imageFileName = `${uuid()}.${imageExtension}`;
 
       // Root reference.
-      var storageRef = storage().ref();
+      var storageRef = firebase.storage().ref();
       // Reference to new file.
       var imageRef = storageRef.child(imageFileName);
 
@@ -44,7 +47,7 @@ function UploadImage({ setIsLoading }) {
 
       await updateUserImageInComments(imageFileName);
 
-      window.location.reload();
+      dispatch({ type: "CHANGE_AVATAR", payload: { imageUrl } });
     } catch (error) {
       console.log(error);
       setIsError(true);
@@ -54,12 +57,13 @@ function UploadImage({ setIsLoading }) {
 
   // Update user image in user document in 'users' collection.
   const updateUserImageUrl = (img) => {
+    imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/${img}?alt=media`;
     return new Promise(async (resolve, reject) => {
       try {
         await adminClient.query(
           q.Update(state.user.userDbRef, {
             data: {
-              imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/${img}?alt=media`,
+              imageUrl,
             },
           })
         );

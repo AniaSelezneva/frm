@@ -51,7 +51,7 @@ exports.handler = async (event) => {
           })
         );
 
-        resolve("success");
+        resolve(res);
       } catch (error) {
         reject(error);
       }
@@ -86,18 +86,21 @@ exports.handler = async (event) => {
   const addNotification = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        await adminClient.query(
-          q.Create(q.Collection("notifications"), {
-            data: {
-              id: uuid(),
-              recepient,
-              sender: userHandle,
-              postId: postId,
-              type: "like",
-              likeId,
-            },
-          })
-        );
+        if (recepient !== userHandle) {
+          await adminClient.query(
+            q.Create(q.Collection("notifications"), {
+              data: {
+                id: uuid(),
+                recepient,
+                sender: userHandle,
+                postId: postId,
+                type: "like",
+                likeId,
+              },
+            })
+          );
+        }
+
         resolve("success");
       } catch (error) {
         reject(error);
@@ -106,9 +109,6 @@ exports.handler = async (event) => {
   };
 
   return checkIfLiked()
-    .then((res) => {
-      return addLike();
-    })
     .then(() => {
       return incrementLikeCount();
     })
@@ -116,6 +116,9 @@ exports.handler = async (event) => {
       return addNotification();
     })
     .then(() => {
+      return addLike();
+    })
+    .then((res) => {
       return {
         statusCode: 200,
         body: JSON.stringify(res),
@@ -123,7 +126,13 @@ exports.handler = async (event) => {
     })
 
     .catch((error) => {
-      console.log("error", error);
+      console.log("Error: ", error);
+      if (error == "Already liked") {
+        return {
+          statusCode: 400,
+          body: JSON.stringify(error),
+        };
+      }
       return {
         statusCode: 500,
         body: JSON.stringify(error),

@@ -114,10 +114,14 @@ $margin: 1.2rem;
   align-items: center;
   gap: 1rem;
 
-  & > input {
-    border: none;
-    border-bottom: 1px solid black;
-    width: 100%;
+  & > .input {
+    display: flex;
+
+    & > input {
+      border: none;
+      border-bottom: 1px solid black;
+      width: 100%;
+    }
   }
 
   .buttons_container {

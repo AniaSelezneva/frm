@@ -64,20 +64,21 @@ exports.handler = async (event, context) => {
   const addNotification = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        // find post
+        if (recepient !== userHandle) {
+          await adminClient.query(
+            q.Create(q.Collection("notifications"), {
+              data: {
+                id: uuid(),
+                recepient,
+                sender: userHandle,
+                postId: postId,
+                type: "comment",
+                commentId,
+              },
+            })
+          );
+        }
 
-        await adminClient.query(
-          q.Create(q.Collection("notifications"), {
-            data: {
-              id: uuid(),
-              recepient,
-              sender: userHandle,
-              postId: postId,
-              type: "comment",
-              commentId,
-            },
-          })
-        );
         resolve("success");
       } catch (error) {
         reject(error);
@@ -98,7 +99,7 @@ exports.handler = async (event, context) => {
     .then(() => {
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: `Comment added successfully` }),
+        body: JSON.stringify(`Comment added successfully`),
       };
     })
     .catch((error) => {

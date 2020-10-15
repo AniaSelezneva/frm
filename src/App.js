@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 // Components
 import GetInvitation from "./pages/GetInvitation/index";
-import Home from "./pages/Home/Home";
 import SignupWithInvitation from "./pages/Signup/SignupWithInvitation";
+import Home from "./pages/Home/Home";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/index";
 import Post from "./pages/Post/index";
@@ -26,7 +26,7 @@ function App() {
   useEffect(() => {
     // If he is...
     if (auth.currentUser() !== null && auth.currentUser() !== undefined) {
-      // change loggedIn property in state object.
+      // ...change loggedIn property in state object.
       dispatch({ type: "LOG_IN" });
     }
   }, []);

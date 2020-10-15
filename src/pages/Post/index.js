@@ -170,6 +170,12 @@ function Post(props) {
       }
       setIsLoading(false);
     })();
+
+    // Abort
+    return () => {
+      const controller = new AbortController();
+      controller.abort();
+    };
   }, [window.location.pathname]);
 
   // Apply class to body to change background image on home page.
@@ -183,6 +189,12 @@ function Post(props) {
       const root = document.getElementById("root");
       root.setAttribute("class", `home_root_background`);
     }
+
+    // Abort
+    return () => {
+      const controller = new AbortController();
+      controller.abort();
+    };
   }, []);
 
   return (

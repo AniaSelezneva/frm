@@ -31,68 +31,6 @@ function Signup({ setIsLoading }) {
     setIsLoading(false);
   }, []);
 
-  // Add user to 'users' collection in db.
-  const addUserToDb = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const ret = await adminClient.query(
-          q.Create(q.Collection("users"), {
-            data: {
-              handle: q.LowerCase(handle),
-              email: q.LowerCase(email),
-              imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/dandelion.jpg?alt=media`,
-            },
-          })
-        );
-        resolve(ret);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  // Check if user handle doesn't exist in db already.
-  const isHandleUnique = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await adminClient.query(
-          q.Exists(q.Match(q.Index("users_by_handle"), q.Casefold(handle)))
-        );
-
-        if (res === true) {
-          setHandleUnique(false);
-          resolve(false);
-        } else {
-          setHandleUnique(true);
-          resolve(true);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  // Check if user email doesn't exist in db already.
-  const isEmailUnique = () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const res = await adminClient.query(
-          q.Exists(q.Match(q.Index("users_by_email"), q.Casefold(email)))
-        );
-
-        if (res === true) {
-          setEmailUnique(false);
-          resolve(false);
-        } else {
-          setEmailUnique(true);
-          resolve(true);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
   // Check if password and confirmPassword match.
   const doPasswordsMatch = () => {
     if (password === confirmPassword) {
@@ -104,18 +42,31 @@ function Signup({ setIsLoading }) {
     }
   };
 
-  // Signup and login at the same time.
+  // Signup.
   const signup = async (e) => {
     setIsLoading(true);
-    try {
-      const handleUnique = await isHandleUnique();
-      const emailUnique = await isEmailUnique();
 
-      if (handleUnique && emailUnique && doPasswordsMatch()) {
+    try {
+      const res = await fetch("/api/addUserToDb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          handle,
+          email,
+        }),
+      });
+
+      doPasswordsMatch();
+
+      const response = await res.json();
+      if (response === "Email already in use") {
+        setEmailUnique(false);
+      } else if (response === "Handle already taken") {
+        setHandleUnique(false);
+      } else if (response === "User is added to database") {
         await auth.signup(email, password);
-        await addUserToDb();
-        //await auth.login(email, password, true);
-        //dispatch({ type: "LOG_IN" });
         setConfirmationSent(true);
       }
     } catch (error) {
