@@ -1,6 +1,6 @@
 @import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
 
-$card-color: rgba(104, 162, 89, 0.93);
+$card-color: rgba(104, 162, 89, 1);
 $margin: 1.2rem;
 
 // Container
@@ -27,6 +27,9 @@ $margin: 1.2rem;
 
 // User on the right
 .user {
+  position: relative;
+  z-index: 1;
+
   font-family: "Alegreya SC", serif, Arial, sans-serif;
   line-height: 1.8rem;
   margin: $margin;
@@ -37,6 +40,15 @@ $margin: 1.2rem;
   padding: $margin;
   flex-direction: column;
   min-width: 280px;
+
+  transform: skew(-3deg) rotate(2deg);
+
+  img,
+  p,
+  form,
+  & > button {
+    transform: skew(3deg) rotate(-2deg);
+  }
 
   @media (max-width: 800px) {
     margin: 10px;
