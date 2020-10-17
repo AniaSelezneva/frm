@@ -10,8 +10,8 @@ $comment_background: rgba(29, 150, 172, 0.56);
 .container {
   display: flex;
   max-width: 1000px;
-  margin-left: $margin;
-  margin-right: $margin;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
 
   // Place user card on top
   @media (max-width: 800px) {
@@ -204,4 +204,23 @@ $comment_background: rgba(29, 150, 172, 0.56);
       }
     }
   }
+}
+
+// 'Loading...' message at the bottom
+.loading_message {
+  text-align: center;
+  padding: 1rem;
+  font-family: "Alegreya SC", serif, Arial, sans-serif;
+}
+
+// Hidden message at the end
+.end_message {
+  visibility: hidden;
+}
+
+// Borders
+.post,
+.comment,
+.new_comment_form {
+  border: 1px solid black;
 }

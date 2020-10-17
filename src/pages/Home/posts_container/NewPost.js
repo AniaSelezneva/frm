@@ -146,6 +146,7 @@ function NewPost({ setIsLoading }) {
               setImageName(undefined);
               setImageDbName(undefined);
               setImage(undefined);
+              setError(undefined);
               document.getElementById("post_body").style.border =
                 "1px solid black";
             }}

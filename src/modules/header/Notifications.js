@@ -229,10 +229,12 @@ function Notifications() {
               <ul id="notifications_container">
                 {state.user.notifications.data.map((notification) => (
                   <li key={notification.data.id}>
-                    {notification.data.sender}{" "}
+                    <Link to={`/user/${notification.data.sender}`}>
+                      {notification.data.sender}
+                    </Link>
                     {notification.data.type === "like"
-                      ? "liked "
-                      : "commented on "}
+                      ? " liked "
+                      : " commented on "}
                     <Link to={`/post/${notification.data.postId}`}>
                       your post
                     </Link>

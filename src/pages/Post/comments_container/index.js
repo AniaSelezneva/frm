@@ -1,16 +1,87 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 // styles
 import postStyles from "../styles/Post.module.scss";
 // components
 import NewComment from "./NewComment";
-import Pagination from "./Pagination";
 import Comment from "./Comment";
+// faunaDB
+import { q, adminClient } from "../../../utils/faunaDB";
+
 // store
 import { store } from "../../../utils/store";
 
 function Index() {
-  const { state } = useContext(store);
+  const { state, dispatch } = useContext(store);
+  const [loading, setLoading] = useState(false);
+  const [element, setElement] = useState(null);
+
+  const loadMore = async () => {
+    const res = await adminClient.query(
+      q.Map(
+        q.Paginate(
+          q.Reverse(
+            q.Match(q.Index("comments_by_postId"), state.post.data.postId)
+          ),
+          {
+            size,
+            after: after.current,
+          }
+        ),
+        q.Lambda("X", q.Get(q.Var("X")))
+      )
+    );
+
+    dispatch({ type: "ADD_COMMENTS", payload: res });
+  };
+
+  const loader = useRef(loadMore);
+  const after = useRef();
+
+  // Number of posts per page.
+  const size = 5;
+
+  const observer = useRef(
+    new IntersectionObserver(
+      (entries) => {
+        const bottomElement = entries[0];
+        // If bottom element is visible and there is 'after' (there is next page)...
+        if (bottomElement.isIntersecting && after.current) {
+          // ... use loader function.
+          loader.current();
+        }
+      },
+      { threshold: 1 }
+    )
+  );
+
+  // Attach observer to element, return unobserve.
+  useEffect(() => {
+    const currentElement = element;
+    const currentObserver = observer.current;
+
+    if (currentElement) {
+      currentObserver.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        currentObserver.unobserve(currentElement);
+      }
+    };
+  }, [element]);
+
+  // Keep loader function up to date.
+  useEffect(() => {
+    loader.current = loadMore;
+  }, [loadMore]);
+
+  // Keep 'after' up to date.
+  useEffect(() => {
+    if (state.post && state.post.comments) {
+      after.current = state.post.comments.after;
+    }
+  }, [state.post]);
 
   return (
     <div>
@@ -38,7 +109,13 @@ function Index() {
           <Comment comment={comment} index={index} key={index} />
         ))}
 
-      <Pagination />
+      <div ref={setElement} id="load-more">
+        {loading ? (
+          <p className={postStyles.loading_message}>Loading...</p>
+        ) : (
+          <p className={postStyles.end_message}>End</p>
+        )}
+      </div>
     </div>
   );
 }

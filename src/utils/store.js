@@ -11,9 +11,11 @@ const initialState = {
     likes: [],
     totalNotifications: null,
   },
+  otherUser: {},
   posts: {},
   post: null,
   query: "",
+  path: "",
 };
 // store has Provider and Consumer components
 const store = createContext(initialState);
@@ -27,6 +29,12 @@ const StateProvider = ({ children }) => {
       case "SET_USER": {
         const { data, ref } = action.payload;
         return { ...state, user: { ...state.user, ...data, userDbRef: ref } };
+      }
+      case "SET_OTHER_USER": {
+        return { ...state, otherUser: action.payload };
+      }
+      case "SET_PATH": {
+        return { ...state, path: action.payload };
       }
       case "CHANGE_IMAGE": {
         return { ...state, user: action.payload };
@@ -224,7 +232,18 @@ const StateProvider = ({ children }) => {
           post: { ...state.post, comments: action.payload },
         };
       }
-
+      case "ADD_COMMENTS": {
+        return {
+          ...state,
+          post: {
+            ...state.post,
+            comments: {
+              data: [...state.post.comments.data, ...action.payload.data],
+              after: action.payload.after,
+            },
+          },
+        };
+      }
       case "CHANGE_AVATAR": {
         const { imageUrl } = action.payload;
         return {

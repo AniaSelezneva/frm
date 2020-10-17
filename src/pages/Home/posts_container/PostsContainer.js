@@ -8,10 +8,10 @@ import { store } from "../../../utils/store";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";
 
-function PostsContainer({ path }) {
+function PostsContainer() {
   const { state, dispatch } = useContext(store);
   const [loading, setLoading] = useState(false);
-  const [element, setElement] = useState(null);
+  const path = state.path;
 
   // Function to load more posts.
   const loadMore = async () => {
@@ -61,64 +61,29 @@ function PostsContainer({ path }) {
     setLoading(false);
   };
 
-  const loader = useRef(loadMore);
-  const after = useRef(state.posts.after);
-
   // Number of posts per page.
   const size = 5;
-
-  const observer = useRef(
-    new IntersectionObserver(
-      (entries) => {
-        const bottomElement = entries[0];
-        // If bottom element is visible and there is 'after' (there is next page)...
-        if (bottomElement.isIntersecting && after.current) {
-          // ... use loader function.
-          loader.current();
-        }
-      },
-      { threshold: 1 }
-    )
-  );
-
-  // Attach observer to element, return unobserve.
-  useEffect(() => {
-    const currentElement = element;
-    const currentObserver = observer.current;
-
-    if (currentElement) {
-      currentObserver.observe(currentElement);
-    }
-
-    return () => {
-      if (currentElement) {
-        currentObserver.unobserve(currentElement);
-      }
-    };
-  }, [element]);
-
-  // Keep loader function up to date.
-  useEffect(() => {
-    loader.current = loadMore;
-  }, [loadMore]);
-
-  // Keep 'after' up to date.
-  useEffect(() => {
-    after.current = state.posts.after;
-  }, [state.posts.after]);
 
   return (
     <div className={postsContainerStyles.posts}>
       {state.posts.data &&
         state.posts.data.map((post, index) => <Post key={index} post={post} />)}
 
-      <div ref={setElement} id="load-more">
-        {loading ? (
-          <p className={postsContainerStyles.loading_message}>Loading...</p>
-        ) : (
-          <p className={postsContainerStyles.end_message}>End</p>
-        )}
-      </div>
+      {state.posts.after && (
+        <div className={postsContainerStyles.load_more}>
+          {loading ? (
+            <p className={postsContainerStyles.loading_message}>Loading...</p>
+          ) : (
+            <button
+              id="load_more_button"
+              className={postsContainerStyles.load_more_button}
+              onClick={loadMore}
+            >
+              Load more
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

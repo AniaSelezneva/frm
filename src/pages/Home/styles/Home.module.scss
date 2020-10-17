@@ -1,15 +1,13 @@
 @import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
-$background: rgba(236, 234, 213, 1);
 $post_height: 8rem;
-$margin: 1.2rem;
-$new_post_background: rgba(233, 86, 154, 0.63);
+$margin: 1.5rem;
+$new_post_background: #231f20ff;
 $new_post_height: 14rem;
 
 #container {
   display: flex;
-  max-width: 1000px;
-  margin-left: $margin;
-  margin-right: $margin;
+  margin-left: -$margin;
+  margin-right: -$margin;
 
   // Place user card on top
   @media (max-width: 800px) {
@@ -34,7 +32,7 @@ $new_post_height: 14rem;
 
     & > textarea {
       border-radius: 0.2rem;
-
+      z-index: 1;
       flex: 0 1 60%;
     }
 
@@ -66,10 +64,6 @@ $new_post_height: 14rem;
           max-width: 100%;
           overflow: hidden;
         }
-
-        span {
-          color: grey;
-        }
       }
     }
   }
@@ -91,4 +85,9 @@ $new_post_height: 14rem;
       text-decoration-color: rgba(241, 89, 36, 1);
     }
   }
+}
+
+// Borders
+#new_post {
+  border: 3px solid #b73a87ff;
 }

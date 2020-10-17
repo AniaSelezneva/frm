@@ -1,6 +1,6 @@
 $post_height: 200px;
 $margin: 1.2rem;
-$post_background: rgba(29, 150, 172, 0.56);
+$post_background: #231f20ff;
 
 // Posts container on the left
 .posts {
@@ -59,18 +59,6 @@ $post_background: rgba(29, 150, 172, 0.56);
   }
 }
 
-// 'Loading...' message at the bottom
-.loading_message {
-  text-align: center;
-  padding: 1rem;
-  font-family: "Alegreya SC", serif, Arial, sans-serif;
-}
-
-// Hidden message at the end
-.end_message {
-  visibility: hidden;
-}
-
 // Like buttons
 #red_heart,
 #blue_heart {
@@ -87,4 +75,26 @@ $post_background: rgba(29, 150, 172, 0.56);
   &:hover {
     scale: 1.08;
   }
+}
+
+// 'Load more' at the end
+.load_more {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+// 'Loading...' message at the bottom
+.loading_message {
+  padding: 1rem;
+  font-family: "Alegreya SC", serif, Arial, sans-serif;
+}
+
+// Load more button
+.load_more_button {
+  border: 1px solid black;
+}
+
+// Borders
+.post {
+  border: 3px solid #227239ff;
 }

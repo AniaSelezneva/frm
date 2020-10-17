@@ -14,7 +14,6 @@ function Logout() {
       const user = auth.currentUser();
       user.logout();
       dispatch({ type: "LOGOUT" });
-      window.location.reload();
     } catch (error) {
       console.log(error);
     }

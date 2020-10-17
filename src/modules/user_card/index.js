@@ -18,10 +18,11 @@ import userCardStyles from "./styles/index.module.scss";
 // path (where user's card component is available) will show logged
 // in user's full info if he's logged in or links to log in or sign up.
 
-function User({ path, handle }) {
+function User({ handle }) {
   const { state, dispatch } = useContext(store);
   const [isAddInfoOpen, setIsAddInfoOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const path = state.path;
 
   // Get logged in user info.
   const getOwnUserInfo = async (email) => {
@@ -62,7 +63,7 @@ function User({ path, handle }) {
         q.Get(q.Match(q.Index("users_by_handle"), q.Casefold(handle)))
       );
 
-      dispatch({ type: "SET_USER", payload: { data: res.data, ref: res.ref } });
+      dispatch({ type: "SET_OTHER_USER", payload: res.data });
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +128,7 @@ function User({ path, handle }) {
           toggleOpenCard();
         }}
       >
-        user info
+        {state.path === "user" ? state.otherUser.handle : state.user.handle}
       </button>
       <div className={userCardStyles.user} id="user_card">
         {/* Add info */}
@@ -177,22 +178,26 @@ function User({ path, handle }) {
         {/* Other user's card */}
         {path === "user" && (
           <>
-            <img src={state.user.imageUrl} alt="profile image" height="300" />
+            <img
+              src={state.otherUser.imageUrl}
+              alt="profile image"
+              height="300"
+            />
 
-            <p>{state.user.handle}</p>
-            {state.user.location && (
+            <p>{state.otherUser.handle}</p>
+            {state.otherUser.location && (
               <p>
-                <strong>Location:</strong> {state.user.location}
+                <strong>Location:</strong> {state.otherUser.location}
               </p>
             )}
-            {state.user.hobbies && (
+            {state.otherUser.hobbies && (
               <p>
-                <strong>Hobbies:</strong> {state.user.hobbies}
+                <strong>Hobbies:</strong> {state.otherUser.hobbies}
               </p>
             )}
-            {state.user.occupation && (
+            {state.otherUser.occupation && (
               <p>
-                <strong>Occupation:</strong> {state.user.occupation}
+                <strong>Occupation:</strong> {state.otherUser.occupation}
               </p>
             )}
           </>

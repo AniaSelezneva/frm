@@ -178,25 +178,6 @@ function Post(props) {
     };
   }, [window.location.pathname]);
 
-  // Apply class to body to change background image on home page.
-  // Apply class to root to have background only on home page.
-  useEffect(() => {
-    // Don't use background if window is small.
-    if (window.innerWidth > 1055) {
-      const body = document.getElementsByTagName("body")[0];
-      body.setAttribute("id", `home_background`);
-
-      const root = document.getElementById("root");
-      root.setAttribute("class", `home_root_background`);
-    }
-
-    // Abort
-    return () => {
-      const controller = new AbortController();
-      controller.abort();
-    };
-  }, []);
-
   return (
     <Layout>
       <div className={postStyles.container}>

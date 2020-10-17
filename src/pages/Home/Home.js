@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 // withLoader hoc
 import WithLoader from "../../HOCs/WithLoader";
@@ -17,7 +17,8 @@ import homeStyles from "./styles/Home.module.scss";
 import auth from "../../utils/auth";
 
 // HOME PAGE
-function Home({ setIsLoading }) {
+function Home(props) {
+  const { setIsLoading } = props;
   const { state, dispatch } = useContext(store);
   const [path, setPath] = useState();
   const [error, setError] = useState(undefined);
@@ -147,18 +148,6 @@ function Home({ setIsLoading }) {
     dispatch({ type: "SET_POSTS", payload: res });
   };
 
-  // Apply classes to body and root to change background image on home page.
-  useEffect(() => {
-    // Don't use background if window is small.
-    if (window.innerWidth > 1055) {
-      const body = document.getElementsByTagName("body")[0];
-      body.setAttribute("id", `home_background`);
-
-      const root = document.getElementById("root");
-      root.setAttribute("class", `home_root_background`);
-    }
-  }, []);
-
   // Confirm token or redirect to 'signup' when user is invited.
   useEffect(() => {
     if (path === "confirm") {
@@ -185,26 +174,36 @@ function Home({ setIsLoading }) {
   // Get posts.
   useEffect(() => {
     setIsLoading(true);
-    if (path === "home") {
-      getAllPosts();
-    } else if (path === "search") {
-      searchInPosts();
-    } else if (path === "user") {
-      getUserPosts();
-    } else if (
-      path === "profile" &&
-      state.user.handle !== null &&
-      state.user.handle !== undefined
-    ) {
-      getOwnPosts();
+
+    // Load posts only if there are none in store or path changes(user goes to profile from home and so on).
+    if (Object.keys(state.posts).length === 0 || state.path !== path) {
+      if (path === "home") {
+        getAllPosts();
+      } else if (path === "search") {
+        searchInPosts();
+      } else if (path === "user") {
+        getUserPosts();
+      } else if (
+        path === "profile" &&
+        state.user.handle !== null &&
+        state.user.handle !== undefined
+      ) {
+        getOwnPosts();
+      }
     }
+
+    // Set path in the store.
+    if (path) {
+      dispatch({ type: "SET_PATH", payload: path });
+    }
+
     setIsLoading(false);
   }, [path, state.user.handle]);
 
   // Check path on page load.
   useEffect(() => {
     checkPath();
-  }, [window.location.pathname]);
+  }, [props.location.pathname]);
 
   return (
     <Layout>
@@ -261,18 +260,18 @@ function Home({ setIsLoading }) {
           {path === "user" && (
             <h2 className={homeStyles.posts_header}>
               {/* User's name from pathname */}
-              {userName}
+              {state.posts.data &&
+                state.posts.data.length === 0 &&
+                `${userName} hasn't posted yet`}
             </h2>
           )}
 
           {/* All posts */}
-          <PostsContainer path={path} />
+          <PostsContainer />
         </div>
 
         {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
-        {path !== "confirm" && path !== "invite" && (
-          <User path={path} handle={userName} />
-        )}
+        {path !== "confirm" && path !== "invite" && <User handle={userName} />}
       </div>
     </Layout>
   );
