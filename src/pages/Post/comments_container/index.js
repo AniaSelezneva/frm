@@ -17,6 +17,7 @@ function Index() {
   const [element, setElement] = useState(null);
 
   const loadMore = async () => {
+    setLoading(true);
     const res = await adminClient.query(
       q.Map(
         q.Paginate(
@@ -33,10 +34,11 @@ function Index() {
     );
 
     dispatch({ type: "ADD_COMMENTS", payload: res });
+    setLoading(false);
   };
 
   const loader = useRef(loadMore);
-  const after = useRef();
+  const after = useRef([]);
 
   // Number of posts per page.
   const size = 5;
@@ -45,8 +47,9 @@ function Index() {
     new IntersectionObserver(
       (entries) => {
         const bottomElement = entries[0];
+
         // If bottom element is visible and there is 'after' (there is next page)...
-        if (bottomElement.isIntersecting && after.current) {
+        if (bottomElement.isIntersecting) {
           // ... use loader function.
           loader.current();
         }
@@ -59,8 +62,7 @@ function Index() {
   useEffect(() => {
     const currentElement = element;
     const currentObserver = observer.current;
-
-    if (currentElement) {
+    if (currentElement && after.current && after.current.length > 0) {
       currentObserver.observe(currentElement);
     }
 
@@ -69,7 +71,7 @@ function Index() {
         currentObserver.unobserve(currentElement);
       }
     };
-  }, [element]);
+  }, [element, after.current]);
 
   // Keep loader function up to date.
   useEffect(() => {
@@ -78,8 +80,10 @@ function Index() {
 
   // Keep 'after' up to date.
   useEffect(() => {
-    if (state.post && state.post.comments) {
+    if (state.post && state.post.comments && state.post.comments.after) {
       after.current = state.post.comments.after;
+    } else {
+      after.current = [];
     }
   }, [state.post]);
 

@@ -207,7 +207,8 @@ $comment_background: rgba(29, 150, 172, 0.56);
 }
 
 // 'Loading...' message at the bottom
-.loading_message {
+.loading_message,
+.end_message {
   text-align: center;
   padding: 1rem;
   font-family: "Alegreya SC", serif, Arial, sans-serif;
