@@ -103,12 +103,18 @@ function User({ handle }) {
 
   // Check if user card should be shown in the beginning.
   useEffect(() => {
+    console.log(state.loggedIn);
     if (window.innerWidth > 800) {
       setIsCardOpen(true);
-    } else if (window.innerWidth <= 800) {
+    } else if (window.innerWidth <= 800 && state.loggedIn) {
       setIsCardOpen(false);
+      // If user is not logged in, don't show 'open card' button on top, don't hide the card itself.
+    } else if (window.innerWidth <= 800 && !state.loggedIn) {
+      const button = document.getElementById("open_card_button");
+      button.style.display = "none";
+      setIsCardOpen(true);
     }
-  }, []);
+  }, [state.loggedIn]);
 
   // Open/close card.
   useEffect(() => {
@@ -124,6 +130,7 @@ function User({ handle }) {
     <div className={userCardStyles.container}>
       <button
         className={userCardStyles.open_card_button}
+        id="open_card_button"
         onClick={() => {
           toggleOpenCard();
         }}
