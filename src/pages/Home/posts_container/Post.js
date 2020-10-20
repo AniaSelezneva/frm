@@ -32,6 +32,7 @@ function Post({ post }) {
           <Link to={`/post/${post.data.postId}`}>
             <div className={postsContainerStyles.image_container}>
               <img
+                alt="post image"
                 src={post.data.imageUrl}
                 className={postsContainerStyles.post_image}
                 loading="lazy"

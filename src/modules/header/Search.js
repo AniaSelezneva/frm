@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 // store
 import { store } from "../../utils/store";
 
@@ -107,25 +107,44 @@ function Search() {
 
   //}, []);
 
+  // Style input field on focus.
+  useEffect(() => {
+    const form = document.getElementById("search_form");
+    const input = document.getElementById("query");
+    input.addEventListener("focus", () => {
+      form.style.borderBottom = "2.7px solid #48c2d9ff";
+    });
+
+    input.addEventListener("blur", () => {
+      form.style.borderBottom = "2.7px solid black";
+    });
+  }, []);
+
   return (
     <form
+      id="search_form"
       onSubmit={(e) => {
         e.preventDefault();
-        // Redirect with query params.
-        window.location.href = `/search/?query=${state.query}`;
       }}
     >
       <input
         type="text"
         placeholder="search in posts..."
+        id="query"
         required
         minLength="3"
         onChange={(e) => {
           dispatch({ type: "SET_QUERY", payload: e.target.value });
         }}
       />
-      &nbsp;
-      <button type="submit">Search</button>
+      <label
+        htmlFor="query"
+        onClick={() => {
+          window.location.href = `/search/?query=${state.query}`;
+        }}
+      >
+        Search
+      </label>
     </form>
   );
 }

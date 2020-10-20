@@ -57,6 +57,10 @@ input[type="file"] {
 
 button {
   font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
+
+  &:focus {
+    outline: 1px solid #48c2d9ff;
+  }
 }
 
 input {
@@ -158,7 +162,7 @@ p {
       font-size: 150%;
     }
 
-    button {
+    label {
       font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
       font-size: 150%;
       align-self: flex-end;
@@ -266,6 +270,10 @@ p {
     outline: none;
     width: 38px;
 
+    &:focus {
+      outline: 1px solid black;
+    }
+
     & > img {
       border: none;
       width: 80%;
@@ -318,6 +326,14 @@ p {
 
     display: flex;
     align-items: center;
+
+    // Notifications navigations buttons (arrows)
+    #prev_notifications,
+    #next_notifications {
+      &:focus {
+        outline: 1px solid black;
+      }
+    }
 
     & > li {
       cursor: initial;
@@ -389,6 +405,10 @@ p {
       transition-duration: 0.3s;
     }
 
+    &:focus {
+      outline: 1px solid black;
+    }
+
     img {
       border: none;
       transition-duration: 0.3s;
@@ -429,6 +449,10 @@ p {
 #close_notifications {
   &:hover {
     text-decoration: underline;
+  }
+
+  &:focus {
+    outline: 1px solid black !important;
   }
 }
 

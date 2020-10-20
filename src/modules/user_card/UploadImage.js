@@ -183,8 +183,18 @@ function UploadImage({ setIsLoading, setIsError }) {
           }
         }}
       >
-        <label htmlFor="avatar" className="custom_file_upload">
-          New picture:
+        <label
+          htmlFor="avatar"
+          className="custom_file_upload"
+          tabIndex="0"
+          onKeyDown={(e) => {
+            if (e.key !== "Tab") {
+              const hiddenInput = document.getElementById("avatar");
+              hiddenInput.click();
+            }
+          }}
+        >
+          New image:
           <br />
           {imageFileName !== "" &&
           imageFileName !== undefined &&
@@ -197,6 +207,7 @@ function UploadImage({ setIsLoading, setIsError }) {
           )}
         </label>
 
+        {/* Hidden input */}
         <input
           type="file"
           id="avatar"
@@ -212,7 +223,9 @@ function UploadImage({ setIsLoading, setIsError }) {
             setIsError(false);
           }}
         />
-        <button type="submit">Change image</button>
+        <button id={userCardStyles.change_image_button} type="submit">
+          Change image
+        </button>
       </form>
     </>
   );

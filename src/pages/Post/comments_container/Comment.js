@@ -76,7 +76,7 @@ function Comment({ comment }) {
         <Link to={`/user/${comment.data.userHandle}`}>
           <p>{time}</p>
           <div className={postStyles.user_info}>
-            <img src={comment.data.userImageUrl} />
+            <img src={comment.data.userImageUrl} alt="user" />
             <h6>{comment.data.userHandle}</h6>
           </div>
         </Link>

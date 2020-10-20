@@ -190,11 +190,7 @@ function User({ handle }) {
         {/* Other user's card */}
         {path === "user" && (
           <>
-            <img
-              src={state.otherUser.imageUrl}
-              alt="profile image"
-              height="300"
-            />
+            <img src={state.otherUser.imageUrl} alt="user" height="300" />
 
             <p>{state.otherUser.handle}</p>
             {state.otherUser.location && (

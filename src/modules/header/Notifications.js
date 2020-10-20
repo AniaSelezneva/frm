@@ -210,12 +210,23 @@ function Notifications() {
                 }
               }
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                if (totalNotifications > 0) {
+                  if (notificationsOpen === false) {
+                    setNotificationsOpen(true);
+                  } else {
+                    setNotificationsOpen(false);
+                  }
+                }
+              }
+            }}
           >
             {totalNotifications === 0 ? (
-              <img src={bellTransparent} />
+              <img src={bellTransparent} alt="bell" />
             ) : (
               <>
-                <img src={bellYellow} />
+                <img src={bellYellow} alt="bell" />
                 <p>{totalNotifications}</p>
               </>
             )}
@@ -248,6 +259,14 @@ function Notifications() {
                           notification.data.id
                         );
                       }}
+                      // onKeyDown={(e) => {
+                      //   if (e.key === "Enter") {
+                      //     removeNotification(
+                      //       notification.ref,
+                      //       notification.data.id
+                      //     );
+                      //   }
+                      // }}
                     >
                       <img src={remove} />
                     </button>
@@ -264,6 +283,11 @@ function Notifications() {
                     onClick={() => {
                       removeAllNotifications();
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        removeAllNotifications();
+                      }
+                    }}
                   >
                     mark all read
                   </button>
@@ -275,6 +299,11 @@ function Notifications() {
                     id="prev_notifications"
                     onClick={() => {
                       goToPrevPage();
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        goToPrevPage();
+                      }
                     }}
                     className={
                       state.user.notifications.before === undefined ||
@@ -292,6 +321,11 @@ function Notifications() {
                     onClick={() => {
                       goToNextPage();
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        goToNextPage();
+                      }
+                    }}
                     className={
                       state.user.notifications.after === undefined ||
                       totalNotifications <= 0
@@ -306,6 +340,11 @@ function Notifications() {
                   id="close_notifications"
                   onClick={() => {
                     setNotificationsOpen(false);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setNotificationsOpen(false);
+                    }
                   }}
                 >
                   close

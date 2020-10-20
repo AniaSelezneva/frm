@@ -156,6 +156,7 @@ function PostInfo({ post }) {
         <img
           src={post.data.userImageUrl}
           className={postsInfoStyles.user_image}
+          alt="user"
         />
         <h6>{post.data.userHandle}</h6>
       </Link>
@@ -164,6 +165,8 @@ function PostInfo({ post }) {
       <div className={postsInfoStyles.likes}>
         {isLiked ? (
           <img
+            tabIndex="0"
+            alt="like"
             id={postsInfoStyles.red_heart}
             src={redHeart}
             onClick={async () => {
@@ -178,10 +181,26 @@ function PostInfo({ post }) {
                 }
               }
             }}
+            onKeyDown={async (e) => {
+              if (e.key !== "Tab") {
+                if (isLiked && ready) {
+                  try {
+                    setIsLiked(false);
+                    await unlikePost();
+
+                    setReady(true);
+                  } catch (error) {
+                    setReady(true);
+                  }
+                }
+              }
+            }}
           />
         ) : (
           <img
+            tabIndex="0"
             id={postsInfoStyles.blue_heart}
+            alt="like"
             className={!state.loggedIn ? postsInfoStyles.inactive_like : null}
             src={post.data.likeCount > 0 ? blueHeart : transparentHeart}
             onClick={async () => {
@@ -195,6 +214,22 @@ function PostInfo({ post }) {
                   }
                 } catch (error) {
                   setReady(true);
+                }
+              }
+            }}
+            onKeyDown={async (e) => {
+              if (e.key !== "Tab") {
+                if (state.loggedIn && ready) {
+                  try {
+                    if (!isLiked) {
+                      setIsLiked(true);
+                      await likePost();
+
+                      setReady(true);
+                    }
+                  } catch (error) {
+                    setReady(true);
+                  }
                 }
               }
             }}
