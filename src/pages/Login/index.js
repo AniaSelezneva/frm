@@ -77,7 +77,6 @@ function Login({ setIsLoading }) {
 
   return (
     <Layout>
-      <div id={loginStyles.picture} />
       <form
         onSubmit={(e) => {
           login(e);

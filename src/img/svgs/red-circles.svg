@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg867"
+   version="1.1"
+   viewBox="0 0 16.03624 25.497511"
+   height="25.497511mm"
+   width="16.03624mm">
+  <defs
+     id="defs861" />
+  <metadata
+     id="metadata864">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-31.894675,-117.83193)"
+     id="layer1">
+    <g
+       transform="matrix(0.3,0,0,0.3,27.938956,91.406483)"
+       id="g1576">
+      <g
+         id="g1564">
+        <circle
+           r="17.105249"
+           cy="130.58069"
+           cx="39.912685"
+           id="circle1434"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke" />
+        <path
+           d="M 49.534444,88.085061 A 17.105249,17.105249 0 0 0 66.63986,105.18996 V 88.085061 Z"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           id="circle1450" />
+        <path
+           id="path1466"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           d="M 30.291145,88.084839 A 17.105249,17.105249 0 0 1 13.185729,105.18974 V 88.084839 Z" />
+        <path
+           d="m 30.291145,173.07654 a 17.105249,17.105249 0 0 0 -17.105416,-17.1049 v 17.1049 z"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           id="path1468" />
+        <path
+           id="path1470"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           d="m 49.534225,173.07654 a 17.105249,17.105249 0 0 1 17.105416,-17.1049 v 17.1049 z" />
+        <path
+           id="path1497"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           d="M 49.534444,88.085061 A 17.105249,17.105249 0 0 0 66.63986,105.18996 V 88.085061 Z" />
+        <path
+           d="M 30.291145,88.084839 A 17.105249,17.105249 0 0 1 13.185729,105.18974 V 88.084839 Z"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           id="path1499" />
+        <path
+           id="path1501"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           d="m 30.291145,173.07654 a 17.105249,17.105249 0 0 0 -17.105416,-17.1049 v 17.1049 z" />
+        <path
+           d="m 49.534225,173.07654 a 17.105249,17.105249 0 0 1 17.105416,-17.1049 v 17.1049 z"
+           style="fill:#e92d3a;fill-rule:evenodd;stroke-width:499.999;stroke-linecap:round;paint-order:fill markers stroke"
+           id="path1503" />
+      </g>
+    </g>
+  </g>
+</svg>

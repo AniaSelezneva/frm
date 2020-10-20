@@ -1,6 +1,6 @@
 @import url(//fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Suez+One&display=swap);
 
-$background: rgba(236, 234, 213, 1);
+$background: #edd3cdff;
 $margin: 1rem;
 
 #form {
@@ -70,28 +70,6 @@ $margin: 1rem;
     color: rgba(211, 56, 49, 1);
     word-break: keep-all;
     text-align: center;
-  }
-}
-#picture {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 50%;
-  background-image: url(../../../img/roses.jpg);
-  background-size: cover;
-  z-index: -1;
-  filter: blur(5px);
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: linear-gradient(to right, $background, transparent);
-    z-index: 10;
   }
 }
 

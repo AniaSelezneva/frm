@@ -71,7 +71,6 @@ function GetInvitation({ setIsLoading }) {
 
   return (
     <Layout>
-      <div id={getInvitationStyles.picture} />
       {confirmationSent ? (
         <p id={getInvitationStyles.confirmation_message}>
           Invitation will be sent to this email address

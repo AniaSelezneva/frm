@@ -204,7 +204,6 @@ function Signup({ setIsLoading }) {
 
   return (
     <Layout>
-      <div id={signupStyles.picture} />
       {!confirmationSent ? (
         <form
           onSubmit={(e) => {

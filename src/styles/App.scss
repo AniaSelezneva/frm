@@ -31,6 +31,8 @@ body {
   background: $root_background;
   z-index: 30;
   border: 2px solid black;
+  border-top: none;
+  border-bottom: none;
   box-shadow: $shadow;
   box-sizing: initial;
 }
@@ -212,24 +214,42 @@ p {
 
 // Colorful stripe at the bottom of the header.
 #header_bottom_border {
-  background: linear-gradient(
-    to right,
-    transparent 10%,
-    rgba(109, 20, 56, 0.64) 90%
-  );
+  background: linear-gradient(to right, transparent 10%, $background 90%);
+  box-shadow: 5px 5px 5px grey;
   height: 10px;
   width: 50vw;
   position: relative;
   right: -50%;
 
-  animation: 1s ease-out 0s 1 slideInFromRight;
+  border: 0.5px solid black;
+  border-left: none;
+  border-right: none;
 
-  @keyframes slideInFromRight {
+  animation: 1s ease-out 0s 1 appear;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: 0;
+    bottom: -2rem;
+    left: 0;
+    z-index: 100;
+    background: linear-gradient(
+      to right,
+      $root_background 10%,
+      transparent 20%
+    );
+  }
+
+  @keyframes appear {
     0% {
-      filter: opacity(0.3);
+      //filter: opacity(0.3);
+      box-shadow: 1px 1px 1px grey;
     }
     100% {
-      filter: opacity(1);
+      //filter: opacity(1);
+      box-shadow: 5px 5px 5px grey;
     }
   }
 }
@@ -387,7 +407,7 @@ p {
 
 // Error message
 .error_message {
-  color: red;
+  color: #e92d3aff;
   font-family: "Alegreya SC", serif, Arial, sans-serif;
   text-align: center;
   animation-duration: 0.5s;
@@ -477,5 +497,24 @@ span {
     to {
       transform: translateY(-100%);
     }
+  }
+}
+
+// Footer
+.footer {
+  height: 4rem;
+
+  background: url(../img/svgs/red-circles.svg);
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background: linear-gradient($root_background, transparent);
   }
 }
