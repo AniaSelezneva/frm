@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 // store
 import { store } from "../../../utils/store";
-// WithLoader
+// HOCs
 import WithLoader from "../../../HOCs/WithLoader";
+import WithError from "../../../HOCs/WithError";
 // styles
 import postStyles from "../styles/Post.module.scss";
 
-function NewComment({ setIsLoading }) {
-  const { state, dispatch } = useContext(store);
+function NewComment({ setIsLoading, setIsError }) {
+  const { state } = useContext(store);
   const [comment, setComment] = useState();
   const [error, setError] = useState(undefined);
 
@@ -19,6 +20,7 @@ function NewComment({ setIsLoading }) {
   // Add comment.
   const addComment = async () => {
     setIsLoading(true);
+
     if (comment.trim() !== "") {
       try {
         const res = await fetch("/api/addComment", {
@@ -36,10 +38,10 @@ function NewComment({ setIsLoading }) {
         });
 
         if (res.status === 404) {
-          setError("Something went wrong, try again later");
+          setIsError(true);
         }
       } catch (error) {
-        setError("Something went wrong, try again later");
+        setIsError(true);
       }
       setIsLoading(false);
       window.location.reload();
@@ -79,4 +81,4 @@ function NewComment({ setIsLoading }) {
   );
 }
 
-export default WithLoader(NewComment, "Wait...");
+export default WithLoader(WithError(NewComment), "Wait...");

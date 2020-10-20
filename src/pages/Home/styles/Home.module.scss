@@ -1,8 +1,9 @@
 @import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
 $post_height: 8rem;
 $margin: 1.5rem;
-$new_post_background: #231f20ff;
+$new_post_background: #fcdf0eff;
 $new_post_height: 14rem;
+$shadow: 5px 5px 5px grey;
 
 #container {
   display: flex;
@@ -87,7 +88,9 @@ $new_post_height: 14rem;
   }
 }
 
-// Borders
+// Borders, shadow
+
 #new_post {
-  border: 3px solid #b73a87ff;
+  border: 2px solid black;
+  box-shadow: $shadow;
 }

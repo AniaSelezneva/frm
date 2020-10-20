@@ -1,21 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 // store
 import { store } from "../../utils/store";
+// HOC
+import WithError from "../../HOCs/WithError";
 // Styles
 import userCardStyles from "./styles/index.module.scss";
 
-function AddInfo({ setIsAddInfoOpen }) {
+function AddInfo({ setIsAddInfoOpen, setIsError }) {
   const { state, dispatch } = useContext(store);
   const [location, setLocation] = useState(state.user.location);
   const [hobbies, setHobbies] = useState(state.user.hobbies);
   const [occupation, setOccupation] = useState(state.user.occupation);
-  const [isError, setIsError] = useState(false);
   let isSubscribed = true;
 
   // Add info to db and dispatch 'add_info' function.
   const addInfoToDb = async () => {
     try {
-      await fetch("/api/addInfo", {
+      const res = await fetch("/api/addInfo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,13 +29,17 @@ function AddInfo({ setIsAddInfoOpen }) {
         }),
       });
 
-      if (isSubscribed) {
-        dispatch({
-          type: "ADD_INFO",
-          payload: { location, hobbies, occupation },
-        });
+      if (res.status >= 400) {
+        setIsError(true);
+      } else {
+        if (isSubscribed) {
+          dispatch({
+            type: "ADD_INFO",
+            payload: { location, hobbies, occupation },
+          });
 
-        setIsAddInfoOpen(false);
+          setIsAddInfoOpen(false);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -45,30 +50,32 @@ function AddInfo({ setIsAddInfoOpen }) {
   // Remove a field from info.
   const removeInfo = async (info) => {
     try {
-      if (isSubscribed) {
-        await fetch("/api/removeInfoField", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Info-To-Remove": info,
-            "User-Handle": state.user.handle,
-          },
-        });
-      }
+      const res = await fetch("/api/removeInfoField", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Info-To-Remove": info,
+          "User-Handle": state.user.handle,
+        },
+      });
 
-      if (info === "location") {
-        setLocation(undefined);
-      } else if (info === "hobbies") {
-        setHobbies(undefined);
-      } else if (info === "occupation") {
-        setOccupation(undefined);
-      }
+      if (res.status >= 400) {
+        setIsError(true);
+      } else {
+        if (info === "location") {
+          setLocation(undefined);
+        } else if (info === "hobbies") {
+          setHobbies(undefined);
+        } else if (info === "occupation") {
+          setOccupation(undefined);
+        }
 
-      if (isSubscribed) {
-        dispatch({
-          type: "REMOVE_INFO",
-          payload: info,
-        });
+        if (isSubscribed) {
+          dispatch({
+            type: "REMOVE_INFO",
+            payload: info,
+          });
+        }
       }
     } catch (error) {
       console.log(error);
@@ -170,9 +177,8 @@ function AddInfo({ setIsAddInfoOpen }) {
         </button>
         <button onClick={() => setIsAddInfoOpen(false)}>close</button>
       </span>
-      {isError && <p>Error occured, please try again later</p>}
     </form>
   );
 }
 
-export default AddInfo;
+export default WithError(AddInfo);

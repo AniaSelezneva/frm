@@ -110,7 +110,7 @@ function Index() {
         state.post.comments.data !== null &&
         state.post.comments.data.length > 0 &&
         state.post.comments.data.map((comment, index) => (
-          <Comment comment={comment} index={index} key={index} />
+          <Comment comment={comment} key={index} />
         ))}
 
       <div ref={setElement} id="load-more">

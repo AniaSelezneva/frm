@@ -3,9 +3,10 @@
 $margin: 1.2rem;
 $post_height: 8rem;
 $comment_height: 10rem;
-$new_comment_background: rgba(233, 86, 154, 0.63);
-$post_background: rgba(29, 150, 172, 0.56);
-$comment_background: rgba(29, 150, 172, 0.56);
+$new_comment_background: #fcdf0eff;
+$post_background: #c0deddff;
+$comment_background: #d9d9d9ff;
+$shadow: 5px 5px 5px grey;
 
 .container {
   display: flex;
@@ -26,8 +27,16 @@ $comment_background: rgba(29, 150, 172, 0.56);
   min-width: 290px;
   margin-top: $margin;
 
+  display: flex;
+  flex-direction: column;
+
   @media (max-width: 320px) {
     margin-left: 0;
+  }
+
+  // Delete post button
+  & > button {
+    align-self: flex-end;
   }
 
   // Post itself
@@ -140,19 +149,6 @@ $comment_background: rgba(29, 150, 172, 0.56);
   }
 }
 
-// Pagination
-.pagination_container {
-  margin: 1.2rem;
-  display: flex;
-  justify-content: center;
-  grid-gap: 2rem;
-  gap: 2rem;
-
-  & > button {
-    font-size: 130%;
-  }
-}
-
 // Container overlay
 .modal_container {
   position: absolute;
@@ -168,7 +164,8 @@ $comment_background: rgba(29, 150, 172, 0.56);
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: red;
+    background: #e82d38ff;
+    border: 2px solid #81191fff;
 
     width: 600px;
     height: 300px;
@@ -214,14 +211,15 @@ $comment_background: rgba(29, 150, 172, 0.56);
   font-family: "Alegreya SC", serif, Arial, sans-serif;
 }
 
-// // Hidden message at the end
-// .end_message {
-//   visibility: hidden;
-// }
+// Hidden message at the end
+.end_message {
+  visibility: hidden;
+}
 
-// Borders
+// Borders, shadow
 .post,
 .comment,
 .new_comment_form {
-  border: 1px solid black;
+  border: 2px solid black;
+  box-shadow: $shadow;
 }

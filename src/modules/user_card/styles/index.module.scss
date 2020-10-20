@@ -1,7 +1,8 @@
 @import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
 
-$card-color: #231f20ff;
+$card-color: #cebf97ff;
 $margin: 1.2rem;
+$shadow: 5px 5px 5px grey;
 
 // Container
 .container {
@@ -28,9 +29,10 @@ $margin: 1.2rem;
 // User on the right
 .user {
   position: relative;
-  z-index: 1;
+  z-index: 0;
   position: sticky;
   top: 1rem;
+  width: 280px;
 
   font-family: "Alegreya SC", serif, Arial, sans-serif;
   line-height: 1.8rem;
@@ -42,7 +44,6 @@ $margin: 1.2rem;
   height: max-content;
   padding: $margin;
   flex-direction: column;
-  min-width: 280px;
 
   animation-duration: 0.5s;
   animation-name: slidein;
@@ -144,8 +145,9 @@ $margin: 1.2rem;
   }
 }
 
-// Borders
+// Borders, shadow
 .user,
 .open_card_button {
-  border: 3px solid #4faecdff;
+  border: 2px solid black;
+  box-shadow: $shadow;
 }

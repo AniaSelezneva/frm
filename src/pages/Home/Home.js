@@ -2,6 +2,8 @@ import React, { useEffect, useContext, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 // withLoader hoc
 import WithLoader from "../../HOCs/WithLoader";
+// WithError hoc
+import WithError from "../../HOCs/WithError";
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // store
@@ -18,7 +20,7 @@ import auth from "../../utils/auth";
 
 // HOME PAGE
 function Home(props) {
-  const { setIsLoading } = props;
+  const { setIsLoading, setIsError } = props;
   const { state, dispatch } = useContext(store);
   const [path, setPath] = useState();
   const [error, setError] = useState(undefined);
@@ -79,10 +81,9 @@ function Home(props) {
       );
 
       dispatch({ type: "SET_POSTS", payload: res });
-
       setIsLoading(false);
     } catch (error) {
-      setError("Something went wrong, please try again later");
+      setIsError(true);
       setIsLoading(false);
     }
   };
@@ -105,7 +106,7 @@ function Home(props) {
       dispatch({ type: "SET_POSTS", payload: res });
       setIsLoading(false);
     } catch (error) {
-      setError("Something went wrong, please try again later");
+      setIsError(true);
       setIsLoading(false);
     }
   };
@@ -129,7 +130,7 @@ function Home(props) {
       dispatch({ type: "SET_QUERY", payload: query });
       setIsLoading(false);
     } catch (error) {
-      setError("Something went wrong, please try again later");
+      setIsError(true);
       setIsLoading(false);
     }
   };
@@ -146,6 +147,8 @@ function Home(props) {
     );
 
     dispatch({ type: "SET_POSTS", payload: res });
+    setIsError(true);
+    setIsLoading(false);
   };
 
   // Confirm token or redirect to 'signup' when user is invited.
@@ -162,9 +165,11 @@ function Home(props) {
           if (error.message === "User not found") {
             setError("User not found or email already confirmed");
           }
+          setIsError(true);
         });
     }
 
+    setIsLoading(false);
     // Redirect to login page if the user came with invitation.
     if (path === "invite") {
       window.location.replace(`/signup/#invite_token=${inviteToken}`);
@@ -174,7 +179,6 @@ function Home(props) {
   // Get posts.
   useEffect(() => {
     setIsLoading(true);
-
     // Load posts only if there are none in store or path changes(user goes to profile from home and so on).
     if (Object.keys(state.posts).length === 0 || state.path !== path) {
       if (path === "home") {
@@ -190,14 +194,14 @@ function Home(props) {
       ) {
         getOwnPosts();
       }
+    } else {
+      setIsLoading(false);
     }
 
     // Set path in the store.
     if (path) {
       dispatch({ type: "SET_PATH", payload: path });
     }
-
-    setIsLoading(false);
   }, [path, state.user.handle]);
 
   // Check path on page load.
@@ -277,4 +281,4 @@ function Home(props) {
   );
 }
 
-export default WithLoader(Home, "wait...");
+export default WithLoader(WithError(Home), "wait...");

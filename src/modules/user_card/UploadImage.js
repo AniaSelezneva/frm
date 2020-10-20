@@ -3,7 +3,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { store } from "../../utils/store";
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
-// withLoader hoc
+// HOCs
+import WithError from "../../HOCs/WithError";
 import WithLoader from "../../HOCs/WithLoader";
 // firebase
 import firebase from "firebase/app";
@@ -15,16 +16,15 @@ import uuid from "react-uuid";
 // Styles
 import userCardStyles from "./styles/index.module.scss";
 
-function UploadImage({ setIsLoading }) {
+function UploadImage({ setIsLoading, setIsError }) {
   const { state, dispatch } = useContext(store);
   const [image, setImage] = useState();
-  const [isError, setIsError] = useState();
   const [imageFileName, setImageFileName] = useState(undefined);
 
   let imageUrl;
 
   // Upload avatar (bundler function)
-  const uploadImage = async (e) => {
+  const uploadImage = async () => {
     setIsLoading(true);
 
     try {
@@ -179,7 +179,7 @@ function UploadImage({ setIsLoading }) {
               message.style.color = "grey";
             }, 3000);
           } else {
-            uploadImage(e);
+            uploadImage();
           }
         }}
       >
@@ -212,12 +212,10 @@ function UploadImage({ setIsLoading }) {
             setIsError(false);
           }}
         />
-        <button type="submit">Upload image</button>
+        <button type="submit">Change image</button>
       </form>
-
-      {isError && <p>Something went wrong, please try again later</p>}
     </>
   );
 }
 
-export default WithLoader(UploadImage, "wait");
+export default WithLoader(WithError(UploadImage), "wait");

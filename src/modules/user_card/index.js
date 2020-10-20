@@ -160,7 +160,7 @@ function User({ handle }) {
                 setIsAddInfoOpen(true);
               }}
             >
-              Add info
+              Change info
             </button>
             <UploadImage />
             <Logout />

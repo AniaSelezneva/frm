@@ -11,8 +11,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
-function Comment({ comment, index }) {
-  const { state } = useContext(store);
+function Comment({ comment }) {
+  const { state, dispatch } = useContext(store);
   const [time, setTime] = useState();
 
   // Delete comment
@@ -46,11 +46,12 @@ function Comment({ comment, index }) {
       )
     );
 
-    // Await for  notifications to be deleted
+    // Wait for  notifications to be deleted
     await Promise.all(promises);
     // Delete post itself
     await adminClient.query(q.Delete(commentRef));
-    window.location.reload();
+
+    dispatch({ type: "DELETE_COMMENT", payload: comment.data.commentId });
   };
 
   useEffect(() => {

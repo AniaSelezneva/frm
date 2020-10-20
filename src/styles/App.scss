@@ -1,8 +1,10 @@
 @import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
 
 $header_height: 100px;
-$background: black;
-$root_background: #231f20ff;
+$background: #cfe1c6ff;
+$root_background: #edd3cdff;
+$notifications_background: #48c2d9ff;
+$shadow: 5px 5px 5px grey;
 
 // Reset
 * {
@@ -28,8 +30,9 @@ body {
   margin-left: 2rem;
   background: $root_background;
   z-index: 30;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  border: 2px solid black;
+  box-shadow: $shadow;
+  box-sizing: initial;
 }
 
 a {
@@ -86,7 +89,8 @@ img {
   position: absolute;
   background: hsla(0, 0%, 100%, 0.5);
 
-  border: 15px solid deeppink;
+  border: 15px solid rgba(255, 255, 255, 0.7);
+  padding: 1rem;
 
   left: 50%;
   top: 30%;
@@ -95,7 +99,10 @@ img {
 
   font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
   font-size: 2rem;
-  color: orange;
+
+  & > span {
+    color: black;
+  }
 }
 
 p {
@@ -134,7 +141,7 @@ p {
     display: flex;
     position: relative;
     top: 1.5px;
-    border-bottom: 2.7px solid #c63b35ff;
+    border-bottom: 2.7px solid black;
 
     @media (max-width: 800px) {
       margin-right: 1rem;
@@ -282,7 +289,7 @@ p {
     width: 20rem;
     max-width: 90vw;
     word-break: break-all;
-    background: rgba(0, 147, 147, 1);
+    background: $notifications_background;
     z-index: 20;
     right: -10px;
     padding: 1.5rem;
@@ -292,10 +299,15 @@ p {
     display: flex;
     align-items: center;
 
+    & > li {
+      cursor: initial;
+      width: 100%;
+    }
+
     // Little triangle
     &::before {
       content: "";
-      border-top: 15px solid rgba(0, 147, 147, 1);
+      border-top: 15px solid $notifications_background;
       border-left: 15px solid transparent;
       border-right: 15px solid transparent;
 
@@ -411,15 +423,45 @@ p {
 // Placeholder
 ::placeholder,
 span {
-  color: lightblue;
+  color: gray;
   opacity: 1; /* Firefox */
 }
 
-h2,
-p,
-button,
-a,
-label,
-input {
-  color: white;
+// h2,
+// p,
+// button,
+// a,
+// label,
+// input {
+//   color: black;
+// }
+
+// Error message
+.with_error {
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  background: #e82d38ff;
+  border: 2px solid black;
+
+  position: fixed;
+  z-index: 200;
+
+  font-family: "Alegreya SC", serif, Arial, sans-serif;
+
+  animation-duration: 0.5s;
+  animation-name: slidedown;
+
+  @keyframes slidedown {
+    from {
+      transform: translateY(-50%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
 }

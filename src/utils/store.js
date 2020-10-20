@@ -257,6 +257,28 @@ const StateProvider = ({ children }) => {
           post: { ...state.post, postId: action.payload },
         };
       }
+      case "DELETE_COMMENT": {
+        const commentId = action.payload;
+        const commentsData = state.post.comments.data;
+
+        // Find comment index.
+        const commentIndex = commentsData.findIndex((comment) => {
+          return comment.data.commentId === commentId;
+        });
+
+        // Remove comment if it exists.
+        if (commentIndex >= 0) {
+          commentsData.splice(commentIndex, 1);
+        }
+
+        return {
+          ...state,
+          post: {
+            ...state.post,
+            comments: { ...state.post.comments, data: commentsData },
+          },
+        };
+      }
       case "LOGOUT": {
         return {
           ...state,
