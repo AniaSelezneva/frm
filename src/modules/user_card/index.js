@@ -107,7 +107,9 @@ function User({ handle }) {
     if (window.innerWidth > 800) {
       setIsCardOpen(true);
     } else if (window.innerWidth <= 800 && state.loggedIn) {
+      const button = document.getElementById("open_card_button");
       setIsCardOpen(false);
+      button.style.display = "block";
       // If user is not logged in, don't show 'open card' button on top, don't hide the card itself.
     } else if (window.innerWidth <= 800 && !state.loggedIn) {
       const button = document.getElementById("open_card_button");
