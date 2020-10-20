@@ -32,7 +32,7 @@ $shadow: 5px 5px 5px grey;
   z-index: 0;
   position: sticky;
   top: 1rem;
-  width: 280px;
+  min-width: 280px;
 
   font-family: "Alegreya SC", serif, Arial, sans-serif;
   line-height: 1.8rem;
@@ -59,10 +59,9 @@ $shadow: 5px 5px 5px grey;
   }
 
   @media (max-width: 800px) {
-    margin: 10px;
-    margin-bottom: 0;
     display: none;
     align-items: center;
+    margin: 0.2rem;
   }
 
   display: flex;

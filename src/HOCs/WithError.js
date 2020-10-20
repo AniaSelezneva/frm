@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import close from "../img/svgs/remove.svg";
 
 const WithError = (ComponentToWrap) => {
@@ -9,6 +9,17 @@ const WithError = (ComponentToWrap) => {
     const closeError = () => {
       setIsError(false);
     };
+
+    // Animate error going up.
+    setTimeout(() => {
+      const error = document.getElementsByClassName("with_error")[0];
+      if (isError && error) {
+        error.style.animationName = "slideup";
+        setTimeout(() => {
+          setIsError(false);
+        }, 500);
+      }
+    }, 3000);
 
     return (
       <>

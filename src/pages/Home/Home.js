@@ -137,18 +137,23 @@ function Home(props) {
 
   // Get other user's posts.
   const getUserPosts = async () => {
-    const res = await adminClient.query(
-      q.Map(
-        q.Paginate(q.Reverse(q.Match(q.Index("posts_by_user"), userName)), {
-          size,
-        }),
-        q.Lambda("X", q.Get(q.Var("X")))
-      )
-    );
+    try {
+      const res = await adminClient.query(
+        q.Map(
+          q.Paginate(q.Reverse(q.Match(q.Index("posts_by_user"), userName)), {
+            size,
+          }),
+          q.Lambda("X", q.Get(q.Var("X")))
+        )
+      );
 
-    dispatch({ type: "SET_POSTS", payload: res });
-    setIsError(true);
-    setIsLoading(false);
+      dispatch({ type: "SET_POSTS", payload: res });
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+      setIsLoading(false);
+    }
   };
 
   // Confirm token or redirect to 'signup' when user is invited.
@@ -179,6 +184,7 @@ function Home(props) {
   // Get posts.
   useEffect(() => {
     setIsLoading(true);
+
     // Load posts only if there are none in store or path changes(user goes to profile from home and so on).
     if (Object.keys(state.posts).length === 0 || state.path !== path) {
       if (path === "home") {

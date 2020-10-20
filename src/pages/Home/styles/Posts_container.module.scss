@@ -96,6 +96,11 @@ $shadow: 5px 5px 5px grey;
   padding-right: 2rem;
   padding-left: 2rem;
   background: #d2d7d9ff;
+
+  &:active {
+    transition-duration: 0.5s;
+    box-shadow: 1px 1px 1px grey;
+  }
 }
 
 // Borders, shadows

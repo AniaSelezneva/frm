@@ -442,7 +442,6 @@ span {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
 
   background: #e82d38ff;
   border: 2px solid black;
@@ -454,6 +453,11 @@ span {
 
   animation-duration: 0.5s;
   animation-name: slidedown;
+  animation-fill-mode: forwards;
+
+  & > button {
+    align-self: center;
+  }
 
   @keyframes slidedown {
     from {
@@ -462,6 +466,16 @@ span {
 
     to {
       transform: translateY(0);
+    }
+  }
+
+  @keyframes slideup {
+    from {
+      transform: translateY(-50%);
+    }
+
+    to {
+      transform: translateY(-100%);
     }
   }
 }

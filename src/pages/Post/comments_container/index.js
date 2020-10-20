@@ -63,6 +63,7 @@ function Index() {
     const currentElement = element;
     const currentObserver = observer.current;
     if (currentElement && after.current && after.current.length > 0) {
+      console.log("observing");
       currentObserver.observe(currentElement);
     }
 
@@ -86,6 +87,11 @@ function Index() {
       after.current = [];
     }
   }, [state.post]);
+
+  // Go to the top of the page in the beginning.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
