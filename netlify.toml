@@ -18,7 +18,6 @@
         default-src 'self' https://forum-wtchs.netlify.app;
         connect-src 'self' https://db.fauna.com;
         img-src 'self' https://firebasestorage.googleapis.com;
-        font-src https://fonts.googleapis.com;
         style-src 'self' https://fonts.googleapis.com;
         script-src 'self' 'unsafe-inline';
         frame-ancestors 'none' """
