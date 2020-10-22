@@ -15,6 +15,7 @@
   for = "/*"
   [headers.values]
         Content-Security-Policy = """
+        font-src https://fonts.googleapis.com;
         default-src 'self' https://forum-wtchs.netlify.app;
         connect-src 'self' https://db.fauna.com;
         img-src 'self' https://firebasestorage.googleapis.com;
