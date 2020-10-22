@@ -17,14 +17,14 @@
         Content-Security-Policy = """
         font-src https://fonts.gstatic.com/;
         manifest-src https://forum-wtchs.netlify.app/;
-        connect-src https://db.fauna.com/;
+        connect-src https://db.fauna.com/ 'self';
         img-src 'self' https://firebasestorage.googleapis.com/;
         style-src 'self' https://fonts.googleapis.com/;
         script-src 'self';
         frame-ancestors 'none'; 
         default-src 'none';
         base-uri 'none';
-        form-action 'self' https://forum-wtchs.netlify.app; """
+        form-action 'self'; """
         X-Content-Type-Options = "nosniff"
         X-Frame-Options = "DENY"
         X-XSS-Protection = "1; mode=block"
