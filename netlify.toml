@@ -19,7 +19,7 @@
         connect-src 'self' https://api.github.com;
         font-src 'self' https://fonts.gstatic.com;
         img-src 'self' https://api.travis-ci.org https://img.shields.io;
-        script-src 'none';
+        script-src 'self';
         style-src 'self' https://fonts.googleapis.com;
         frame-ancestors 'none';
     """
