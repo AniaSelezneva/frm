@@ -14,4 +14,5 @@
 [[headers]]
   for = "/*"
   [headers.values]
-        Content-Security-Policy = "style-src 'none';"
+        Content-Security-Policy = "style-src 'none';
+        script-src 'none'"
