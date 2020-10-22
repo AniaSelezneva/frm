@@ -11,4 +11,17 @@
   to = "/index.html"
   status = 200
 
+[[headers]]
+  for = "/*"
+  [headers.values]
+        Content-Security-Policy = """
+        default-src 'none';
+        connect-src 'self';
+        img-src 'self';
+        style-src 'self';
+        script-src 'self' https://forum-wtchs.netlify.app;
+        frame-ancestors 'none' """
+        X-Content-Type-Options = "nosniff"
+        X-Frame-Options = "DENY"
+        X-XSS-Protection = "1; mode=block"
         
