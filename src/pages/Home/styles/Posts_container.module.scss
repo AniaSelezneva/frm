@@ -28,9 +28,16 @@ $shadow: 5px 5px 5px grey;
       }
 
       // Post text
-      & > a > p {
-        word-break: break-all;
-        padding: 1rem;
+      & > a {
+        height: max-content;
+        & > p {
+          word-break: break-all;
+          padding: 1rem;
+        }
+
+        &:focus {
+          outline: 1px dotted black;
+        }
       }
 
       // Post image

@@ -80,9 +80,10 @@ $shadow: 5px 5px 5px grey;
     color: inherit;
 
     &:hover,
-    &:active {
+    &:focus {
+      outline: none;
       text-decoration: underline;
-      text-decoration-color: rgba(241, 89, 36, 1);
+      text-decoration-color: rgba(21, 72, 159, 1);
     }
   }
 }

@@ -47,6 +47,7 @@ function Layout(props) {
         src={upArrow}
         onClick={() => window.scrollTo(0, 0)}
         style={{ display: "none" }}
+        tabIndex="0"
       ></img>
       <Footer />
     </>

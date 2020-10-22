@@ -139,6 +139,7 @@ function Search() {
       />
       <label
         htmlFor="query"
+        tabIndex="0"
         onClick={() => {
           window.location.href = `/search/?query=${state.query}`;
         }}

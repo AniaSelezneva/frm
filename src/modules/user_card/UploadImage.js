@@ -188,7 +188,7 @@ function UploadImage({ setIsLoading, setIsError }) {
           className="custom_file_upload"
           tabIndex="0"
           onKeyDown={(e) => {
-            if (e.key !== "Tab") {
+            if (e.key === "Enter") {
               const hiddenInput = document.getElementById("avatar");
               hiddenInput.click();
             }

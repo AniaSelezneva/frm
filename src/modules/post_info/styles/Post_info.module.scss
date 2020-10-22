@@ -20,7 +20,7 @@ $post_background: rgba(253, 202, 172, 1);
     gap: 3px;
 
     &:focus {
-      outline: 1px solid #48c2d9ff;
+      outline: 1px dashed black;
     }
   }
 
@@ -44,7 +44,8 @@ $post_background: rgba(253, 202, 172, 1);
   }
 
   &:focus {
-    outline: 1px solid #48c2d9ff;
+    outline: none;
+    transform: scale(1.3);
   }
 }
 

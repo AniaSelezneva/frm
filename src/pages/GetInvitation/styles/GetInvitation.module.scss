@@ -53,6 +53,7 @@ $margin: 1rem;
     transition-duration: 0.2s;
 
     &:active {
+      outline: none;
       box-shadow: 3px 3px 3px grey;
       transition-duration: 0.2s;
     }

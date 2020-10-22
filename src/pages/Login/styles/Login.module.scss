@@ -52,7 +52,9 @@ $margin: 1rem;
     box-shadow: 5px 5px 5px grey;
     transition-duration: 0.2s;
 
-    &:active {
+    &:active,
+    &:focus {
+      outline: none;
       box-shadow: 3px 3px 3px grey;
       transition-duration: 0.2s;
     }

@@ -132,7 +132,17 @@ function NewPost({ setIsLoading }) {
 
       <div className={homeStyles.new_post_buttons_container}>
         <div className={homeStyles.choose_image_container}>
-          <label htmlFor="image" className="custom_file_upload">
+          <label
+            htmlFor="image"
+            className="custom_file_upload"
+            tabIndex="0"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const hiddenInput = document.getElementById("image");
+                hiddenInput.click();
+              }
+            }}
+          >
             Image:
             <span>
               {imageName === undefined ? " choose an image" : ` ${imageName}`}

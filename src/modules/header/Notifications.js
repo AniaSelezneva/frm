@@ -259,14 +259,6 @@ function Notifications() {
                           notification.data.id
                         );
                       }}
-                      // onKeyDown={(e) => {
-                      //   if (e.key === "Enter") {
-                      //     removeNotification(
-                      //       notification.ref,
-                      //       notification.data.id
-                      //     );
-                      //   }
-                      // }}
                     >
                       <img src={remove} />
                     </button>
@@ -283,11 +275,6 @@ function Notifications() {
                     onClick={() => {
                       removeAllNotifications();
                     }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        removeAllNotifications();
-                      }
-                    }}
                   >
                     mark all read
                   </button>
@@ -295,15 +282,15 @@ function Notifications() {
 
                 <div id="navigation_container">
                   <button
-                    tabIndex="0"
+                    tabIndex={
+                      state.user.notifications.before === undefined ||
+                      totalNotifications <= 0
+                        ? "-1"
+                        : "0"
+                    }
                     id="prev_notifications"
                     onClick={() => {
                       goToPrevPage();
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        goToPrevPage();
-                      }
                     }}
                     className={
                       state.user.notifications.before === undefined ||
@@ -316,15 +303,15 @@ function Notifications() {
                   </button>
                   &nbsp;
                   <button
-                    tabIndex="0"
+                    tabIndex={
+                      state.user.notifications.after === undefined ||
+                      totalNotifications <= 0
+                        ? "-1"
+                        : "0"
+                    }
                     id="next_notifications"
                     onClick={() => {
                       goToNextPage();
-                    }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        goToNextPage();
-                      }
                     }}
                     className={
                       state.user.notifications.after === undefined ||
@@ -340,11 +327,6 @@ function Notifications() {
                   id="close_notifications"
                   onClick={() => {
                     setNotificationsOpen(false);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setNotificationsOpen(false);
-                    }
                   }}
                 >
                   close

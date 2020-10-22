@@ -120,7 +120,7 @@ $shadow: 5px 5px 5px grey;
   label[for="avatar"] {
     &:hover,
     &:focus {
-      text-decoration: underline;
+      outline: 1px dashed black;
     }
   }
 }
@@ -159,4 +159,10 @@ $shadow: 5px 5px 5px grey;
 // Change image button
 #change_image_button {
   margin-bottom: 0.5rem;
+}
+
+a {
+  &:focus {
+    outline: 1px dashed black;
+  }
 }
