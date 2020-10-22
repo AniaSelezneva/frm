@@ -14,7 +14,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
-        Content-Security-Policy-Report-Only = """
+        Content-Security-Policy = """
         default-src 'none';
         connect-src 'self' https://api.github.com;
         font-src 'self' https://fonts.gstatic.com;
