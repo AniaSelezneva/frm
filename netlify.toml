@@ -11,3 +11,18 @@
   to = "/index.html"
   status = 200
 
+[[headers]]
+  for = "/*"
+  [headers.values]
+        Content-Security-Policy = "
+        default-src 'none';
+        connect-src 'self' https://api.github.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' https://api.travis-ci.org https://img.shields.io;
+        script-src 'self';
+        style-src 'self' https://fonts.googleapis.com;
+        frame-ancestors 'none';
+    "
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
