@@ -15,10 +15,10 @@
   for = "/*"
   [headers.values]
         Content-Security-Policy = """
-        default-src 'none';
+        default-src 'self' https://forum-wtchs.netlify.app;
         connect-src 'self';
         img-src 'self';
-        style-src 'self';
+        style-src 'self' https://fonts.googleapis.com;
         script-src 'self' https://forum-wtchs.netlify.app;
         frame-ancestors 'none' """
         X-Content-Type-Options = "nosniff"
