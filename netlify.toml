@@ -15,14 +15,14 @@
   for = "/*"
   [headers.values]
         Content-Security-Policy = """
-        font-src https://fonts.gstatic.com;
-        default-src 'none';
-        manifest-src https://forum-wtchs.netlify.app
-        connect-src 'self' https://db.fauna.com;
-        img-src 'self' https://firebasestorage.googleapis.com;
-        style-src 'self' https://fonts.googleapis.com;
+        font-src https://fonts.gstatic.com/;
+        manifest-src https://forum-wtchs.netlify.app/
+        connect-src 'self' https://db.fauna.com/;
+        img-src 'self' https://firebasestorage.googleapis.com/;
+        style-src 'self' https://fonts.googleapis.com/;
         script-src 'self';
-        frame-ancestors 'none' """
+        frame-ancestors 'none'; 
+        default-src 'none'; """
         X-Content-Type-Options = "nosniff"
         X-Frame-Options = "DENY"
         X-XSS-Protection = "1; mode=block"
