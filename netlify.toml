@@ -18,8 +18,9 @@
         default-src 'self' https://forum-wtchs.netlify.app;
         connect-src 'self';
         img-src 'self';
-        style-src 'self' https://fonts.googleapis.com;
-        script-src 'self' https://forum-wtchs.netlify.app;
+        font-src 'https://fonts.googleapis.com';
+        style-src 'self';
+        script-src 'self' 'unsafe-inline';
         frame-ancestors 'none' """
         X-Content-Type-Options = "nosniff"
         X-Frame-Options = "DENY"
