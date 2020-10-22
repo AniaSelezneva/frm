@@ -16,9 +16,9 @@
   [headers.values]
         Content-Security-Policy = """
         default-src 'self' https://forum-wtchs.netlify.app;
-        connect-src 'self';
+        connect-src 'self' https://db.fauna.com;
         img-src 'self';
-        font-src 'https://fonts.googleapis.com';
+        font-src https://fonts.googleapis.com;
         style-src 'self';
         script-src 'self' 'unsafe-inline';
         frame-ancestors 'none' """
