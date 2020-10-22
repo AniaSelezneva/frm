@@ -18,7 +18,7 @@
         default-src 'none';
         connect-src 'self';
         img-src 'self';
-        style-src 'none';
+        style-src 'self';
         script-src 'self';
         frame-ancestors 'none' """
         X-Content-Type-Options = "nosniff"
