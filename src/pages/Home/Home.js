@@ -184,7 +184,7 @@ function Home(props) {
   // Get posts.
   useEffect(() => {
     setIsLoading(true);
-
+    window.scrollTo(0, 0);
     // Load posts only if there are none in store or path changes(user goes to profile from home and so on).
     if (Object.keys(state.posts).length === 0 || state.path !== path) {
       if (path === "home") {

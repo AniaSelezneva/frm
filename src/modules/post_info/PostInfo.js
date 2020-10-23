@@ -16,7 +16,8 @@ dayjs.extend(relativeTime);
 
 function PostInfo({ post }) {
   const { state, dispatch } = useContext(store);
-  const [ready, setReady] = useState(true);
+  const [readyToLike, setReadyToLike] = useState(true);
+  const [readyToUnlike, setReadyToUnlike] = useState(true);
 
   const [time, setTime] = useState();
   const [isLiked, setIsLiked] = useState(false);
@@ -49,7 +50,6 @@ function PostInfo({ post }) {
 
   // Like post
   const likePost = () => {
-    setReady(false);
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch("/api/like", {
@@ -108,7 +108,6 @@ function PostInfo({ post }) {
 
   // Unlike post
   const unlikePost = () => {
-    setReady(false);
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch("/api/unlike", {
@@ -165,21 +164,22 @@ function PostInfo({ post }) {
       <div className={postsInfoStyles.likes}>
         {isLiked ? (
           <input
-            title="like post"
+            title="unlike post"
             type="image"
             tabIndex="0"
             alt="like"
             id={postsInfoStyles.red_heart}
             src={redHeart}
             onClick={async () => {
-              if (isLiked && ready) {
+              if (isLiked && readyToUnlike) {
+                setReadyToLike(false);
                 try {
                   setIsLiked(false);
                   await unlikePost();
 
-                  setReady(true);
+                  setReadyToLike(true);
                 } catch (error) {
-                  setReady(true);
+                  setReadyToLike(true);
                 }
               }
             }}
@@ -194,16 +194,17 @@ function PostInfo({ post }) {
             className={!state.loggedIn ? postsInfoStyles.inactive_like : null}
             src={post.data.likeCount > 0 ? blueHeart : transparentHeart}
             onClick={async () => {
-              if (state.loggedIn && ready) {
+              if (state.loggedIn && readyToLike) {
+                setReadyToUnlike(false);
                 try {
                   if (!isLiked) {
                     setIsLiked(true);
                     await likePost();
 
-                    setReady(true);
+                    setReadyToUnlike(true);
                   }
                 } catch (error) {
-                  setReady(true);
+                  setReadyToUnlike(true);
                 }
               }
             }}

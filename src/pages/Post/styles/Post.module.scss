@@ -61,6 +61,11 @@ $shadow: 5px 5px 5px grey;
       }
     }
   }
+
+  // Delete post button
+  & > button {
+    margin-right: 2rem;
+  }
 }
 
 // Comment

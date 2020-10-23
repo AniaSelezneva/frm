@@ -51,8 +51,6 @@ $shadow: 5px 5px 5px grey;
         // main post image
         & > img {
           background: pink;
-          height: 100%;
-          width: 100%;
           object-fit: cover;
 
           transition-duration: 0.5s;
