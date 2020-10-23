@@ -198,9 +198,11 @@ function Notifications() {
     <>
       {totalNotifications !== undefined && !isError && (
         <>
-          <div
+          <input
+            title="notifications"
+            type="image"
             id="notifications_bell"
-            tabIndex="0"
+            src={totalNotifications === 0 ? bellTransparent : bellYellow}
             onClick={() => {
               if (totalNotifications > 0) {
                 if (notificationsOpen === false) {
@@ -210,27 +212,10 @@ function Notifications() {
                 }
               }
             }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                if (totalNotifications > 0) {
-                  if (notificationsOpen === false) {
-                    setNotificationsOpen(true);
-                  } else {
-                    setNotificationsOpen(false);
-                  }
-                }
-              }
-            }}
-          >
-            {totalNotifications === 0 ? (
-              <img src={bellTransparent} alt="bell" />
-            ) : (
-              <>
-                <img src={bellYellow} alt="bell" />
-                <p>{totalNotifications}</p>
-              </>
-            )}
-          </div>
+          />
+          {totalNotifications > 0 && (
+            <p id="total_notifications">{totalNotifications}</p>
+          )}
 
           {notificationsOpen &&
             totalNotifications !== undefined &&
@@ -251,7 +236,7 @@ function Notifications() {
                     </Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <button
-                      tabIndex="0"
+                      title="remove notification"
                       className="remove_notification_button"
                       onClick={() => {
                         removeNotification(
@@ -281,7 +266,11 @@ function Notifications() {
                 </div>
 
                 <div id="navigation_container">
-                  <button
+                  <input
+                    type="image"
+                    title="go to previous page"
+                    tabIndex="0"
+                    src={arrow}
                     tabIndex={
                       state.user.notifications.before === undefined ||
                       totalNotifications <= 0
@@ -298,11 +287,13 @@ function Notifications() {
                         ? "inactive"
                         : null
                     }
-                  >
-                    <img src={arrow} />
-                  </button>
+                  />
                   &nbsp;
-                  <button
+                  <input
+                    type="image"
+                    title="go to next page"
+                    tabIndex="0"
+                    src={arrow}
                     tabIndex={
                       state.user.notifications.after === undefined ||
                       totalNotifications <= 0
@@ -319,9 +310,7 @@ function Notifications() {
                         ? "inactive"
                         : null
                     }
-                  >
-                    <img src={arrow} />
-                  </button>
+                  />
                 </div>
                 <button
                   id="close_notifications"

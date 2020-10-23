@@ -127,9 +127,10 @@ function Search() {
         e.preventDefault();
       }}
     >
+      <label htmlFor="query">Search in posts</label>
       <input
         type="text"
-        placeholder="search in posts..."
+        placeholder="..."
         id="query"
         required
         minLength="3"
@@ -137,15 +138,15 @@ function Search() {
           dispatch({ type: "SET_QUERY", payload: e.target.value });
         }}
       />
-      <label
+      <button
+        title="search"
         htmlFor="query"
-        tabIndex="0"
         onClick={() => {
           window.location.href = `/search/?query=${state.query}`;
         }}
       >
-        Search
-      </label>
+        Go
+      </button>
     </form>
   );
 }

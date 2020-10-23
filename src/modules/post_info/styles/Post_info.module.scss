@@ -39,6 +39,9 @@ $post_background: rgba(253, 202, 172, 1);
 // Like buttons
 #red_heart,
 #blue_heart {
+  border: none;
+  width: 90%;
+
   &:hover {
     cursor: pointer;
   }

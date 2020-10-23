@@ -112,13 +112,12 @@ $shadow: 5px 5px 5px grey;
 
 // New comment form
 .new_comment_form {
-  height: 8rem;
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
   border-radius: 0.2rem;
   background: $new_comment_background;
-  padding: $margin / 2;
+  padding: 0.75rem;
   margin-top: $margin;
 
   & > textarea {

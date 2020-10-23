@@ -164,7 +164,9 @@ function PostInfo({ post }) {
       <p>{post.data.commentCount} comments</p>
       <div className={postsInfoStyles.likes}>
         {isLiked ? (
-          <img
+          <input
+            title="like post"
+            type="image"
             tabIndex="0"
             alt="like"
             id={postsInfoStyles.red_heart}
@@ -181,23 +183,11 @@ function PostInfo({ post }) {
                 }
               }
             }}
-            onKeyDown={async (e) => {
-              if (e.key !== "Tab") {
-                if (isLiked && ready) {
-                  try {
-                    setIsLiked(false);
-                    await unlikePost();
-
-                    setReady(true);
-                  } catch (error) {
-                    setReady(true);
-                  }
-                }
-              }
-            }}
           />
         ) : (
-          <img
+          <input
+            title="like post"
+            type="image"
             tabIndex="0"
             id={postsInfoStyles.blue_heart}
             alt="like"
@@ -214,22 +204,6 @@ function PostInfo({ post }) {
                   }
                 } catch (error) {
                   setReady(true);
-                }
-              }
-            }}
-            onKeyDown={async (e) => {
-              if (e.key !== "Tab") {
-                if (state.loggedIn && ready) {
-                  try {
-                    if (!isLiked) {
-                      setIsLiked(true);
-                      await likePost();
-
-                      setReady(true);
-                    }
-                  } catch (error) {
-                    setReady(true);
-                  }
                 }
               }
             }}
