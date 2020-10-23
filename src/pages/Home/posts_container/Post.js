@@ -29,7 +29,10 @@ function Post({ post }) {
     <div className={postsContainerStyles.post}>
       <div className={postsContainerStyles.post_main_body}>
         {post.data.imageUrl !== undefined && (
-          <Link to={`/post/${post.data.postId}`}>
+          <Link
+            to={`/post/${post.data.postId}`}
+            className={postsContainerStyles.image_link}
+          >
             <div className={postsContainerStyles.image_container}>
               <img
                 alt="post image"

@@ -1,4 +1,4 @@
-@import url(//fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
+@import url(//fonts.googleapis.com/css2?family=Indie+Flower&family=Jacques+Francois&family=Fruktur&family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
 
 $header_height: 100px;
 $background: #cfe1c6ff;
@@ -117,9 +117,13 @@ p {
   align-items: center;
   justify-content: center;
 
-  & > ul > li > a:focus {
-    color: $notifications_background;
-    outline: none;
+  & > ul > li > a {
+    &:focus,
+    &:hover {
+      outline: none;
+      text-decoration: underline;
+      text-decoration-color: $notifications_background;
+    }
   }
 
   & > li {
@@ -145,13 +149,13 @@ p {
     display: flex;
     position: relative;
     max-width: 300px;
-    top: 1.5px;
+    top: -1px;
     border-bottom: 2.7px solid black;
-    margin-top: 0.2rem;
 
     @media (max-width: 800px) {
       margin-right: 1rem;
       margin-left: 1rem;
+      margin-top: 0.2rem;
     }
 
     & > label {
@@ -164,8 +168,8 @@ p {
       width: 300px;
       height: 2rem;
       border: none;
-      font-family: "Pompiere", cursive, Arial, sans-serif;
-      font-size: 150%;
+      font-family: "Jacques Francois", serif;
+      font-size: 120%;
 
       &:focus {
         color: black;
@@ -182,7 +186,7 @@ p {
     }
 
     button {
-      font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
+      font-family: "Indie Flower", cursive, Arial, sans-serif;
       font-size: 150%;
       align-self: flex-end;
       transition-duration: 0.2s;
@@ -223,13 +227,13 @@ p {
       transition-duration: 0.2s;
     }
 
-    // Li containing lnks in the header
+    // Li containing links in the header
     & > li {
       cursor: pointer;
       margin-top: 1rem;
       transition-duration: 0.2s;
 
-      font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
+      font-family: "Indie Flower", cursive, Arial, sans-serif;
       font-size: 150%;
     }
 
@@ -504,15 +508,6 @@ span {
   opacity: 1; /* Firefox */
 }
 
-// h2,
-// p,
-// button,
-// a,
-// label,
-// input {
-//   color: black;
-// }
-
 // Error message
 .with_error {
   padding: 1rem;
@@ -578,8 +573,11 @@ span {
 
 // Custom file upload lebels
 .custom_file_upload,
-button {
+button,
+a {
+  &:hover,
   &:focus {
-    outline: 1px dotted black;
+    outline: none;
+    text-decoration: underline;
   }
 }

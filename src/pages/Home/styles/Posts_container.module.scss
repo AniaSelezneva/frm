@@ -1,3 +1,5 @@
+@import url(//fonts.googleapis.com/css2?family=Jacques+Francois&display=swap);
+
 $post_height: 200px;
 $margin: 1.2rem;
 $post_background: #c0deddff;
@@ -33,10 +35,24 @@ $shadow: 5px 5px 5px grey;
         & > p {
           word-break: break-all;
           padding: 1rem;
+          font-family: "Jacques Francois", serif;
         }
 
+        &:focus,
+        &:hover {
+          outline: none;
+          text-decoration: underline;
+        }
+      }
+
+      // Post image - link
+      .image_link {
+        &:hover,
         &:focus {
-          outline: 1px dotted black;
+          & > div > img {
+            transform: scale(1.5);
+            transition-duration: 0.3s;
+          }
         }
       }
 
@@ -54,11 +70,6 @@ $shadow: 5px 5px 5px grey;
           object-fit: cover;
 
           transition-duration: 0.5s;
-
-          &:hover {
-            transform: scale(1.5);
-            transition-duration: 0.5s;
-          }
         }
       }
     }
@@ -104,6 +115,7 @@ $shadow: 5px 5px 5px grey;
 
   &:active,
   &:focus {
+    outline: none;
     transition-duration: 0.5s;
     box-shadow: 1px 1px 1px grey;
   }
@@ -114,4 +126,10 @@ $shadow: 5px 5px 5px grey;
 .load_more_button {
   border: 2px solid black;
   box-shadow: $shadow;
+}
+
+// Fonts
+textarea {
+  font-family: "Jacques Francois", serif;
+  font-size: 120%;
 }

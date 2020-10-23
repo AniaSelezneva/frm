@@ -157,7 +157,7 @@ function PostInfo({ post }) {
           className={postsInfoStyles.user_image}
           alt="user"
         />
-        <h6>{post.data.userHandle}</h6>
+        <p>{post.data.userHandle}</p>
       </Link>
       <p lang="en">{time}</p>
       <p>{post.data.commentCount} comments</p>

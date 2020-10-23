@@ -46,18 +46,35 @@ $shadow: 5px 5px 5px grey;
       label {
         &:hover,
         &:focus {
+          outline: none;
           text-decoration: underline;
         }
       }
 
+      // 'Submit" button
       & > button {
         font-size: 120%;
+
+        &:focus,
+        &:hover {
+          outline: none;
+          text-decoration: underline;
+        }
       }
 
       // Image input
       & > .choose_image_container {
         display: flex;
         gap: 1rem;
+
+        // 'Remove' button
+        & > button {
+          &:focus,
+          &:hover {
+            outline: none;
+            text-decoration: underline;
+          }
+        }
 
         & label {
           font-family: "Alegreya SC", serif, Arial, sans-serif;

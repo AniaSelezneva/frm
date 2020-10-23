@@ -1,3 +1,5 @@
+@import url(//fonts.googleapis.com/css2?family=Alegreya+SC&display=swap);
+
 $post_height: 200px;
 $margin: 1.2rem;
 $post_background: rgba(253, 202, 172, 1);
@@ -19,12 +21,15 @@ $post_background: rgba(253, 202, 172, 1);
     align-items: center;
     gap: 3px;
 
-    &:focus {
-      outline: 1px dashed black;
+    &:focus,
+    &:hover {
+      outline: none;
+      text-decoration: underline;
     }
   }
 
-  & > p {
+  p {
+    font-family: "Alegreya SC", serif, Arial, sans-serif;
     word-break: keep-all;
     font-size: 80%;
   }

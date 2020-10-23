@@ -77,7 +77,7 @@ function Comment({ comment }) {
           <p>{time}</p>
           <div className={postStyles.user_info}>
             <img src={comment.data.userImageUrl} alt="user" />
-            <h6>{comment.data.userHandle}</h6>
+            <p>{comment.data.userHandle}</p>
           </div>
         </Link>
       </div>
