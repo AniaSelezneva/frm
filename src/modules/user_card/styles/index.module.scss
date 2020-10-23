@@ -155,6 +155,15 @@ $shadow: 5px 5px 5px grey;
   box-shadow: $shadow;
 }
 
+.open_card_button {
+  transition-duration: 0.3s;
+  &:focus {
+    box-shadow: 1px 1px 1px grey;
+    transition-duration: 0.3s;
+    outline: none;
+  }
+}
+
 // Change image button
 #change_image_button {
   margin-bottom: 0.5rem;
