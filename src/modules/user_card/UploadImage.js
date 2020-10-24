@@ -28,7 +28,9 @@ function UploadImage({ setIsLoading, setIsError }) {
     setIsLoading(true);
 
     try {
-      firebase.initializeApp(config);
+      if (!firebase.apps.length) {
+        firebase.initializeApp(config);
+      }
 
       const imageExtension = image.name.split(".").pop();
 
@@ -199,7 +201,7 @@ function UploadImage({ setIsLoading, setIsError }) {
           {imageFileName !== "" &&
           imageFileName !== undefined &&
           imageFileName !== null ? (
-            <span> {imageFileName}</span>
+            <span className="choose_image"> {imageFileName}</span>
           ) : (
             <span id={userCardStyles.choose_image} className="choose_image">
               choose an image
