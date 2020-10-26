@@ -28,6 +28,7 @@ function UploadImage({ setIsLoading, setIsError }) {
     setIsLoading(true);
 
     try {
+      // Initialize only if not initialized previously.
       if (!firebase.apps.length) {
         firebase.initializeApp(config);
       }

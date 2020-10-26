@@ -32,6 +32,7 @@ function PostInfo({ post }) {
 
   // Check if this post is liked by the user.
   useEffect(() => {
+    //console.log(state.user.likes, post.data.postId);
     setIsLiked(false);
     if (
       state.user.likes !== undefined &&
@@ -41,12 +42,18 @@ function PostInfo({ post }) {
       state.user.likes.forEach((like) => {
         if (like.data.postId === post.data.postId) {
           setIsLiked(true);
+        } else {
         }
       });
     }
 
     return () => (isSubscribed = false);
-  }, [state.user.likes, state.posts, window.location.pathname]);
+  }, [
+    state.user.likes,
+    state.posts,
+    window.location.pathname,
+    post.data.postId,
+  ]);
 
   // Like post
   const likePost = () => {
