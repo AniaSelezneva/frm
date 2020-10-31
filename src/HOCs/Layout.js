@@ -6,24 +6,22 @@ import Footer from "../modules/footer/";
 import upArrow from "../img/svgs/up-arrow.svg";
 
 function Layout(props) {
-  const throttle = (callback, time) => {
-    let timer;
+  const throttle = (callback, timeout) => {
+    let wait = true;
     return () => {
-      if (timer) {
-        window.clearTimeout(timer);
-      }
-
-      timer = window.setTimeout(function () {
-        // Actual callback
+      if (!wait) {
         callback();
-      }, time);
+      }
+      setTimeout(() => {
+        wait = false;
+      }, timeout);
     };
   };
 
   const callback = () => {
     const distance = window.scrollY;
     const arrow = document.getElementById("up_arrow");
-    //console.log(distance);
+
     if (distance > 400) {
       arrow.removeAttribute("style");
     } else if (distance < 400) {
