@@ -185,12 +185,12 @@ function Post(props) {
     if (image) {
       let timeoutId;
 
-      // Do it with delay.
-      image.onmouseenter = () => {
-        timeoutId = setTimeout(() => {
-          setShowFullPageImage(true);
-        }, 600);
-      };
+      // // Do it with delay.
+      // image.onmouseenter = () => {
+      //   timeoutId = setTimeout(() => {
+      //     setShowFullPageImage(true);
+      //   }, 600);
+      // };
 
       image.ontouchstart = () => {
         setShowFullPageImage(true);
