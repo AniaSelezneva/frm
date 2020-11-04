@@ -2,7 +2,7 @@
 import GoTrue from "gotrue-js";
 
 const auth = new GoTrue({
-  APIUrl: "https://rb-frm.netlify.app/.netlify/identity",
+  APIUrl: "https://redballoons.netlify.app/.netlify/identity",
   audience: "",
   setCookie: false,
 });

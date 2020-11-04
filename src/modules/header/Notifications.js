@@ -28,7 +28,6 @@ function Notifications() {
             q.Match(q.Index("notifications_by_recepient"), state.user.handle)
           )
         );
-        //dispatch({ type: "SET_TOTAL_NOTIFICATIONS", payload: total });
 
         setTotalNotifications(total);
         resolve("successfully counted");

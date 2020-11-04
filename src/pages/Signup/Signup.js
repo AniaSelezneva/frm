@@ -61,6 +61,7 @@ function Signup({ setIsLoading }) {
       doPasswordsMatch();
 
       const response = await res.json();
+      console.log(response);
       if (response === "Email already in use") {
         setEmailUnique(false);
       } else if (response === "Handle already taken") {
@@ -148,16 +149,6 @@ function Signup({ setIsLoading }) {
     }
   }, [passwordsMatch]);
 
-  // Remove body className to remove background applied on home page.
-  // Remove class of root to have background only on home page.
-  useEffect(() => {
-    const body = document.getElementsByTagName("body")[0];
-    body.removeAttribute("id");
-
-    const root = document.getElementById("root");
-    root.removeAttribute("class");
-  }, []);
-
   return (
     <Layout>
       {!confirmationSent ? (
@@ -240,7 +231,7 @@ function Signup({ setIsLoading }) {
         </form>
       ) : (
         <p id={signupStyles.confirmation_message}>
-          Confirmation letter is sent to your email
+          Confirmation letter has been sent to your email
         </p>
       )}
     </Layout>

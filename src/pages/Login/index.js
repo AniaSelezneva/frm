@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 // store
 import { store } from "../../utils/store";
 // auth
@@ -17,16 +18,6 @@ function Login({ setIsLoading }) {
   const [password, setPassword] = useState();
   const [credentialsCorrect, setCredentialsCorrect] = useState();
   const [error, setError] = useState(undefined);
-
-  // Remove body className to remove background applied on home page.
-  // Remove class of root to have background only on home page.
-  useEffect(() => {
-    const body = document.getElementsByTagName("body")[0];
-    body.removeAttribute("id");
-
-    const root = document.getElementById("root");
-    root.removeAttribute("class");
-  }, []);
 
   // Login
   const login = async (e) => {
@@ -119,6 +110,7 @@ function Login({ setIsLoading }) {
         {error !== undefined && <p>{error}</p>}
 
         <button type="submit">Login</button>
+        <Link to="/restore">Forgot password?</Link>
       </form>
     </Layout>
   );

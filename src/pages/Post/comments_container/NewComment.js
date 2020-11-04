@@ -57,7 +57,7 @@ function NewComment({ setIsLoading, setIsError }) {
   return (
     <form
       className={postStyles.new_comment_form}
-      onSubmit={async (e) => {
+      onSubmit={(e) => {
         e.preventDefault();
         addComment();
       }}

@@ -112,11 +112,7 @@ const StateProvider = ({ children }) => {
         const { newLikeCount, postId } = action.payload;
 
         let postsData;
-        if (
-          state.posts !== undefined &&
-          state.posts !== null &&
-          state.posts.length !== 0
-        ) {
+        if (state.posts && state.posts.data && state.posts.length !== 0) {
           postsData = state.posts.data;
           const postIndex = state.posts.data.findIndex((post) => {
             return post.data.postId === postId;

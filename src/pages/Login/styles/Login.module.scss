@@ -15,6 +15,11 @@ $margin: 1rem;
   padding: 6rem;
   transition-duration: 0.2s;
 
+  // Restore password link
+  & > a {
+    margin-top: 2rem;
+  }
+
   @media (max-width: 830px) {
     margin-left: 0;
     transition-duration: 0.2s;
@@ -74,4 +79,9 @@ $margin: 1rem;
     word-break: keep-all;
     text-align: center;
   }
+}
+
+// Message 'email sent' on the restore password page
+#restore_password_message {
+  color: black !important;
 }

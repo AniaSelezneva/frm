@@ -12,6 +12,8 @@ import Home from "./pages/Home/Home";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/index";
 import Post from "./pages/Post/index";
+import RestorePassword from "./pages/RestorePassword/RestorePassword";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 // Store
 import { store } from "./utils/store";
 // Styles
@@ -43,6 +45,14 @@ function App() {
           {state.loggedIn && <Redirect to="/" />}
         </Route> */}
         <Route exact path="/login" component={Login}>
+          {state.loggedIn && <Redirect to="/" />}
+        </Route>
+
+        <Route exact path="/restore" component={RestorePassword}>
+          {state.loggedIn && <Redirect to="/" />}
+        </Route>
+
+        <Route exact path="/resetpassword" component={ChangePassword}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>
 

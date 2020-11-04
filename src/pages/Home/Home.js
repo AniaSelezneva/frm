@@ -46,6 +46,10 @@ function Home(props) {
   let inviteToken = decodeURIComponent(window.location.hash)
     .substring(1)
     .split("invite_token=")[1];
+  // Recovery token
+  let recoveryToken = decodeURIComponent(window.location.hash)
+    .substring(1)
+    .split("recovery_token=")[1];
 
   // Check which route it is.
   const checkPath = () => {
@@ -53,6 +57,8 @@ function Home(props) {
       setPath("confirm");
     } else if (inviteToken !== undefined) {
       setPath("invite");
+    } else if (recoveryToken) {
+      setPath("recovery");
     } else if (
       window.location.pathname === "/search" ||
       window.location.pathname === "/search/"
@@ -178,6 +184,12 @@ function Home(props) {
     // Redirect to login page if the user came with invitation.
     if (path === "invite") {
       window.location.replace(`/signup/#invite_token=${inviteToken}`);
+    }
+    // Redirect to reset password page.
+    if (path === "recovery") {
+      window.location.replace(
+        `/resetpassword/#recovery_token=${recoveryToken}`
+      );
     }
   }, [path]);
 

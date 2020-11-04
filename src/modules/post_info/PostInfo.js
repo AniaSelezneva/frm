@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 // store
 import { store } from "../../utils/store";
@@ -22,7 +22,8 @@ function PostInfo({ post }) {
   const [time, setTime] = useState();
   const [isLiked, setIsLiked] = useState(false);
 
-  let isSubscribed = true;
+  let isSubscribed = undefined;
+  const subscribed = useRef(true);
 
   // Set time of the post submission.
   useEffect(() => {
@@ -32,22 +33,14 @@ function PostInfo({ post }) {
 
   // Check if this post is liked by the user.
   useEffect(() => {
-    //console.log(state.user.likes, post.data.postId);
     setIsLiked(false);
-    if (
-      state.user.likes !== undefined &&
-      state.user.likes !== null &&
-      state.user.likes.length !== 0
-    ) {
+    if (state.user.likes && state.user.likes.length !== 0) {
       state.user.likes.forEach((like) => {
         if (like.data.postId === post.data.postId) {
           setIsLiked(true);
-        } else {
         }
       });
     }
-
-    return () => (isSubscribed = false);
   }, [
     state.user.likes,
     state.posts,
@@ -72,34 +65,26 @@ function PostInfo({ post }) {
         });
 
         const newLikeCount = post.data.likeCount + 1;
-        const like = await res.json();
 
-        if (isSubscribed) {
-          if (like === "Already liked") {
-            dispatch({
-              type: "LIKE_POST",
-              payload: {
-                like: {
-                  data: {
-                    postId: post.data.postId,
-                    userHandle: post.data.userHandle,
-                  },
-                },
+        dispatch({
+          type: "LIKE_POST",
+          payload: {
+            like: {
+              data: {
                 postId: post.data.postId,
+                userHandle: post.data.userHandle,
               },
-            });
-          } else {
-            dispatch({
-              type: "LIKE_POST",
-              payload: { like, postId: post.data.postId },
-            });
-          }
+            },
+            postId: post.data.postId,
+          },
+        });
 
-          dispatch({
-            type: "CHANGE_LIKE_COUNT",
-            payload: { newLikeCount, postId: post.data.postId },
-          });
+        dispatch({
+          type: "CHANGE_LIKE_COUNT",
+          payload: { newLikeCount, postId: post.data.postId },
+        });
 
+        if (subscribed.current) {
           if (res.status < 400) {
             resolve("success");
           } else if (res.status >= 400) {
@@ -129,20 +114,18 @@ function PostInfo({ post }) {
             recepient: post.data.userHandle,
           }),
         });
-
         const newLikeCount = post.data.likeCount - 1;
+        dispatch({
+          type: "UNLIKE_POST",
+          payload: { postId: post.data.postId },
+        });
 
-        if (isSubscribed) {
-          dispatch({
-            type: "UNLIKE_POST",
-            payload: { postId: post.data.postId },
-          });
+        dispatch({
+          type: "CHANGE_LIKE_COUNT",
+          payload: { newLikeCount, postId: post.data.postId },
+        });
 
-          dispatch({
-            type: "CHANGE_LIKE_COUNT",
-            payload: { newLikeCount, postId: post.data.postId },
-          });
-
+        if (subscribed.current) {
           if (res.status < 400) {
             resolve("success");
           } else if (res.status >= 400) {
@@ -154,6 +137,25 @@ function PostInfo({ post }) {
         reject(error);
       }
     });
+  };
+
+  // Change subscribed Ref.
+  useEffect(() => {
+    return () => {
+      subscribed.current = isSubscribed;
+    };
+  }, [isSubscribed]);
+
+  // Unsubscribe on unmount.
+  useEffect(() => {
+    return () => {
+      isSubscribed = false;
+    };
+  }, []);
+
+  // Change heart image.
+  const changeHeart = () => {
+    const unlike = document.querySelector('[title="unlike_post"]');
   };
 
   return (
@@ -178,15 +180,16 @@ function PostInfo({ post }) {
             id={postsInfoStyles.red_heart}
             src={redHeart}
             onClick={async () => {
+              isSubscribed = true;
               if (isLiked && readyToUnlike) {
                 setReadyToLike(false);
                 try {
                   setIsLiked(false);
                   await unlikePost();
 
-                  setReadyToLike(true);
+                  if (subscribed.current) setReadyToLike(true);
                 } catch (error) {
-                  setReadyToLike(true);
+                  if (subscribed.current) setReadyToLike(true);
                 }
               }
             }}
@@ -201,6 +204,7 @@ function PostInfo({ post }) {
             className={!state.loggedIn ? postsInfoStyles.inactive_like : null}
             src={post.data.likeCount > 0 ? blueHeart : transparentHeart}
             onClick={async () => {
+              isSubscribed = true;
               if (state.loggedIn && readyToLike) {
                 setReadyToUnlike(false);
                 try {
@@ -208,15 +212,16 @@ function PostInfo({ post }) {
                     setIsLiked(true);
                     await likePost();
 
-                    setReadyToUnlike(true);
+                    if (subscribed.current) setReadyToUnlike(true);
                   }
                 } catch (error) {
-                  setReadyToUnlike(true);
+                  if (subscribed.current) setReadyToUnlike(true);
                 }
               }
             }}
           />
         )}
+
         {post.data.likeCount > 0 && <p>{post.data.likeCount}</p>}
       </div>
     </div>

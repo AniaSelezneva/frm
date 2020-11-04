@@ -1,0 +1,80 @@
+@import url(//fonts.googleapis.com/css2?family=Alegreya+SC&display=swap);
+
+$post_height: 200px;
+$margin: 1.2rem;
+$post_background: rgba(253, 202, 172, 1);
+
+// User info, likes, comments = post info
+.post_info {
+  padding-top: 1rem;
+  margin-top: auto;
+  align-items: flex-end;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+
+  // User image with name
+  & > a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+
+    &:focus,
+    &:hover {
+      outline: none;
+      text-decoration: underline;
+    }
+  }
+
+  p {
+    font-family: "Alegreya SC", serif, Arial, sans-serif;
+    word-break: keep-all;
+    font-size: 80%;
+  }
+}
+
+// user image at the bottom of post
+.user_image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+// Like buttons
+#red_heart,
+#blue_heart {
+  border: none;
+  width: 90%;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: none;
+    transform: scale(1.08);
+  }
+}
+
+.inactive_like {
+  scale: 1 !important;
+}
+
+#blue_heart {
+  &:hover {
+    scale: 1.08;
+  }
+}
+
+.likes {
+  display: flex;
+  align-items: flex-end;
+  width: 30px;
+  gap: 3px;
+
+  & > img {
+    width: 100%;
+  }
+}

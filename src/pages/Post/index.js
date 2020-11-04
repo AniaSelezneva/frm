@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Link } from "react-router-dom";
 // FaunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // WithLoader hoc
@@ -10,6 +9,7 @@ import postStyles from "./styles/Post.module.scss";
 import Layout from "../../HOCs/Layout";
 import User from "../../modules/user_card/index";
 import Comments from "./comments_container";
+import FullPageImage from "./FullPageImage";
 // Store
 import { store } from "../../utils/store";
 import PostInfo from "../../modules/post_info/PostInfo";
@@ -20,6 +20,7 @@ function Post(props) {
   const { setIsLoading } = props;
 
   const [showModal, setShowModal] = useState(undefined);
+  const [showFullPageImage, setShowFullPageImage] = useState(undefined);
 
   // Fetch post.
   const getPost = () => {
@@ -171,12 +172,38 @@ function Post(props) {
       setIsLoading(false);
     })();
 
-    // Abort
+    // Cancel async tasks.
     return () => {
       const controller = new AbortController();
       controller.abort();
     };
   }, [window.location.pathname]);
+
+  // Add event listener to post image to show modal with image of original size.
+  useEffect(() => {
+    const image = document.getElementById("post_image");
+    if (image) {
+      let timeoutId;
+
+      // Do it with delay.
+      image.onmouseenter = () => {
+        timeoutId = setTimeout(() => {
+          setShowFullPageImage(true);
+        }, 600);
+      };
+
+      image.ontouchstart = () => {
+        setShowFullPageImage(true);
+      };
+
+      // Don't do it if mouse leaves.
+      // Hide it when the mouse leaves.
+      image.onmouseleave = () => {
+        //setShowFullPageImage(false);
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [state.post]);
 
   return (
     <Layout>
@@ -185,14 +212,14 @@ function Post(props) {
           {state.post !== null && (
             <div className={postStyles.post}>
               <div className={postStyles.post_main_body}>
-                {state.post.data.imageUrl !== null &&
-                  state.post.data.imageUrl !== undefined && (
-                    <img
-                      src={state.post.data.imageUrl}
-                      width="200"
-                      className={postStyles.post_image}
-                    />
-                  )}
+                {state.post.data.imageUrl && (
+                  <img
+                    src={state.post.data.imageUrl}
+                    width="200"
+                    className={postStyles.post_image}
+                    id="post_image"
+                  />
+                )}
 
                 <p>{state.post.data.body}</p>
               </div>
@@ -213,6 +240,14 @@ function Post(props) {
         </div>
         <User path="post" />
       </div>
+
+      {/* Full Page Image */}
+      {showFullPageImage && state.post.data.imageUrl ? (
+        <FullPageImage
+          url={state.post.data.imageUrl}
+          toggleShow={setShowFullPageImage}
+        />
+      ) : null}
     </Layout>
   );
 }

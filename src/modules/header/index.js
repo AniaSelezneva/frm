@@ -18,7 +18,11 @@ function Header() {
       window.location.pathname === "/login" ||
       window.location.pathname === "/login/" ||
       window.location.pathname === "/invite/" ||
-      window.location.pathname === "/invite"
+      window.location.pathname === "/invite" ||
+      window.location.pathname === "/restore" ||
+      window.location.pathname === "/restore/" ||
+      window.location.pathname === "/resetpassword" ||
+      window.location.pathname === "/resetpassword/"
     )
       return true;
     else {
