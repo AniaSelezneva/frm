@@ -33,7 +33,6 @@ function ChangePassword({ setIsLoading }) {
     auth
       .recover(recoveryToken)
       .then((res) => {
-        console.log(res);
         setEmail(res.email);
       })
 

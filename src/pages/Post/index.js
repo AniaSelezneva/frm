@@ -185,11 +185,17 @@ function Post(props) {
     if (image) {
       let timeoutId;
 
+      image.onclick = () => {
+        if (timeoutId) clearTimeout(timeoutId);
+        setShowFullPageImage(true);
+      };
+
       // Do it with delay.
       image.onmouseenter = () => {
+        if (timeoutId) clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
           setShowFullPageImage(true);
-        }, 600);
+        }, 300);
       };
 
       // Don't do it if mouse leaves.
