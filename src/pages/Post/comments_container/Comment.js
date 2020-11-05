@@ -48,7 +48,7 @@ function Comment({ comment }) {
 
     // Wait for  notifications to be deleted
     await Promise.all(promises);
-    // Delete post itself
+    // Delete comment itself
     await adminClient.query(q.Delete(commentRef));
 
     dispatch({ type: "DELETE_COMMENT", payload: comment.data.commentId });

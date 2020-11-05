@@ -35,6 +35,46 @@ function Home(props) {
     .split("%20")
     .join(" ");
 
+  // Save scroll position in localStorage.
+  const wait = useRef(false);
+  const throttle = (callback, timeout) => {
+    return () => {
+      if (wait.current) {
+        return;
+      }
+
+      callback();
+
+      wait.current = true;
+
+      setTimeout(() => {
+        wait.current = false;
+      }, timeout);
+    };
+  };
+
+  useEffect(() => {
+    window.addEventListener(
+      "scroll",
+      throttle(() => {
+        if (window.scrollY > 0) {
+          window.localStorage.setItem("scrollY", window.scrollY);
+        }
+      }, 1000)
+    );
+
+    return () => {
+      wait.current = true;
+    };
+  }, []);
+
+  // Go to scroll position if there is any in local storage.
+  let scrollY = window.localStorage.getItem("scrollY");
+
+  if (scrollY) {
+    window.scrollTo(0, scrollY);
+  }
+
   // Search query
   const urlParams = new URLSearchParams(window.location.search);
   const query = urlParams.get("query");

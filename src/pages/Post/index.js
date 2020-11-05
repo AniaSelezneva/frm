@@ -195,7 +195,7 @@ function Post(props) {
         if (timeoutId) clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
           setShowFullPageImage(true);
-        }, 300);
+        }, 400);
       };
 
       // Don't do it if mouse leaves.

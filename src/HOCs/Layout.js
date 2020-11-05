@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 // Components
 import Header from "../modules/header/";
 import Footer from "../modules/footer/";
@@ -6,14 +6,24 @@ import Footer from "../modules/footer/";
 import upArrow from "../img/svgs/up-arrow.svg";
 
 function Layout(props) {
+  const wait = useRef(false);
+
   const throttle = (callback, timeout) => {
-    let wait = true;
     return () => {
-      if (!wait) {
-        callback();
+      // 3. Don't do anything if there is timoutId = waiting
+      if (wait.current) {
+        return;
       }
+
+      // 1. Execute callback
+      callback();
+
+      // 2. Wait
+      wait.current = true;
+
+      // 4. Stop waiting
       setTimeout(() => {
-        wait = false;
+        wait.current = false;
       }, timeout);
     };
   };

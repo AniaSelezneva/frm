@@ -32,6 +32,8 @@ function Post({ post }) {
           <Link
             to={`/post/${post.data.postId}`}
             className={postsContainerStyles.image_link}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <div className={postsContainerStyles.image_container}>
               <img
@@ -46,7 +48,11 @@ function Post({ post }) {
           </Link>
         )}
 
-        <Link to={`/post/${post.data.postId}`}>
+        <Link
+          to={`/post/${post.data.postId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <p>{body}</p>
         </Link>
       </div>
