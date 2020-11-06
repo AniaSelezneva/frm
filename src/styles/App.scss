@@ -581,3 +581,20 @@ a {
     text-decoration: underline;
   }
 }
+
+// Page not found
+.page_not_found {
+  text-align: center;
+  font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
+
+  p {
+    margin-top: 15rem;
+    font-size: 150%;
+    color: #15489f;
+  }
+
+  a {
+    position: relative;
+    top: 3rem;
+  }
+}

@@ -123,100 +123,128 @@ function User({ handle }) {
 
   // Open/close card.
   useEffect(() => {
-    const card = document.getElementById("user_card");
-    if (isCardOpen) {
-      card.style.display = "flex";
-    } else if (!isCardOpen) {
-      card.style.display = "none";
+    // If this user exists.
+    if (Object.keys(state.otherUser).length > 0) {
+      const card = document.getElementById("user_card");
+      if (isCardOpen) {
+        card.style.display = "flex";
+      } else if (!isCardOpen) {
+        card.style.display = "none";
+      }
     }
   }, [isCardOpen]);
 
+  // Check the path.
+  const shouldShowCard = () => {
+    const path = state.path;
+    if (
+      path === "home" ||
+      path === "search" ||
+      path === "profile" ||
+      path === "post" ||
+      window.location.pathname.substring(1, 5) === "post" ||
+      (path === "user" && Object.keys(state.otherUser).length > 0)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <div className={userCardStyles.container}>
-      <button
-        className={userCardStyles.open_card_button}
-        id="open_card_button"
-        onClick={() => {
-          toggleOpenCard();
-        }}
-      >
-        {state.path === "user" ? state.otherUser.handle : state.user.handle}
-      </button>
-      <div className={userCardStyles.user} id="user_card">
-        {/* Add info */}
-        {isAddInfoOpen && <AddInfo setIsAddInfoOpen={setIsAddInfoOpen} />}
-        {/* Logged in user's card */}
-        {path !== "user" && state.loggedIn && !isAddInfoOpen && (
-          <>
-            <img src={state.user.imageUrl} alt="profile image" />
+    <>
+      {/* Show user card in two cases: 
+    1. This is 'user'(arbitrary user);
+    2. This is not 'confirm', 'invite', 'login', 'signup', 
+     */}
+      {shouldShowCard() && (
+        <div className={userCardStyles.container}>
+          <button
+            className={userCardStyles.open_card_button}
+            id="open_card_button"
+            onClick={() => {
+              toggleOpenCard();
+            }}
+          >
+            {state.path === "user" ? state.otherUser.handle : state.user.handle}
+          </button>
+          <div className={userCardStyles.user} id="user_card">
+            {/* Add info */}
+            {isAddInfoOpen && <AddInfo setIsAddInfoOpen={setIsAddInfoOpen} />}
+            {/* Logged in user's card */}
+            {path !== "user" && state.loggedIn && !isAddInfoOpen && (
+              <>
+                <img src={state.user.imageUrl} alt="profile image" />
 
-            <p>{state.user.handle}</p>
-            <p>{state.user.email}</p>
-            {state.user.location && (
-              <p>
-                <strong>Location:</strong> {state.user.location}
-              </p>
+                <p>{state.user.handle}</p>
+                <p>{state.user.email}</p>
+                {state.user.location && (
+                  <p>
+                    <strong>Location:</strong> {state.user.location}
+                  </p>
+                )}
+                {state.user.hobbies && (
+                  <p>
+                    <strong>Hobbies:</strong> {state.user.hobbies}
+                  </p>
+                )}
+                {state.user.occupation && (
+                  <p>
+                    <strong>Occupation:</strong> {state.user.occupation}
+                  </p>
+                )}
+                <button
+                  onClick={() => {
+                    setIsAddInfoOpen(true);
+                  }}
+                >
+                  Change info
+                </button>
+                <UploadImage />
+                <Logout />
+              </>
             )}
-            {state.user.hobbies && (
-              <p>
-                <strong>Hobbies:</strong> {state.user.hobbies}
-              </p>
-            )}
-            {state.user.occupation && (
-              <p>
-                <strong>Occupation:</strong> {state.user.occupation}
-              </p>
-            )}
-            <button
-              onClick={() => {
-                setIsAddInfoOpen(true);
-              }}
-            >
-              Change info
-            </button>
-            <UploadImage />
-            <Logout />
-          </>
-        )}
 
-        {/* User is not logged in and it's not 'user' path */}
-        {!state.loggedIn && path !== "user" && (
-          <div id={userCardStyles.login_signup_buttons_container}>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signup</Link>
+            {/* User is not logged in and it's not 'user' path */}
+            {!state.loggedIn && path !== "user" && (
+              <div id={userCardStyles.login_signup_buttons_container}>
+                <Link to="/login">Login</Link>
+                <Link to="/signup">Signup</Link>
+              </div>
+            )}
+
+            {/* Other user's card */}
+            {path === "user" && (
+              <>
+                <img
+                  src={state.otherUser.imageUrl}
+                  alt="user"
+                  height="300"
+                  width="240"
+                />
+
+                <p>{state.otherUser.handle}</p>
+                {state.otherUser.location && (
+                  <p>
+                    <strong>Location:</strong> {state.otherUser.location}
+                  </p>
+                )}
+                {state.otherUser.hobbies && (
+                  <p>
+                    <strong>Hobbies:</strong> {state.otherUser.hobbies}
+                  </p>
+                )}
+                {state.otherUser.occupation && (
+                  <p>
+                    <strong>Occupation:</strong> {state.otherUser.occupation}
+                  </p>
+                )}
+              </>
+            )}
           </div>
-        )}
-
-        {/* Other user's card */}
-        {path === "user" && (
-          <>
-            <img
-              src={state.otherUser.imageUrl}
-              alt="user"
-              height="300"
-              width="240"
-            />
-
-            <p>{state.otherUser.handle}</p>
-            {state.otherUser.location && (
-              <p>
-                <strong>Location:</strong> {state.otherUser.location}
-              </p>
-            )}
-            {state.otherUser.hobbies && (
-              <p>
-                <strong>Hobbies:</strong> {state.otherUser.hobbies}
-              </p>
-            )}
-            {state.otherUser.occupation && (
-              <p>
-                <strong>Occupation:</strong> {state.otherUser.occupation}
-              </p>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
 

@@ -10,19 +10,14 @@ import Search from "./Search";
 function Header() {
   const { state, dispatch } = useContext(store);
 
-  // Check if the location pathname is 'login', 'signup' or 'invite'
-  const isLoginOrSignup = () => {
+  // Check if the location pathname is 'home', 'profile' or 'user'
+  const shouldShowSearch = () => {
+    const path = window.location.pathname.split("/")[1];
     if (
-      window.location.pathname === "/signup" ||
-      window.location.pathname === "/signup/" ||
-      window.location.pathname === "/login" ||
-      window.location.pathname === "/login/" ||
-      window.location.pathname === "/invite/" ||
-      window.location.pathname === "/invite" ||
-      window.location.pathname === "/restore" ||
-      window.location.pathname === "/restore/" ||
-      window.location.pathname === "/resetpassword" ||
-      window.location.pathname === "/resetpassword/"
+      path !== "signup" &&
+      path !== "login" &&
+      path !== "restore" &&
+      path !== "resetpassword"
     )
       return true;
     else {
@@ -33,7 +28,7 @@ function Header() {
   return (
     <>
       <ul className="header">
-        {!isLoginOrSignup() && (
+        {shouldShowSearch() && (
           <li>
             <Search />
           </li>
@@ -107,7 +102,7 @@ function Header() {
         </ul>
       </ul>
       {/* Border on the bottom of the header only on signup and login pages. */}
-      {isLoginOrSignup() && <div id="header_bottom_border" />}
+      {!shouldShowSearch() && <div id="header_bottom_border" />}
     </>
   );
 }

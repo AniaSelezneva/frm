@@ -14,6 +14,7 @@ import Login from "./pages/Login/index";
 import Post from "./pages/Post/index";
 import RestorePassword from "./pages/RestorePassword/RestorePassword";
 import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import PageNotFound from "./pages/404/PageNotFound";
 // Store
 import { store } from "./utils/store";
 // Styles
@@ -48,7 +49,7 @@ function App() {
           {state.loggedIn && <Redirect to="/" />}
         </Route>
 
-        <Route exact path="/restore" component={RestorePassword}>
+        <Route exact path="/restorepassword" component={RestorePassword}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>
 
@@ -59,6 +60,7 @@ function App() {
         <Route exact path="/post/:postId" component={Post} />
         <Route exact path="/user/:name" component={Home} />
         <Route exact path="/profile" component={Home} />
+        <Route component={PageNotFound} />
       </Switch>
     </Router>
   );

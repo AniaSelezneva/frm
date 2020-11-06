@@ -19,6 +19,8 @@ function PostInfo({ post }) {
   const [readyToLike, setReadyToLike] = useState(true);
   const [readyToUnlike, setReadyToUnlike] = useState(true);
 
+  const [zeroLikes, setZeroLikes] = useState();
+
   const [time, setTime] = useState();
   const [isLiked, setIsLiked] = useState(false);
 
@@ -100,6 +102,9 @@ function PostInfo({ post }) {
 
   // Unlike post
   const unlikePost = () => {
+    if (post.data.likeCount === 1) {
+      setZeroLikes(true);
+    }
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch("/api/unlike", {
@@ -202,7 +207,11 @@ function PostInfo({ post }) {
             id={postsInfoStyles.blue_heart}
             alt="like"
             className={!state.loggedIn ? postsInfoStyles.inactive_like : null}
-            src={post.data.likeCount > 0 ? blueHeart : transparentHeart}
+            src={
+              post.data.likeCount === 0 || zeroLikes
+                ? transparentHeart
+                : blueHeart
+            }
             onClick={async () => {
               isSubscribed = true;
               if (state.loggedIn && readyToLike) {

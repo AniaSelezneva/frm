@@ -20,6 +20,7 @@ $post_background: rgba(253, 202, 172, 1);
     flex-direction: column;
     align-items: center;
     gap: 3px;
+    max-width: 30%;
 
     &:focus,
     &:hover {
@@ -30,7 +31,6 @@ $post_background: rgba(253, 202, 172, 1);
 
   p {
     font-family: "Alegreya SC", serif, Arial, sans-serif;
-    word-break: keep-all;
     font-size: 80%;
   }
 }

@@ -110,7 +110,7 @@ function Login({ setIsLoading }) {
         {error !== undefined && <p>{error}</p>}
 
         <button type="submit">Login</button>
-        <Link to="/restore">Forgot password?</Link>
+        <Link to="/restorepassword">Forgot password?</Link>
       </form>
     </Layout>
   );

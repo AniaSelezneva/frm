@@ -25,7 +25,7 @@ const WithLoader = (ComponentToWrap, loadingMessage) => {
       const lettersCollection = container.childNodes;
 
       setInterval(() => {
-        // Change color of the border after the first color changing.
+        // Change color of the border after the first color change.
         if (!isFirst && count === 0) {
           container.style.border = `15px solid ${color}`;
         }

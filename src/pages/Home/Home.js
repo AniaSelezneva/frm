@@ -35,46 +35,6 @@ function Home(props) {
     .split("%20")
     .join(" ");
 
-  // Save scroll position in localStorage.
-  const wait = useRef(false);
-  const throttle = (callback, timeout) => {
-    return () => {
-      if (wait.current) {
-        return;
-      }
-
-      callback();
-
-      wait.current = true;
-
-      setTimeout(() => {
-        wait.current = false;
-      }, timeout);
-    };
-  };
-
-  useEffect(() => {
-    window.addEventListener(
-      "scroll",
-      throttle(() => {
-        if (window.scrollY > 0) {
-          window.localStorage.setItem("scrollY", window.scrollY);
-        }
-      }, 1000)
-    );
-
-    return () => {
-      wait.current = true;
-    };
-  }, []);
-
-  // Go to scroll position if there is any in local storage.
-  let scrollY = window.localStorage.getItem("scrollY");
-
-  if (scrollY) {
-    window.scrollTo(0, scrollY);
-  }
-
   // Search query
   const urlParams = new URLSearchParams(window.location.search);
   const query = urlParams.get("query");
@@ -93,25 +53,20 @@ function Home(props) {
 
   // Check which route it is.
   const checkPath = () => {
-    if (confirmationToken !== undefined) {
+    const path = window.location.pathname;
+    if (confirmationToken) {
       setPath("confirm");
-    } else if (inviteToken !== undefined) {
+    } else if (inviteToken) {
       setPath("invite");
     } else if (recoveryToken) {
       setPath("recovery");
-    } else if (
-      window.location.pathname === "/search" ||
-      window.location.pathname === "/search/"
-    ) {
+    } else if (path === "/search" || path === "/search/") {
       setPath("search");
-    } else if (window.location.pathname === "/") {
+    } else if (path === "/") {
       setPath("home");
-    } else if (
-      window.location.pathname === "/profile" ||
-      window.location.pathname === "/profile/"
-    ) {
+    } else if (path === "/profile" || path === "/profile/") {
       setPath("profile");
-    } else if (window.location.pathname.slice(0, 5) === "/user") {
+    } else if (path.slice(0, 5) === "/user") {
       setPath("user");
     }
   };
@@ -321,20 +276,26 @@ function Home(props) {
           )}
 
           {/* Other user's path */}
-          {path === "user" && (
-            <h2 className={homeStyles.posts_header}>
-              {/* User's name from pathname */}
-              {state.posts.data &&
-                state.posts.data.length === 0 &&
-                `${userName} hasn't posted yet`}
-            </h2>
-          )}
+          {path === "user" &&
+            (Object.keys(state.otherUser).length !== 0 ? (
+              <h2 className={homeStyles.posts_header}>
+                {/* User's name from pathname */}
+                {state.posts.data &&
+                  state.posts.data.length === 0 &&
+                  `${userName} hasn't posted yet`}
+              </h2>
+            ) : (
+              <h2 className={homeStyles.posts_header}>
+                This user doesn't exist
+              </h2>
+            ))}
 
           {/* All posts */}
           <PostsContainer />
         </div>
 
-        {/* Don't show user's card on the right if it's 'confirm' or 'invite' path */}
+        {/* Don't show user's card on the right if it's 'confirm' or 'invite' path*/}
+
         {path !== "confirm" && path !== "invite" && <User handle={userName} />}
       </div>
     </Layout>
