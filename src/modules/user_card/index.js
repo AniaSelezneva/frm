@@ -103,28 +103,38 @@ function User({ handle }) {
 
   // Check if user card should be shown in the beginning.
   useEffect(() => {
-    // Toggle open/close card button.
-    const button = document.getElementById("open_card_button");
+    if (shouldShowCard()) {
+      // Toggle open/close card button.
+      const button = document.getElementById("open_card_button");
 
-    if (window.innerWidth > 800) {
-      setIsCardOpen(true);
-    } else if (window.innerWidth <= 800 && state.loggedIn && path !== "user") {
-      setIsCardOpen(false);
-      button.style.display = "block";
-      // If user is not logged in, don't show 'open card' button on top, don't hide the card itself.
-    } else if (window.innerWidth <= 800 && !state.loggedIn && path !== "user") {
-      button.style.display = "none";
-      setIsCardOpen(true);
-    } else if (path === "user") {
-      button.style.display = "none";
-      setIsCardOpen(true);
+      if (window.innerWidth > 800) {
+        setIsCardOpen(true);
+      } else if (
+        window.innerWidth <= 800 &&
+        state.loggedIn &&
+        path !== "user"
+      ) {
+        setIsCardOpen(false);
+        button.style.display = "block";
+        // If user is not logged in, don't show 'open card' button on top, don't hide the card itself.
+      } else if (
+        window.innerWidth <= 800 &&
+        !state.loggedIn &&
+        path !== "user"
+      ) {
+        button.style.display = "none";
+        setIsCardOpen(true);
+      } else if (path === "user") {
+        button.style.display = "none";
+        setIsCardOpen(true);
+      }
     }
   }, [state.loggedIn, path]);
 
   // Open/close card.
   useEffect(() => {
     // If this user exists.
-    if (Object.keys(state.otherUser).length > 0) {
+    if (shouldShowCard()) {
       const card = document.getElementById("user_card");
       if (isCardOpen) {
         card.style.display = "flex";
@@ -134,29 +144,40 @@ function User({ handle }) {
     }
   }, [isCardOpen]);
 
-  // Check the path.
+  // Check if card should be shown.
+  // Returns bool.
   const shouldShowCard = () => {
     const path = state.path;
+    // If user us logged in and path is 'home', 'search', 'profile' or 'post'.
     if (
-      path === "home" ||
+      (state.loggedIn && path === "home") ||
       path === "search" ||
       path === "profile" ||
-      path === "post" ||
-      window.location.pathname.substring(1, 5) === "post" ||
-      (path === "user" && Object.keys(state.otherUser).length > 0)
+      window.location.pathname.substring(1, 5) === "post"
     ) {
+      return true;
+      // If path is 'user'(arbitrary user) and this user exists.
+    } else if (path === "user" && Object.keys(state.otherUser).length > 0) {
       return true;
     } else {
       return false;
     }
+
+    // if (
+    //   path === "home" ||
+    //   path === "search" ||
+    //   path === "profile" ||
+    //   window.location.pathname.substring(1, 5) === "post" ||
+    //   (path === "user" && Object.keys(state.otherUser).length > 0)
+    // ) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   };
 
   return (
     <>
-      {/* Show user card in two cases: 
-    1. This is 'user'(arbitrary user);
-    2. This is not 'confirm', 'invite', 'login', 'signup', 
-     */}
       {shouldShowCard() && (
         <div className={userCardStyles.container}>
           <button
