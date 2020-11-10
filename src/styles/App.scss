@@ -181,6 +181,10 @@ p {
       font-family: "Jacques Francois", serif;
       font-size: 120%;
 
+      &:hover {
+        cursor: text;
+      }
+
       // For Firefox (red outline)
       &:required {
         box-shadow: none;
@@ -224,6 +228,28 @@ p {
     @media (max-width: 360px) {
       margin-right: 2rem;
       margin-left: 2rem;
+    }
+
+    // Error (query too short) message
+    & > p {
+      position: absolute;
+      top: 2rem;
+      font-family: "Alegreya SC", serif, Arial, sans-serif;
+      font-size: 90%;
+      color: #ee276a;
+
+      animation-duration: 0.5s;
+      animation-name: slideinsearcherror;
+
+      @keyframes slideinsearcherror {
+        from {
+          transform: translateY(-5px);
+        }
+
+        to {
+          transform: translateY(0);
+        }
+      }
     }
   }
 

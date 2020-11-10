@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // store
 import { store } from "../../utils/store";
 // SVG
@@ -6,6 +6,7 @@ import search from "../../img/svgs/search.svg";
 
 function Search() {
   const { state, dispatch } = useContext(store);
+  const [tooShort, setTooShort] = useState(false);
 
   // const setPosts = async (searchWord, size) => {
   //   const payload = await adminClient.query(
@@ -122,6 +123,16 @@ function Search() {
     });
   }, []);
 
+  // Check if search input contains less that three symbols.
+  const isTooShort = () => {
+    const query = document.getElementById("query").value;
+    if (query.trim().length < 3) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <form
       id="search_form"
@@ -134,22 +145,25 @@ function Search() {
         type="text"
         placeholder="..."
         id="query"
-        required
-        minLength="3"
         onChange={(e) => {
-          dispatch({ type: "SET_QUERY", payload: e.target.value });
+          dispatch({ type: "SET_QUERY", payload: e.target.value.trim() });
+          setTooShort(false);
         }}
       />
       <input
         type="image"
         src={search}
-        title="search"
         id="search_button"
-        htmlFor="query"
         onClick={() => {
-          window.location.href = `/search/?query=${state.query}`;
+          const isQueryTooShort = isTooShort();
+          if (!isQueryTooShort) {
+            window.location.href = `/search/?query=${state.query}`;
+          } else {
+            setTooShort(true);
+          }
         }}
-      ></input>
+      />
+      {tooShort && <p>Must be at least three characters long</p>}
     </form>
   );
 }

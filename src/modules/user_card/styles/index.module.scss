@@ -140,6 +140,10 @@ $shadow: 5px 5px 5px grey;
       border: none;
       border-bottom: 1px solid black;
       width: 100%;
+
+      &:hover {
+        cursor: text;
+      }
     }
   }
 
