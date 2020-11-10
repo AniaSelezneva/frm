@@ -16,6 +16,8 @@ dayjs.extend(relativeTime);
 
 function PostInfo({ post }) {
   const { state, dispatch } = useContext(store);
+  const [readyToLike, setReadyToLike] = useState(true);
+  const [readyToUnlike, setReadyToUnlike] = useState(true);
 
   const [zeroLikes, setZeroLikes] = useState();
 
@@ -181,11 +183,20 @@ function PostInfo({ post }) {
             src={redHeart}
             onClick={async () => {
               isSubscribed = true;
-              if (isLiked && state.pendingPostUnlike !== post.data.postId) {
+              if (
+                isLiked &&
+                readyToUnlike &&
+                state.pendingPostUnlike !== post.data.postId
+              ) {
+                setReadyToLike(false);
                 try {
                   setIsLiked(false);
                   await unlikePost();
-                } catch (error) {}
+
+                  if (subscribed.current) setReadyToLike(true);
+                } catch (error) {
+                  if (subscribed.current) setReadyToLike(true);
+                }
               }
             }}
           />
@@ -206,14 +217,20 @@ function PostInfo({ post }) {
               isSubscribed = true;
               if (
                 state.loggedIn &&
+                readyToLike &&
                 state.pendingPostLike !== post.data.postId
               ) {
+                setReadyToUnlike(false);
                 try {
                   if (!isLiked) {
                     setIsLiked(true);
                     await likePost();
+
+                    if (subscribed.current) setReadyToUnlike(true);
                   }
-                } catch (error) {}
+                } catch (error) {
+                  if (subscribed.current) setReadyToUnlike(true);
+                }
               }
             }}
           />
