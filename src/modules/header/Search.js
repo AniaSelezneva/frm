@@ -160,10 +160,26 @@ function Search() {
             window.location.href = `/search/?query=${state.query}`;
           } else {
             setTooShort(true);
+
+            setTimeout(() => {
+              const errorMsg = document.getElementById(
+                "query_too_short_message"
+              );
+              errorMsg.style.animationDuration = "0.6s";
+              errorMsg.style.animationName = "slideupsearcherror";
+
+              setTimeout(() => {
+                setTooShort(false);
+              }, 500);
+            }, 2000);
           }
         }}
       />
-      {tooShort && <p>Must be at least three characters long</p>}
+      {tooShort && (
+        <p id="query_too_short_message">
+          Must be at least three characters long
+        </p>
+      )}
     </form>
   );
 }

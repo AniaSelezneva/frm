@@ -244,10 +244,24 @@ p {
       @keyframes slideinsearcherror {
         from {
           transform: translateY(-5px);
+          opacity: 0;
         }
 
         to {
           transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideupsearcherror {
+        from {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        to {
+          transform: translateY(-5px);
+          opacity: 0;
         }
       }
     }
@@ -511,10 +525,12 @@ p {
   @keyframes slidein {
     from {
       transform: translateY(-15px);
+      opacity: 0;
     }
 
     to {
       transform: translateY(0);
+      opacity: 1;
     }
   }
 }
