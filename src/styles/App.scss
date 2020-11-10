@@ -1,4 +1,5 @@
 @import url(//fonts.googleapis.com/css2?family=Indie+Flower&family=Jacques+Francois&family=Fruktur&family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
+@use "sass:math";
 
 $header_height: 100px;
 $background: #cfe1c6ff;
@@ -82,12 +83,16 @@ img {
   }
 }
 
+@function random_element($elements...) {
+  @return nth($elements, random(length($elements)));
+}
+
 // Loading message
 #loading_message {
   position: absolute;
   background: hsla(0, 0%, 100%, 0.5);
 
-  border: 15px solid rgba(255, 255, 255, 0.7);
+  border: 15px solid random_element(green, yellow, blue, orange, red, purple);
   border-radius: 0.2rem;
   padding: 1rem;
 
@@ -165,16 +170,16 @@ p {
     }
 
     input {
+      border: none;
+    }
+
+    // Text input
+    #query {
       width: 300px;
       height: 2rem;
-      border: none;
+
       font-family: "Jacques Francois", serif;
       font-size: 120%;
-
-      &:focus {
-        color: black;
-        border: none;
-      }
 
       // For Firefox (red outline)
       &:required {
@@ -182,6 +187,16 @@ p {
       }
       &:invalid {
         box-shadow: none;
+      }
+    }
+
+    // Search button
+    #search_button {
+      transition-duration: 0.2s;
+      &:focus,
+      &:hover {
+        transform: scale(1.08);
+        transition-duration: 0.2s;
       }
     }
 
@@ -295,7 +310,7 @@ p {
   animation: 1s ease-out 0s 1 opacityChange;
 
   &:focus-within > #notifications_bell {
-    transform: scale(1.3);
+    transform: scale(1.08);
     transition-duration: 0.3s;
   }
 
@@ -305,6 +320,7 @@ p {
     justify-content: center;
     border: none;
     width: 35px;
+    transition-duration: 0.2s;
 
     @keyframes opacityChange {
       0% {
@@ -555,7 +571,7 @@ span {
 // Footer
 .footer {
   height: 5.5rem;
-
+  margin-top: 1rem;
   background: url(../img/svgs/bunny.svg);
   background-repeat: no-repeat;
   position: relative;

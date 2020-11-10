@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Header from "../modules/header/";
 import Footer from "../modules/footer/";
 // Svg
-import upArrow from "../img/svgs/up-arrow.svg";
+import upArrow from "../img/svgs/new/up-arrow.svg";
 
 function Layout(props) {
   const wait = useRef(false);
@@ -32,9 +32,9 @@ function Layout(props) {
     const distance = window.scrollY;
     const arrow = document.getElementById("up_arrow");
 
-    if (distance > 400) {
+    if (distance > 600) {
       arrow.removeAttribute("style");
-    } else if (distance < 400) {
+    } else if (distance < 600) {
       arrow.setAttribute("style", `display: none`);
     }
   };

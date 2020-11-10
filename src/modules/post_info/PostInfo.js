@@ -8,9 +8,9 @@ import postsInfoStyles from "./styles/Post_info.module.scss";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 // Svgs
-import redHeart from "../../img/svgs/red-heart.svg";
-import blueHeart from "../../img/svgs/blue-heart.svg";
-import transparentHeart from "../../img/svgs/transparent-heart.svg";
+import redHeart from "../../img/svgs/new/red-heart.svg";
+import blueHeart from "../../img/svgs/new/blue-heart.svg";
+import transparentHeart from "../../img/svgs/new/transparent-heart.svg";
 
 dayjs.extend(relativeTime);
 

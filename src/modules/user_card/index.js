@@ -18,11 +18,13 @@ import userCardStyles from "./styles/index.module.scss";
 // path (where user's card component is available) will show logged
 // in user's full info if he's logged in or links to log in or sign up.
 
-function User({ handle }) {
+function User() {
   const { state, dispatch } = useContext(store);
   const [isAddInfoOpen, setIsAddInfoOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const path = state.path;
+
+  let handle = window.location.pathname.split("/").pop().split("%20").join(" ");
 
   // Get logged in user info.
   const getOwnUserInfo = async (email) => {

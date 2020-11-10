@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from "react";
 // store
 import { store } from "../../utils/store";
+// SVG
+import search from "../../img/svgs/search.svg";
 
 function Search() {
   const { state, dispatch } = useContext(store);
@@ -138,15 +140,16 @@ function Search() {
           dispatch({ type: "SET_QUERY", payload: e.target.value });
         }}
       />
-      <button
+      <input
+        type="image"
+        src={search}
         title="search"
+        id="search_button"
         htmlFor="query"
         onClick={() => {
           window.location.href = `/search/?query=${state.query}`;
         }}
-      >
-        Go
-      </button>
+      ></input>
     </form>
   );
 }

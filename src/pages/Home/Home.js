@@ -296,7 +296,7 @@ function Home(props) {
 
         {/* Don't show user's card on the right if it's 'confirm' or 'invite' path*/}
 
-        {path !== "confirm" && path !== "invite" && <User handle={userName} />}
+        {path !== "confirm" && path !== "invite" && <User />}
       </div>
     </Layout>
   );

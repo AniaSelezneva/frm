@@ -5,8 +5,8 @@ import { store } from "../../utils/store";
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // svgs
-import bellTransparent from "../../img/svgs/bell-transparent.svg";
-import bellYellow from "../../img/svgs/bell-yellow.svg";
+import bellTransparent from "../../img/svgs/new/bell-transparent.svg";
+import bellYellow from "../../img/svgs/new/bell-yellow.svg";
 import arrow from "../../img/svgs/arrow.svg";
 import remove from "../../img/svgs/remove.svg";
 
