@@ -45,6 +45,11 @@ function Post(props) {
     });
   };
 
+  // Set path in the store.
+  useEffect(() => {
+    dispatch({ type: "SET_PATH", payload: "post" });
+  }, []);
+
   // Get comments.
   const getComments = () => {
     return new Promise(async (resolve, reject) => {

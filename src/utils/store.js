@@ -16,6 +16,8 @@ const initialState = {
   post: null,
   query: "",
   path: "",
+  pendingPostLike: null,
+  pendingPostUnlike: null,
 };
 // store has Provider and Consumer components
 const store = createContext(initialState);
@@ -193,6 +195,27 @@ const StateProvider = ({ children }) => {
           },
         };
       }
+
+      case "SET_PENDING_POST_LIKE": {
+        const postId = action.payload;
+
+        return {
+          ...state,
+          pendingPostLike: postId,
+          pendingPostUnlike: null,
+        };
+      }
+
+      case "SET_PENDING_POST_UNLIKE": {
+        const postId = action.payload;
+
+        return {
+          ...state,
+          pendingPostUnlike: postId,
+          pendingPostLike: null,
+        };
+      }
+
       case "REMOVE_NOTIFICATION": {
         const notifications = state.user.notifications.data;
 
@@ -222,6 +245,7 @@ const StateProvider = ({ children }) => {
           },
         };
       }
+
       case "SET_COMMENTS": {
         return {
           ...state,

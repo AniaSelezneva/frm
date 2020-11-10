@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 // store
-import { store } from "../../utils/store";
+import { StateProvider, store } from "../../utils/store";
 // Styles
 import postsInfoStyles from "./styles/Post_info.module.scss";
 // Day.js
@@ -16,8 +16,6 @@ dayjs.extend(relativeTime);
 
 function PostInfo({ post }) {
   const { state, dispatch } = useContext(store);
-  const [readyToLike, setReadyToLike] = useState(true);
-  const [readyToUnlike, setReadyToUnlike] = useState(true);
 
   const [zeroLikes, setZeroLikes] = useState();
 
@@ -52,6 +50,7 @@ function PostInfo({ post }) {
 
   // Like post
   const likePost = () => {
+    dispatch({ type: "SET_PENDING_POST_LIKE", payload: post.data.postId });
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch("/api/like", {
@@ -105,6 +104,7 @@ function PostInfo({ post }) {
     if (post.data.likeCount === 1) {
       setZeroLikes(true);
     }
+    dispatch({ type: "SET_PENDING_POST_UNLIKE", payload: post.data.postId });
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch("/api/unlike", {
@@ -158,11 +158,6 @@ function PostInfo({ post }) {
     };
   }, []);
 
-  // Change heart image.
-  const changeHeart = () => {
-    const unlike = document.querySelector('[title="unlike_post"]');
-  };
-
   return (
     <div className={postsInfoStyles.post_info}>
       <Link to={`/user/${post.data.userHandle}`}>
@@ -186,16 +181,11 @@ function PostInfo({ post }) {
             src={redHeart}
             onClick={async () => {
               isSubscribed = true;
-              if (isLiked && readyToUnlike) {
-                setReadyToLike(false);
+              if (isLiked && state.pendingPostUnlike !== post.data.postId) {
                 try {
                   setIsLiked(false);
                   await unlikePost();
-
-                  if (subscribed.current) setReadyToLike(true);
-                } catch (error) {
-                  if (subscribed.current) setReadyToLike(true);
-                }
+                } catch (error) {}
               }
             }}
           />
@@ -214,18 +204,16 @@ function PostInfo({ post }) {
             }
             onClick={async () => {
               isSubscribed = true;
-              if (state.loggedIn && readyToLike) {
-                setReadyToUnlike(false);
+              if (
+                state.loggedIn &&
+                state.pendingPostLike !== post.data.postId
+              ) {
                 try {
                   if (!isLiked) {
                     setIsLiked(true);
                     await likePost();
-
-                    if (subscribed.current) setReadyToUnlike(true);
                   }
-                } catch (error) {
-                  if (subscribed.current) setReadyToUnlike(true);
-                }
+                } catch (error) {}
               }
             }}
           />
