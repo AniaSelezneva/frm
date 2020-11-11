@@ -191,8 +191,13 @@ function Home(props) {
   // Get posts.
   useEffect(() => {
     setIsLoading(true);
-    // Load posts only if there are none in store or path changes(user goes to profile from home and so on).
-    if (Object.keys(state.posts).length === 0 || state.path !== path) {
+    console.log(Object.keys(state.posts), state.path, path);
+    // Load posts only if there are none in store or path changes(user goes to profile from home and so on)
+    // and user doesn't go back to home page from post.
+    if (
+      state.path !== "post" &&
+      (Object.keys(state.posts).length === 0 || state.path !== path)
+    ) {
       if (path === "home") {
         getAllPosts();
       } else if (path === "search") {
