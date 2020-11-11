@@ -11,10 +11,6 @@ function FullPageImage({ url, toggleShow }) {
   useEffect(() => {
     const overlay = document.getElementById("image_full_page_overlay");
     if (overlay) {
-      overlay.ontouchstart = () => {
-        toggleShow(false);
-      };
-
       overlay.onclick = () => {
         toggleShow(false);
       };
