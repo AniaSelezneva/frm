@@ -47,19 +47,28 @@ function NewComment({ setIsLoading, setIsError }) {
     }
   };
 
+  // Sumbit comment handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (comment.trim().length > 0) {
+      addComment();
+    } // If empty...
+    else {
+      const textarea = document.getElementById("comment");
+      textarea.style.border = "2px solid red";
+      setError(`Must not be empty`);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <form
       className={postStyles.new_comment_form}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (comment.trim().length > 0) {
-          addComment();
-        } // If empty...
-        else {
-          const textarea = document.getElementById("comment");
-          textarea.style.border = "2px solid red";
-          setError(`Must not be empty`);
-          setIsLoading(false);
+      onSubmit={handleSubmit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSubmit(e);
         }
       }}
     >

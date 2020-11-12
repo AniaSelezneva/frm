@@ -122,6 +122,10 @@ p {
   align-items: center;
   justify-content: center;
 
+  @media (max-width: 800px) {
+    margin-top: 0.5rem;
+  }
+
   & > ul > li > a {
     &:focus,
     &:hover {
@@ -436,6 +440,7 @@ p {
     & > li {
       cursor: initial;
       width: 100%;
+      word-break: keep-all;
     }
 
     // Little triangle
@@ -447,7 +452,7 @@ p {
 
       position: absolute;
       top: -13px;
-      right: 13px;
+      right: 26px;
       transform: rotate(180deg);
     }
 
@@ -614,7 +619,7 @@ span {
   }
 }
 
-// Footer
+// FOOTER
 .footer {
   height: 5.5rem;
   margin-top: 1rem;

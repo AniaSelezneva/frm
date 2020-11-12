@@ -105,9 +105,20 @@ $shadow: 5px 5px 5px grey;
   }
 }
 
-// Borders, shadow
-
 #new_post {
   border: 2px solid black;
   box-shadow: $shadow;
+}
+
+// Empty new post input error message sliding up animation
+@keyframes slideuperror {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
 }

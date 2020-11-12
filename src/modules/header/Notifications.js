@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 // store
 import { store } from "../../utils/store";
@@ -17,9 +17,9 @@ function Notifications() {
   const [totalNotifications, setTotalNotifications] = useState();
 
   // Number of notifications
-  const size = 10;
+  const size = 5;
 
-  // Set totalNotifications in the store.
+  // Set totalNotifications in the store
   const countNotifications = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -30,7 +30,7 @@ function Notifications() {
         );
 
         setTotalNotifications(total);
-        resolve("successfully counted");
+        resolve("Success");
       } catch (error) {
         console.log(error);
         setIsError(true);
@@ -39,7 +39,7 @@ function Notifications() {
     });
   };
 
-  // Get all user's notifications to remove all of them.
+  // Get all user's notifications to remove all of them
   const getAllNotifications = async () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -58,7 +58,7 @@ function Notifications() {
     });
   };
 
-  // Get a needed page with notifications.
+  // Get a needed page with notifications
   const getUserNotifications = () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -87,7 +87,7 @@ function Notifications() {
     });
   };
 
-  // Remove currently shown notifications.
+  // Remove one notification
   const removeNotification = async (ref, id) => {
     try {
       // Remove notification from db.
@@ -106,7 +106,7 @@ function Notifications() {
     }
   };
 
-  // Remove all notifications.
+  // Remove all notifications
   const removeAllNotifications = async () => {
     try {
       // Get all user's notifications.
@@ -131,38 +131,30 @@ function Notifications() {
     }
   };
 
-  const goToNextPage = async () => {
-    try {
-      // get user's notifications
-      const response = await adminClient.query(
-        q.Map(
-          q.Paginate(
-            q.Reverse(
-              q.Match(q.Index("notifications_by_recepient"), state.user.handle)
-            ),
-            { size, after: state.user.notifications.after }
-          ),
-          q.Lambda("X", q.Get(q.Var("X")))
-        )
-      );
+  // Load new page with notifications
+  const changePage = async (direction) => {
+    let params;
 
-      dispatch({ type: "SET_NOTIFICATIONS", payload: response });
-    } catch (error) {
-      console.log(error);
-      setIsError(true);
+    if (direction === "forward") {
+      params = {
+        size,
+        after: state.user.notifications.after,
+      };
+    } else if (direction === "back") {
+      params = {
+        size,
+        before: state.user.notifications.before,
+      };
     }
-  };
 
-  const goToPrevPage = async () => {
     try {
-      // get user's notifications
       const response = await adminClient.query(
         q.Map(
           q.Paginate(
             q.Reverse(
               q.Match(q.Index("notifications_by_recepient"), state.user.handle)
             ),
-            { size, before: state.user.notifications.before }
+            params
           ),
           q.Lambda("X", q.Get(q.Var("X")))
         )
@@ -193,9 +185,19 @@ function Notifications() {
     }
   }, [totalNotifications]);
 
+  useEffect(() => {
+    // Close notifications when body is clicked (exclude notifications container)
+    document.body.addEventListener("click", (e) => {
+      // Elements in the notifications container have data attribute to find them.
+      if (!e.target.dataset.dontDetectClick) {
+        setNotificationsOpen(false);
+      }
+    });
+  }, [notificationsOpen]);
+
   return (
     <>
-      {totalNotifications !== undefined && !isError && (
+      {totalNotifications && !isError && (
         <>
           <input
             title="notifications"
@@ -217,13 +219,12 @@ function Notifications() {
           )}
 
           {notificationsOpen &&
-            totalNotifications !== undefined &&
-            state.user.notifications !== undefined &&
-            state.user.notifications !== null &&
+            totalNotifications &&
+            state.user.notifications &&
             !isError && (
-              <ul id="notifications_container">
+              <ul id="notifications_container" data-dont-detect-click="true">
                 {state.user.notifications.data.map((notification) => (
-                  <li key={notification.data.id}>
+                  <li key={notification.data.id} data-dont-detect-click="true">
                     <Link to={`/user/${notification.data.sender}`}>
                       {notification.data.sender}
                     </Link>
@@ -237,6 +238,7 @@ function Notifications() {
                     <button
                       title="remove notification"
                       className="remove_notification_button"
+                      data-dont-detect-click="true"
                       onClick={() => {
                         removeNotification(
                           notification.ref,
@@ -244,7 +246,7 @@ function Notifications() {
                         );
                       }}
                     >
-                      <img src={remove} />
+                      <img src={remove} data-dont-detect-click="true" />
                     </button>
                   </li>
                 ))}
@@ -252,6 +254,7 @@ function Notifications() {
                 <div
                   id="mark_read_buttons_container"
                   className={totalNotifications <= 0 ? "disabled" : null}
+                  data-dont-detect-click="true"
                 >
                   <button
                     id="mark_all_read"
@@ -259,29 +262,31 @@ function Notifications() {
                     onClick={() => {
                       removeAllNotifications();
                     }}
+                    data-dont-detect-click="true"
                   >
                     mark all read
                   </button>
                 </div>
 
-                <div id="navigation_container">
+                <div id="navigation_container" data-dont-detect-click="true">
                   <input
                     type="image"
                     title="go to previous page"
                     tabIndex="0"
                     src={arrow}
+                    data-dont-detect-click="true"
                     tabIndex={
-                      state.user.notifications.before === undefined ||
+                      !state.user.notifications.before ||
                       totalNotifications <= 0
                         ? "-1"
                         : "0"
                     }
                     id="prev_notifications"
                     onClick={() => {
-                      goToPrevPage();
+                      changePage("back");
                     }}
                     className={
-                      state.user.notifications.before === undefined ||
+                      !state.user.notifications.before ||
                       totalNotifications <= 0
                         ? "inactive"
                         : null
@@ -292,16 +297,16 @@ function Notifications() {
                     type="image"
                     title="go to next page"
                     tabIndex="0"
+                    data-dont-detect-click="true"
                     src={arrow}
                     tabIndex={
-                      state.user.notifications.after === undefined ||
-                      totalNotifications <= 0
+                      !state.user.notifications.after || totalNotifications <= 0
                         ? "-1"
                         : "0"
                     }
                     id="next_notifications"
                     onClick={() => {
-                      goToNextPage();
+                      changePage("forward");
                     }}
                     className={
                       state.user.notifications.after === undefined ||

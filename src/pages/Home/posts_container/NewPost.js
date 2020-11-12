@@ -64,7 +64,7 @@ function NewPost({ setIsLoading }) {
     };
   }, [image]);
 
-  // Create post (bind image and post in db together)
+  // Create post (bind image and post together in db)
   const submitPost = async () => {
     setIsLoading(true);
 
@@ -103,19 +103,45 @@ function NewPost({ setIsLoading }) {
     }
   };
 
+  // Submit post event handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (body.trim().length > 0) {
+      submitPost(e);
+    } else {
+      setError("Must not be empty");
+    }
+  };
+
+  // Handle error message animation
+  useEffect(() => {
+    const errorMsg = document.getElementsByClassName("error_message")[0];
+    if (error && errorMsg) {
+      setTimeout(() => {
+        errorMsg.style.animationDuration = "0.6s";
+        errorMsg.style.animationName = `${homeStyles.slideuperror}`;
+        document.getElementById("post_body").style.border = "2px solid black";
+
+        setTimeout(() => {
+          setError(undefined);
+        }, 500);
+      }, 2000);
+
+      // Red border around the textarea
+      document.getElementById("post_body").style.border = "2px solid red";
+    }
+  }, [error]);
+
   return (
     <form
       id={homeStyles.new_post}
       encType="multipart/form-data"
       ref={form}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (body.trim().length > 0) {
-          submitPost(e);
-        } else {
-          setError("Must not be empty");
-          // Red border around the textarea
-          document.getElementById("post_body").style.border = "2px solid red";
+      onSubmit={handleSubmit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSubmit(e);
         }
       }}
     >
@@ -132,7 +158,7 @@ function NewPost({ setIsLoading }) {
         }}
       />
       {/* Show error message if there is an error */}
-      {!error && <p className="error_message">{error}</p>}
+      {error && <p className="error_message">{error}</p>}
 
       <div className={homeStyles.new_post_buttons_container}>
         <div className={homeStyles.choose_image_container}>

@@ -16,13 +16,14 @@ dayjs.extend(relativeTime);
 
 function PostInfo({ post }) {
   const { state, dispatch } = useContext(store);
+  const [isLiked, setIsLiked] = useState(false);
+
   const [readyToLike, setReadyToLike] = useState(true);
   const [readyToUnlike, setReadyToUnlike] = useState(true);
 
   const [zeroLikes, setZeroLikes] = useState();
 
   const [time, setTime] = useState();
-  const [isLiked, setIsLiked] = useState(false);
 
   let isSubscribed = undefined;
   const subscribed = useRef(true);
