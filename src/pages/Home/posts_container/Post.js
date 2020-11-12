@@ -8,21 +8,14 @@ import PostInfo from "../../../modules/post_info/PostInfo";
 function Post({ post }) {
   const [body, setBody] = useState();
 
-  let isSubscribed = true;
-
   // Limit length of the post body if it's too long.
   useEffect(() => {
     if (post.data.body.length > 49) {
       const cutString = post.data.body.substring(0, 50);
-      if (isSubscribed) setBody(`${cutString}...`);
+      setBody(`${cutString}...`);
     } else {
-      if (isSubscribed) setBody(post.data.body);
+      setBody(post.data.body);
     }
-
-    // Abort
-    return () => {
-      return () => (isSubscribed = false);
-    };
   }, [post]);
 
   return (

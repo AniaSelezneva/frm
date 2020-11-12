@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 // Components
 import Post from "./Post";
 // FaunaDB
@@ -11,11 +11,14 @@ import postsContainerStyles from "../styles/Posts_container.module.scss";
 function PostsContainer() {
   const { state, dispatch } = useContext(store);
   const [loading, setLoading] = useState(false);
-  const path = state.path;
 
-  // Function to load more posts.
+  // Number of posts per page.
+  const size = 5;
+
+  // Function to load more posts
   const loadMore = async () => {
     setLoading(true);
+    const path = state.path;
     let res;
 
     if (path === "search") {
@@ -60,9 +63,6 @@ function PostsContainer() {
     dispatch({ type: "ADD_POSTS", payload: res });
     setLoading(false);
   };
-
-  // Number of posts per page.
-  const size = 5;
 
   return (
     <div className={postsContainerStyles.posts}>

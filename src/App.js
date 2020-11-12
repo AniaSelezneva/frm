@@ -8,7 +8,7 @@ import {
 // Components
 import GetInvitation from "./pages/GetInvitation/index";
 import SignupWithInvitation from "./pages/Signup/SignupWithInvitation";
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home/";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/index";
 import Post from "./pages/Post/index";
@@ -38,7 +38,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/search/" component={Home} />
+        <Route exact path="/search" component={Home} />
         <Route exact path="/signup" component={Signup}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>
@@ -59,7 +59,9 @@ function App() {
 
         <Route exact path="/post/:postId" component={Post} />
         <Route exact path="/user/:name" component={Home} />
-        <Route exact path="/profile" component={Home} />
+        <Route exact path="/profile" component={Home}>
+          {!state.loggedIn && <Redirect to="/login" />}
+        </Route>
         <Route component={PageNotFound} />
       </Switch>
     </Router>

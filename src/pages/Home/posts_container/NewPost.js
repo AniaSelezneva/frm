@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 // uuid
 import uuid from "react-uuid";
 // Firebase
@@ -20,20 +20,23 @@ function NewPost({ setIsLoading }) {
   const [imageName, setImageName] = useState(); // image name from file system
   const [error, setError] = useState(undefined);
 
-  // Loading = false on component load.
+  // DOM elements
+  const form = useRef(null);
+
+  // Loading = false on component load
   useEffect(() => {
     setIsLoading(false);
   }, []);
 
-  // Upload image.
+  // Upload image
   const uploadImage = () => {
     return new Promise(async (resolve, reject) => {
       try {
         firebase.initializeApp(config);
 
-        // Root reference.
+        // Root reference
         var storageRef = firebase.storage().ref();
-        // Reference to new file.
+        // Reference to new file
         var imageRef = storageRef.child(imageDbName);
 
         await imageRef.put(image);
@@ -46,9 +49,9 @@ function NewPost({ setIsLoading }) {
     });
   };
 
-  // Set imageDbName when image is chosen in the browser.
+  // Set imageDbName when image is chosen in the browser
   useEffect(() => {
-    if (image !== undefined && image !== null) {
+    if (image) {
       const imageExtension = image.name.split(".").pop();
       const imageName = `${uuid()}.${imageExtension}`;
       setImageDbName(imageName);
@@ -61,12 +64,12 @@ function NewPost({ setIsLoading }) {
     };
   }, [image]);
 
-  // Create post (bind image and post in db together).
-  const submitPost = async (e) => {
+  // Create post (bind image and post in db together)
+  const submitPost = async () => {
     setIsLoading(true);
 
     // If image is chosen...
-    if (image !== null && image !== undefined) {
+    if (image) {
       // ... upload it.
       await uploadImage();
     }
@@ -88,7 +91,7 @@ function NewPost({ setIsLoading }) {
         }),
       });
 
-      if (res.status === 404) {
+      if (res.status >= 400) {
         setError("Something went wrong, try again later");
       } else {
         window.location.reload();
@@ -104,13 +107,14 @@ function NewPost({ setIsLoading }) {
     <form
       id={homeStyles.new_post}
       encType="multipart/form-data"
+      ref={form}
       onSubmit={(e) => {
         e.preventDefault();
-        if (body.trim() !== "") {
+        if (body.trim().length > 0) {
           submitPost(e);
         } else {
           setError("Must not be empty");
-          // Red border around the textarea.
+          // Red border around the textarea
           document.getElementById("post_body").style.border = "2px solid red";
         }
       }}
@@ -128,7 +132,7 @@ function NewPost({ setIsLoading }) {
         }}
       />
       {/* Show error message if there is an error */}
-      {error !== undefined && <p className="error_message">{error}</p>}
+      {!error && <p className="error_message">{error}</p>}
 
       <div className={homeStyles.new_post_buttons_container}>
         <div className={homeStyles.choose_image_container}>
@@ -144,9 +148,7 @@ function NewPost({ setIsLoading }) {
             }}
           >
             Image:
-            <span>
-              {imageName === undefined ? " choose an image" : ` ${imageName}`}
-            </span>
+            <span>{!imageName ? " choose an image" : ` ${imageName}`}</span>
           </label>
 
           {/* Button to remove previously chosen image. */}

@@ -29,7 +29,7 @@ function FullPageImage({ url, toggleShow }) {
   // Remove scroll from body.
   useEffect(() => {
     document.body.style.overflow = "hidden";
-
+    // Show scroll when full page image is closed.
     return () => {
       document.body.style.overflow = "scroll";
     };

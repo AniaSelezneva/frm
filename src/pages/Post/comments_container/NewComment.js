@@ -12,44 +12,37 @@ function NewComment({ setIsLoading, setIsError }) {
   const [comment, setComment] = useState();
   const [error, setError] = useState(undefined);
 
-  // Loading = false on page load.
+  // Loading = false on page load
   useEffect(() => {
     setIsLoading(false);
   }, []);
 
-  // Add comment.
+  // Add a comment
   const addComment = async () => {
     setIsLoading(true);
+    try {
+      const res = await fetch("/api/addComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment,
+          userHandle: state.user.handle,
+          userImageUrl: state.user.imageUrl,
+          postId: state.post.data.postId,
+          recepient: state.post.data.userHandle,
+        }),
+      });
 
-    if (comment.trim() !== "") {
-      try {
-        const res = await fetch("/api/addComment", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            comment,
-            userHandle: state.user.handle,
-            userImageUrl: state.user.imageUrl,
-            postId: state.post.data.postId,
-            recepient: state.post.data.userHandle,
-          }),
-        });
-
-        if (res.status === 404) {
-          setIsError(true);
-        }
-      } catch (error) {
+      if (res.status === 404) {
         setIsError(true);
+        setIsLoading(false);
+      } else {
+        window.location.reload();
       }
-      setIsLoading(false);
-      window.location.reload();
-      // If empty...
-    } else {
-      const textarea = document.getElementById("comment");
-      textarea.style.border = "2px solid red";
-      setError(`Must not be empty`);
+    } catch (error) {
+      setIsError(true);
       setIsLoading(false);
     }
   };
@@ -59,7 +52,15 @@ function NewComment({ setIsLoading, setIsError }) {
       className={postStyles.new_comment_form}
       onSubmit={(e) => {
         e.preventDefault();
-        addComment();
+        if (comment.trim().length > 0) {
+          addComment();
+        } // If empty...
+        else {
+          const textarea = document.getElementById("comment");
+          textarea.style.border = "2px solid red";
+          setError(`Must not be empty`);
+          setIsLoading(false);
+        }
       }}
     >
       <textarea
@@ -75,7 +76,7 @@ function NewComment({ setIsLoading, setIsError }) {
           setComment(e.target.value);
         }}
       />
-      {error !== undefined && <p className="error_message">{error}</p>}
+      {error && <p className="error_message">{error}</p>}
       <button type="submit">Send</button>
     </form>
   );

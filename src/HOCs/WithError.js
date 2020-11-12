@@ -10,7 +10,7 @@ const WithError = (ComponentToWrap) => {
       setIsError(false);
     };
 
-    // Animate error going up.
+    // Animate error div going up.
     setTimeout(() => {
       const error = document.getElementsByClassName("with_error")[0];
       if (isError && error) {

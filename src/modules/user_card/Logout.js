@@ -9,6 +9,7 @@ import userCardStyles from "./styles/index.module.scss";
 function Logout() {
   const { dispatch } = useContext(store);
 
+  // Logout
   const logout = async () => {
     try {
       const user = auth.currentUser();

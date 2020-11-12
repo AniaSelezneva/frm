@@ -1,7 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-// store
-import { store } from "../../utils/store";
+import React, { useState, useEffect } from "react";
 // auth
 import auth from "../../utils/auth";
 // withLoader hoc
@@ -17,7 +14,7 @@ function RestorePassword({ setIsLoading }) {
   const [error, setError] = useState(undefined);
   const [emailSent, setEmailSent] = useState(false);
 
-  // Restore password.
+  // Restore password
   const restore = async (e) => {
     setIsLoading(true);
     e.preventDefault();
@@ -33,12 +30,12 @@ function RestorePassword({ setIsLoading }) {
     }
   };
 
-  // Loading = false
+  // Loading = false on page load
   useEffect(() => {
     setIsLoading(false);
   }, []);
 
-  // Change color of email label and input if there is error.
+  // Change color of email label and input if there is an error
   useEffect(() => {
     const email = document.getElementsByName("email")[0];
 
@@ -78,8 +75,8 @@ function RestorePassword({ setIsLoading }) {
           required="required"
         ></input>
 
-        {emailCorrect !== undefined && <p>No user found with that email</p>}
-        {error !== undefined && <p>{error}</p>}
+        {emailCorrect && <p>No user found with that email</p>}
+        {error && <p>{error}</p>}
 
         {!emailSent ? (
           <button type="submit">Restore password</button>

@@ -22,8 +22,6 @@ function Signup({ setIsLoading }) {
   const [handleUnique, setHandleUnique] = useState();
   const [passwordsMatch, setPasswordsMatch] = useState();
 
-  const [confirmationSent, setConfirmationSent] = useState(false);
-
   // General error
   const [isError, setIsError] = useState();
 
@@ -204,91 +202,68 @@ function Signup({ setIsLoading }) {
 
   return (
     <Layout>
-      {!confirmationSent ? (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            signup(e);
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          signup(e);
+        }}
+        method="post"
+        id={signupStyles.form}
+      >
+        <label htmlFor="handle" id="handle_label">
+          Username:
+        </label>
+        <input
+          type="text"
+          name="handle"
+          id="handle"
+          onChange={(e) => {
+            setHandleUnique(undefined);
+            setIsError(false);
+            setHandle(e.target.value);
           }}
-          method="post"
-          id={signupStyles.form}
-        >
-          {/* <label htmlFor="email" id="email_label">
-            Email:
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            onChange={(e) => {
-              setEmailUnique(undefined);
-              setIsError(false);
-              setEmail(e.target.value);
-            }}
-            required="required"
-          ></input> */}
+          required
+        ></input>
 
-          {/* // {emailUnique === false ? <p>This email is already in use</p> : null} */}
+        {!handleUnique && <p>This handle is already in use</p>}
 
-          <label htmlFor="handle" id="handle_label">
-            Username:
-          </label>
-          <input
-            type="text"
-            name="handle"
-            id="handle"
-            onChange={(e) => {
-              setHandleUnique(undefined);
-              setIsError(false);
-              setHandle(e.target.value);
-            }}
-            required="required"
-          ></input>
+        <label htmlFor="password" id="password_label">
+          Password:
+        </label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setIsError(false);
+            setPasswordsMatch(true);
+          }}
+          required="required"
+        ></input>
 
-          {handleUnique === false ? <p>This handle is already in use</p> : null}
+        <label htmlFor="confirmPassword" id="confirm_password_label">
+          Confirm password:
+        </label>
+        <input
+          type="password"
+          name="confirmPassword"
+          id="confirmPassword"
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            setIsError(false);
+            setPasswordsMatch(true);
+          }}
+          required="required"
+        ></input>
+        {passwordsMatch === false ? <p>Passwords don't match</p> : null}
 
-          <label htmlFor="password" id="password_label">
-            Password:
-          </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setIsError(false);
-              setPasswordsMatch(true);
-            }}
-            required="required"
-          ></input>
+        {isError && <p>Error occured, please try again later</p>}
 
-          <label htmlFor="confirmPassword" id="confirm_password_label">
-            Confirm password:
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-              setIsError(false);
-              setPasswordsMatch(true);
-            }}
-            required="required"
-          ></input>
-          {passwordsMatch === false ? <p>Passwords don't match</p> : null}
-
-          {isError && <p>Error occured, please try again later</p>}
-
-          <button type="submit">Signup</button>
-        </form>
-      ) : (
-        <p id={signupStyles.confirmation_message}>
-          Confirmation letter is sent to your email
-        </p>
-      )}
+        <button type="submit">Signup</button>
+      </form>
     </Layout>
   );
 }
 
-export default WithLoader(Signup, "loading");
+export default WithLoader(Signup, "Signing up...");

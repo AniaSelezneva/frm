@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 // store
-import { StateProvider, store } from "../../utils/store";
+import { store } from "../../utils/store";
 // Styles
 import postsInfoStyles from "./styles/Post_info.module.scss";
 // Day.js
@@ -146,14 +146,14 @@ function PostInfo({ post }) {
     });
   };
 
-  // Change subscribed Ref.
+  // Change subscribed Ref
   useEffect(() => {
     return () => {
       subscribed.current = isSubscribed;
     };
   }, [isSubscribed]);
 
-  // Unsubscribe on unmount.
+  // Unsubscribe on unmount
   useEffect(() => {
     return () => {
       isSubscribed = false;

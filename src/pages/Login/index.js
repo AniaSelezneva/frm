@@ -41,7 +41,7 @@ function Login({ setIsLoading }) {
     }
   };
 
-  // Loading = false
+  // Loading = false on page load
   useEffect(() => {
     setIsLoading(false);
   }, []);
@@ -104,10 +104,10 @@ function Login({ setIsLoading }) {
           }}
           required="required"
         ></input>
-        {credentialsCorrect !== undefined && (
+        {credentialsCorrect && (
           <p>No user found with that email, or password invalid</p>
         )}
-        {error !== undefined && <p>{error}</p>}
+        {error && <p>{error}</p>}
 
         <button type="submit">Login</button>
         <Link to="/restorepassword">Forgot password?</Link>
@@ -116,4 +116,4 @@ function Login({ setIsLoading }) {
   );
 }
 
-export default WithLoader(Login, "wait");
+export default WithLoader(Login, "Logging in...");

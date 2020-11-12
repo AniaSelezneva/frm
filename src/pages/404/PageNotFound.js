@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// HOC
-import Layout from "../../HOCs/Layout";
 
 function PageNotFound() {
   return (

@@ -30,7 +30,7 @@ function Comment({ comment }) {
       promises.push(adminClient.query(q.Delete(notification.ref)));
     });
 
-    // Reduce the total number of nitifications in post
+    // Reduce the total number of notifications in post
     adminClient.query(
       q.Update(state.post.ref, {
         data: {

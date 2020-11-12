@@ -14,7 +14,7 @@ const initialState = {
   otherUser: {},
   posts: {},
   post: null,
-  query: "",
+
   path: "",
   pendingPostLike: null,
   pendingPostUnlike: null,
@@ -38,9 +38,7 @@ const StateProvider = ({ children }) => {
       case "SET_PATH": {
         return { ...state, path: action.payload };
       }
-      case "CHANGE_IMAGE": {
-        return { ...state, user: action.payload };
-      }
+
       case "ADD_INFO": {
         const { location, hobbies, occupation } = action.payload;
 
@@ -61,6 +59,29 @@ const StateProvider = ({ children }) => {
         }
 
         return newState;
+      }
+
+      case "CHANGE_IMAGE": {
+        return { ...state, user: action.payload };
+      }
+
+      case "REMOVE_POST": {
+        const postId = action.payload;
+        // If there are posts in store...
+        if (Object.keys(state.posts).length > 0) {
+          const postsData = state.posts.data;
+          // 1. find its index,
+          const postIndex = postsData.findIndex((post) => {
+            return post.data.postId === postId;
+          });
+
+          // 2. delete post from store.
+          if (postIndex >= 0) {
+            postsData.splice(postIndex, 1);
+          }
+
+          return { ...state, posts: { ...state.posts, data: postsData } };
+        }
       }
 
       case "REMOVE_INFO": {
@@ -101,12 +122,6 @@ const StateProvider = ({ children }) => {
         return {
           ...state,
           user: { ...state.user, notifications: action.payload },
-        };
-      }
-      case "SET_QUERY": {
-        return {
-          ...state,
-          query: action.payload,
         };
       }
 

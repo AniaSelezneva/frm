@@ -174,7 +174,7 @@ function UploadImage({ setIsLoading, setIsError }) {
         encType="multipart/form-data"
         onSubmit={(e) => {
           e.preventDefault();
-          if (imageFileName === undefined) {
+          if (!imageFileName) {
             const message = document.getElementsByClassName("choose_image")[0];
             message.style.color = "red";
 
@@ -183,6 +183,8 @@ function UploadImage({ setIsLoading, setIsError }) {
             }, 3000);
           } else {
             uploadImage();
+            setImage(undefined);
+            setImageFileName(undefined);
           }
         }}
       >

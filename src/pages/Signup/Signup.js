@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-
-// faunaDB
-import { q, adminClient } from "../../utils/faunaDB";
-// auth
+// Auth
 import auth from "../../utils/auth";
-// withLoader hoc
+// HOCs
 import WithLoader from "../../HOCs/WithLoader";
+
 // Styles
 import signupStyles from "./styles/Signup.module.scss";
 // Layout
@@ -26,12 +24,7 @@ function Signup({ setIsLoading }) {
   // General error
   const [isError, setIsError] = useState();
 
-  // Loading = false
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
-
-  // Check if password and confirmPassword match.
+  // Check if password and confirmPassword match
   const doPasswordsMatch = () => {
     if (password === confirmPassword) {
       setPasswordsMatch(true);
@@ -42,8 +35,8 @@ function Signup({ setIsLoading }) {
     }
   };
 
-  // Signup.
-  const signup = async (e) => {
+  // Signup
+  const signup = async () => {
     setIsLoading(true);
 
     try {
@@ -61,7 +54,6 @@ function Signup({ setIsLoading }) {
       doPasswordsMatch();
 
       const response = await res.json();
-      console.log(response);
       if (response === "Email already in use") {
         setEmailUnique(false);
       } else if (response === "Handle already taken") {
@@ -76,6 +68,11 @@ function Signup({ setIsLoading }) {
     }
     setIsLoading(false);
   };
+
+  // Loading = false on page load
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   // Change color of labels when corresponding input is active.
   useEffect(() => {
@@ -238,4 +235,4 @@ function Signup({ setIsLoading }) {
   );
 }
 
-export default WithLoader(Signup, "loading");
+export default WithLoader(Signup, "Signing up...");

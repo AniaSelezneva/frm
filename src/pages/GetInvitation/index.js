@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
 // withLoader hoc
@@ -41,6 +40,7 @@ function GetInvitation({ setIsLoading }) {
     });
   };
 
+  // Add email to db.
   const addUser = async () => {
     setIsLoading(true);
 
@@ -93,7 +93,7 @@ function GetInvitation({ setIsLoading }) {
             }}
           />
           <button>Send invitation</button>
-          {error !== undefined && <p>{error}</p>}
+          {error && <p>{error}</p>}
         </form>
       )}
     </Layout>

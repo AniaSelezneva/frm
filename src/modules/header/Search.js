@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-// store
-import { store } from "../../utils/store";
+import React, { useEffect, useState } from "react";
 // SVG
 import search from "../../img/svgs/search.svg";
 
 function Search() {
-  const { state, dispatch } = useContext(store);
   const [tooShort, setTooShort] = useState(false);
+  const [query, setQuery] = useState();
 
   // const setPosts = async (searchWord, size) => {
   //   const payload = await adminClient.query(
@@ -146,7 +144,7 @@ function Search() {
         placeholder="..."
         id="query"
         onChange={(e) => {
-          dispatch({ type: "SET_QUERY", payload: e.target.value.trim() });
+          setQuery(e.target.value.trim());
           setTooShort(false);
         }}
       />
@@ -157,7 +155,7 @@ function Search() {
         onClick={() => {
           const isQueryTooShort = isTooShort();
           if (!isQueryTooShort) {
-            window.location.href = `/search/?query=${state.query}`;
+            window.location.href = `/search?query=${query}`;
           } else {
             setTooShort(true);
 

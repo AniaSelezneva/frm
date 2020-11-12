@@ -592,20 +592,24 @@ span {
   @keyframes slidedown {
     from {
       transform: translateY(-50%);
+      opacity: 0;
     }
 
     to {
       transform: translateY(0);
+      opacity: 1;
     }
   }
 
   @keyframes slideup {
     from {
-      transform: translateY(-50%);
+      transform: translateY(0);
+      opacity: 1;
     }
 
     to {
       transform: translateY(-100%);
+      opacity: 0;
     }
   }
 }

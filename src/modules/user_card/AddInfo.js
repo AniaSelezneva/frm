@@ -13,7 +13,7 @@ function AddInfo({ setIsAddInfoOpen, setIsError }) {
   const [occupation, setOccupation] = useState(state.user.occupation);
   let isSubscribed = true;
 
-  // Add info to db and dispatch 'add_info' function.
+  // Add info to db and dispatch 'add_info'
   const addInfoToDb = async () => {
     try {
       const res = await fetch("/api/addInfo", {
@@ -47,7 +47,7 @@ function AddInfo({ setIsAddInfoOpen, setIsError }) {
     }
   };
 
-  // Remove a field from info.
+  // Remove a field from info
   const removeInfo = async (info) => {
     try {
       const res = await fetch("/api/removeInfoField", {
@@ -83,13 +83,13 @@ function AddInfo({ setIsAddInfoOpen, setIsError }) {
     }
   };
 
-  // Empty input field.
+  // Empty input field
   const emptyField = (name) => {
     const input = document.getElementById(name);
     input.setAttribute("placeholder", "");
   };
 
-  // Unsubscribed
+  // Unsubscribe
   useEffect(() => {
     return () => (isSubscribed = false);
   }, []);
