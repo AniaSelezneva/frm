@@ -33,6 +33,10 @@ $post_background: rgba(253, 202, 172, 1);
     font-family: "Alegreya SC", serif, Arial, sans-serif;
     font-size: 80%;
   }
+
+  & > p {
+    word-break: keep-all;
+  }
 }
 
 // user image at the bottom of post

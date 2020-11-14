@@ -17,7 +17,9 @@ $margin: 1rem;
 
   // Restore password link
   & > a {
-    margin-top: 2rem;
+    margin-top: 5rem;
+    align-self: flex-end;
+    font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
   }
 
   @media (max-width: 830px) {
@@ -84,4 +86,5 @@ $margin: 1rem;
 // Message 'email sent' on the restore password page
 #restore_password_message {
   color: black !important;
+  font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
 }

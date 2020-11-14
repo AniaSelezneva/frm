@@ -154,7 +154,7 @@ function Post(props) {
             )}
           <Comments />
         </div>
-        <User path="post" />
+        {state.loggedIn && <User />}
       </div>
 
       {/* Full Page Image */}

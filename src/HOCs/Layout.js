@@ -1,12 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useRef, useContext } from "react";
 // Components
 import Header from "../modules/header/";
 import Footer from "../modules/footer/";
+import LoginPrompt from "../modules/login_prompt_image/LoginPrompt";
 // Svg
 import upArrow from "../img/svgs/new/up-arrow.svg";
+// Store
+import { store } from "../utils/store";
 
 function Layout(props) {
   const wait = useRef(false);
+  const { state } = useContext(store);
 
   const throttle = (callback, timeout) => {
     return () => {
@@ -57,6 +61,9 @@ function Layout(props) {
         style={{ display: "none" }}
         tabIndex="0"
       ></img>
+
+      {/* Login prompt image (appears when trying to like withoug being logged in) */}
+      {!state.loggedIn && <LoginPrompt />}
       <Footer />
     </>
   );

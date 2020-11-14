@@ -655,3 +655,14 @@ a {
     top: 3rem;
   }
 }
+
+// Animating sliding login prompt image to the right
+@keyframes slideright {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}

@@ -215,6 +215,30 @@ function PostInfo({ post }) {
                 : blueHeart
             }
             onClick={async () => {
+              // If not logged in...
+              if (!state.loggedIn) {
+                if (!state.showLoginPrompt) {
+                  dispatch({
+                    type: "SET_SHOW_LOGIN_PROMPT",
+                    payload: true,
+                  });
+                }
+
+                setTimeout(() => {
+                  const image = document.getElementsByClassName(
+                    "image_ask_to_login"
+                  )[0];
+                  if (image) {
+                    image.style.animation = "slideright 2s forwards";
+                    setTimeout(() => {
+                      dispatch({
+                        type: "SET_SHOW_LOGIN_PROMPT",
+                        payload: false,
+                      });
+                    }, 2000);
+                  }
+                }, 4000);
+              }
               isSubscribed = true;
               if (
                 state.loggedIn &&

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 // Components
 import Post from "./Post";
 // FaunaDB
@@ -11,11 +11,12 @@ import postsContainerStyles from "../styles/Posts_container.module.scss";
 function PostsContainer() {
   const { state, dispatch } = useContext(store);
   const [loading, setLoading] = useState(false);
+  const container = useRef(null);
 
   // Number of posts per page.
   const size = 5;
 
-  // Function to load more posts
+  // Load more posts.
   const loadMore = async () => {
     setLoading(true);
     const path = state.path;
@@ -65,7 +66,7 @@ function PostsContainer() {
   };
 
   return (
-    <div className={postsContainerStyles.posts}>
+    <div className={postsContainerStyles.posts} ref={container}>
       {state.posts.data &&
         state.posts.data.map((post, index) => <Post key={index} post={post} />)}
 

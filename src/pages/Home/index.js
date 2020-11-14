@@ -6,7 +6,7 @@ import WithLoader from "../../HOCs/WithLoader";
 import WithError from "../../HOCs/WithError";
 // faunaDB
 import { q, adminClient } from "../../utils/faunaDB";
-// store
+// Store
 import { store } from "../../utils/store";
 // Components
 import User from "../../modules/user_card";
@@ -268,8 +268,8 @@ function Home(props) {
           <PostsContainer />
         </div>
 
-        {/* Don't show user's card on the right if it's 'confirm' or 'invite' path*/}
-        {path !== "confirm" && path !== "invite" && <User />}
+        {/* Don't show user's card if user is not logged in*/}
+        {(state.loggedIn || path === "user") && <User />}
       </div>
     </Layout>
   );

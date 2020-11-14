@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";

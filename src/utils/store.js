@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react";
+import { act } from "react-dom/test-utils";
 
 const initialState = {
   loggedIn: false,
@@ -14,7 +15,7 @@ const initialState = {
   otherUser: {},
   posts: {},
   post: null,
-
+  showLoginPrompt: false,
   path: "",
   pendingPostLike: null,
   pendingPostUnlike: null,
@@ -31,6 +32,9 @@ const StateProvider = ({ children }) => {
       case "SET_USER": {
         const { data, ref } = action.payload;
         return { ...state, user: { ...state.user, ...data, userDbRef: ref } };
+      }
+      case "SET_SHOW_LOGIN_PROMPT": {
+        return { ...state, showLoginPrompt: action.payload };
       }
       case "SET_OTHER_USER": {
         return { ...state, otherUser: action.payload };

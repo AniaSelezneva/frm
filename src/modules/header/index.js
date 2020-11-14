@@ -16,7 +16,8 @@ function Header() {
       path !== "signup" &&
       path !== "login" &&
       path !== "restore" &&
-      path !== "resetpassword"
+      path !== "resetpassword" &&
+      path !== "restorepassword"
     )
       return true;
     else {

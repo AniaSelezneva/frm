@@ -1,0 +1,19 @@
+// Login prompt image
+#image_ask_to_login {
+  position: fixed;
+  top: 40%;
+  right: 0;
+  z-index: 100;
+  cursor: pointer;
+  animation: slideleft 2s forwards;
+
+  @keyframes slideleft {
+    from {
+      transform: translateX(100%);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+}

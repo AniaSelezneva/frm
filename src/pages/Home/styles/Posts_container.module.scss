@@ -14,7 +14,7 @@ $shadow: 5px 5px 5px grey;
     height: max-content;
     margin-top: $margin;
     background: $post_background;
-
+    position: relative;
     display: flex;
     flex-direction: column;
 
