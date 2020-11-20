@@ -154,12 +154,77 @@ function PostInfo({ post }) {
     };
   }, [isSubscribed]);
 
-  // Unsubscribe on unmount
+  // Unmount
   useEffect(() => {
     return () => {
       isSubscribed = false;
+
+      dispatch({
+        type: "SET_SHOW_LOGIN_PROMPT",
+        payload: false,
+      });
     };
   }, []);
+
+  // Hide login prompt image (cat sliding from the right)
+  const hide = () => {
+    const image = document.getElementsByClassName("image_ask_to_login")[0];
+
+    if (image) {
+      image.style.animation = "slideright 2s forwards";
+
+      setTimeout(() => {
+        dispatch({
+          type: "SET_SHOW_LOGIN_PROMPT",
+          payload: false,
+        });
+
+        dispatch({
+          type: "SET_WAIT_TO_SHOW_LOGIN_PROMPT",
+          payload: false,
+        });
+      }, 1000);
+    }
+  };
+
+  // Set timer to hide the image on the right (login prompt) and clean it on the unmount.
+  useEffect(() => {
+    let timer;
+    if (state.showLoginPrompt) {
+      timer = setTimeout(() => {
+        hide();
+      }, 4000);
+
+      return () => {
+        clearTimeout(timer);
+
+        dispatch({
+          type: "SET_WAIT_TO_SHOW_LOGIN_PROMPT",
+          payload: false,
+        });
+      };
+    }
+  }, [state.showLoginPrompt]);
+
+  const control_showing_login_prompt = () => {
+    // 1. if login prompt is not shown and not waiting...
+    if (!state.showLoginPrompt && !state.waitToShowLoginPrompt) {
+      dispatch({
+        type: "SET_SHOW_LOGIN_PROMPT",
+        payload: true,
+      });
+
+      dispatch({
+        type: "SET_WAIT_TO_SHOW_LOGIN_PROMPT",
+        payload: true,
+      });
+    }
+
+    // 2. if login prompt is shown and waiting
+    else if (state.showLoginPrompt && state.waitToShowLoginPrompt) {
+      hide();
+    }
+  };
 
   return (
     <div className={postsInfoStyles.post_info}>
@@ -217,39 +282,7 @@ function PostInfo({ post }) {
             onClick={async () => {
               // If not logged in and...
               if (!state.loggedIn) {
-                const hide = () => {
-                  const image = document.getElementsByClassName(
-                    "image_ask_to_login"
-                  )[0];
-                  if (image) {
-                    image.style.animation = "slideright 2s forwards";
-                    setTimeout(() => {
-                      dispatch({
-                        type: "SET_SHOW_LOGIN_PROMPT",
-                        payload: false,
-                      });
-                    }, 2000);
-                  }
-                };
-
-                // 1. if login prompt is shown...
-                if (!state.showLoginPrompt) {
-                  dispatch({
-                    type: "SET_SHOW_LOGIN_PROMPT",
-                    payload: true,
-                  });
-
-                  setTimeout(() => {
-                    if (state.showLoginPrompt) {
-                      hide();
-                    }
-                  }, 4000);
-                }
-                // 2. if login prompt is not shown
-                else if (state.showLoginPrompt) {
-                  console.log("hiding on click");
-                  hide();
-                }
+                control_showing_login_prompt();
               }
               isSubscribed = true;
               if (

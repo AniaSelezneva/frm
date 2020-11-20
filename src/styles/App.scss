@@ -87,27 +87,46 @@ img {
   @return nth($elements, random(length($elements)));
 }
 
-// Loading message
-#loading_message {
+// Loading image
+#loading_image {
   position: absolute;
-  background: hsla(0, 0%, 100%, 0.5);
-
-  border: 15px solid random_element(green, yellow, blue, orange, red, purple);
-  border-radius: 0.2rem;
-  padding: 1rem;
-
   left: 50%;
-  top: 30%;
-  transform: translate(-50%);
-  z-index: 100;
+  top: 50%;
+  z-index: 500;
+  transform: translate(-50%, -50%);
+  animation: rotate 2s infinite;
 
-  font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
-  font-size: 2rem;
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
 
-  & > span {
-    color: black;
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
+
+// #loading_message {
+//   position: absolute;
+//   background: hsla(0, 0%, 100%, 0.5);
+
+//   border: 15px solid random_element(green, yellow, blue, orange, red, purple);
+//   border-radius: 0.2rem;
+//   padding: 1rem;
+
+//   left: 50%;
+//   top: 30%;
+//   transform: translate(-50%);
+//   z-index: 100;
+
+//   font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
+//   font-size: 2rem;
+
+//   & > span {
+//     color: black;
+//   }
+// }
 
 p {
   word-break: break-all;
@@ -623,7 +642,7 @@ span {
 .footer {
   height: 6rem;
   margin-top: 1rem;
-  background: url(../img/svgs/kitty.svg);
+  background: url(../img/svgs/kitty_ball_1.svg);
   background-repeat: no-repeat;
   position: relative;
   left: -1rem;

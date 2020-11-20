@@ -16,6 +16,7 @@ const initialState = {
   posts: {},
   post: null,
   showLoginPrompt: false,
+  waitToShowLoginPrompt: false,
   path: "",
   pendingPostLike: null,
   pendingPostUnlike: null,
@@ -38,6 +39,9 @@ const StateProvider = ({ children }) => {
       }
       case "SET_OTHER_USER": {
         return { ...state, otherUser: action.payload };
+      }
+      case "SET_WAIT_TO_SHOW_LOGIN_PROMPT": {
+        return { ...state, waitToShowLoginPrompt: action.payload };
       }
       case "SET_PATH": {
         return { ...state, path: action.payload };
