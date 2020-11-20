@@ -62,7 +62,7 @@ function Layout(props) {
         tabIndex="0"
       ></img>
 
-      {/* Login prompt image (appears when trying to like withoug being logged in) */}
+      {/* Login prompt image (appears when trying to like without being logged in) */}
       {!state.loggedIn && <LoginPrompt />}
       <Footer />
     </>

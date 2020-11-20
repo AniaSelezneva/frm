@@ -621,11 +621,12 @@ span {
 
 // FOOTER
 .footer {
-  height: 5.5rem;
+  height: 6rem;
   margin-top: 1rem;
-  background: url(../img/svgs/bunny.svg);
+  background: url(../img/svgs/kitty.svg);
   background-repeat: no-repeat;
   position: relative;
+  left: -1rem;
 }
 
 // Custom file upload lebels
@@ -659,10 +660,10 @@ a {
 // Animating sliding login prompt image to the right
 @keyframes slideright {
   from {
-    transform: translateX(0);
+    transform: translateX(0) translateY(-50%) rotate(-90deg);
   }
 
   to {
-    transform: translateX(100%);
+    transform: translateX(100%) translateY(-50%) rotate(-90deg);
   }
 }

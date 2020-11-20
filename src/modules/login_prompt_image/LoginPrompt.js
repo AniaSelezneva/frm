@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 // Store
 import { store } from "../../utils/store";
 // SVG
-import bunny from "../../img/svgs/bunny.svg";
+import kitty_ball from "../../img/svgs/kitty_ball.svg";
 // Styles
 import loginPromptStyles from "./styles/loginPromptStyles.module.scss";
 
@@ -15,7 +15,7 @@ function LoginPrompt() {
           onClick={() => {
             window.location.href = "/login";
           }}
-          src={bunny}
+          src={kitty_ball}
           id={loginPromptStyles.image_ask_to_login}
           className="image_ask_to_login"
         />
