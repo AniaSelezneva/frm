@@ -215,16 +215,9 @@ function PostInfo({ post }) {
                 : blueHeart
             }
             onClick={async () => {
-              // If not logged in...
+              // If not logged in and...
               if (!state.loggedIn) {
-                if (!state.showLoginPrompt) {
-                  dispatch({
-                    type: "SET_SHOW_LOGIN_PROMPT",
-                    payload: true,
-                  });
-                }
-
-                setTimeout(() => {
+                const hide = () => {
                   const image = document.getElementsByClassName(
                     "image_ask_to_login"
                   )[0];
@@ -237,7 +230,26 @@ function PostInfo({ post }) {
                       });
                     }, 2000);
                   }
-                }, 4000);
+                };
+
+                // 1. if login prompt is shown...
+                if (!state.showLoginPrompt) {
+                  dispatch({
+                    type: "SET_SHOW_LOGIN_PROMPT",
+                    payload: true,
+                  });
+
+                  setTimeout(() => {
+                    if (state.showLoginPrompt) {
+                      hide();
+                    }
+                  }, 4000);
+                }
+                // 2. if login prompt is not shown
+                else if (state.showLoginPrompt) {
+                  console.log("hiding on click");
+                  hide();
+                }
               }
               isSubscribed = true;
               if (
