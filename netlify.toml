@@ -16,10 +16,11 @@
   [headers.values]
         Content-Security-Policy = """
         font-src https://fonts.gstatic.com/;
+         style-src-elem 'self' https://fonts.googleapis.com/;
         manifest-src https://pinkrabbits.netlify.app/;
         connect-src https://db.fauna.com/ 'self' https://firebasestorage.googleapis.com;
         img-src 'self' https://firebasestorage.googleapis.com/;
-        style-src 'unsafe-inline';
+        style-src 'self' https://fonts.googleapis.com/;
         script-src 'self';
         frame-ancestors 'none'; 
         default-src 'self';
