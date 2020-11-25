@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // SVG
 import Cat from "../img/svgs/kitty_ball_2.svg";
 // Styled components
