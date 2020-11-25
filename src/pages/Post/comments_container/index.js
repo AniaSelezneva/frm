@@ -41,21 +41,17 @@ function Index() {
   const after = useRef([]);
 
   // Number of posts per page.
-  const size = 5;
+  const size = 2;
 
   const observer = useRef(
-    new IntersectionObserver(
-      (entries) => {
-        const bottomElement = entries[0];
-
-        // If bottom element is visible and there is 'after' (there is next page)...
-        if (bottomElement.isIntersecting) {
-          // ... use loader function.
-          loader.current();
-        }
-      },
-      { threshold: 1 }
-    )
+    new IntersectionObserver((entries) => {
+      const bottomElement = entries[0];
+      // If bottom element is visible...
+      if (bottomElement.isIntersecting) {
+        // ... use loader function.
+        loader.current();
+      }
+    })
   );
 
   // Attach observer to element, return unobserve.
@@ -118,7 +114,7 @@ function Index() {
           <Comment comment={comment} key={index} />
         ))}
 
-      <div ref={setElement} id="load-more">
+      <div ref={setElement} id="load-more" className={postStyles.end_message}>
         {loading ? (
           <p className={postStyles.loading_message}>Loading...</p>
         ) : (

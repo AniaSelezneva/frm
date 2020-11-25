@@ -2,11 +2,17 @@ import React, { useRef, useContext } from "react";
 // Components
 import Header from "../modules/header/";
 import Footer from "../modules/footer/";
-import LoginPrompt from "../modules/login_prompt_image/LoginPrompt";
+import LoginPromptImage from "../modules/login_prompt/LoginPromptImage";
 // Svg
 import upArrow from "../img/svgs/new/up-arrow.svg";
 // Store
 import { store } from "../utils/store";
+// Styled Components
+import styled from "styled-components";
+
+const StyledUpArrow = styled(upArrow)`
+  display: none;
+`;
 
 function Layout(props) {
   const wait = useRef(false);
@@ -37,9 +43,9 @@ function Layout(props) {
     const arrow = document.getElementById("up_arrow");
 
     if (distance > 600) {
-      arrow.removeAttribute("style");
+      arrow.style.display = "block";
     } else if (distance < 600) {
-      arrow.setAttribute("style", `display: none`);
+      arrow.style.display = "none";
     }
   };
 
@@ -52,18 +58,15 @@ function Layout(props) {
         <Header />
         {props.children}
       </div>
-
-      <img
+      <StyledUpArrow
+        tabIndex="0"
         className="up_arrow"
         id="up_arrow"
-        src={upArrow}
         onClick={() => window.scrollTo(0, 0)}
-        style={{ display: "none" }}
-        tabIndex="0"
-      ></img>
+      />
 
       {/* Login prompt image (appears when trying to like without being logged in) */}
-      {!state.loggedIn && <LoginPrompt />}
+      {!state.loggedIn && <LoginPromptImage />}
       <Footer />
     </>
   );

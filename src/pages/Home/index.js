@@ -11,7 +11,7 @@ import { store } from "../../utils/store";
 // Components
 import User from "../../modules/user_card";
 import Layout from "../../HOCs/Layout";
-import PostsContainer from "./posts_container/PostsContainer";
+import PostsContainer from "./posts_container/index";
 import NewPost from "./posts_container/NewPost";
 // Styles
 import homeStyles from "./styles/Home.module.scss";
@@ -251,12 +251,13 @@ function Home(props) {
 
           {/* Other user's path */}
           {path === "user" &&
-            (Object.keys(state.otherUser).length !== 0 ? (
+            // If not initial state of otherUser(undefined), which means it's not loaded yet...
+            (state.otherUser !== undefined ? (
               <h2 className={homeStyles.posts_header}>
                 {/* User's name from pathname */}
-                {state.posts.data &&
-                  state.posts.data.length === 0 &&
-                  `${userName} hasn't posted yet`}
+                {state.posts.data && state.posts.data.length === 0
+                  ? `${userName} hasn't posted yet`
+                  : `Posts by ${userName}`}
               </h2>
             ) : (
               <h2 className={homeStyles.posts_header}>

@@ -159,23 +159,15 @@ function User() {
     ) {
       return true;
       // If path is 'user'(arbitrary user) and this user exists.
-    } else if (path === "user" && Object.keys(state.otherUser).length > 0) {
+    } else if (
+      path === "user" &&
+      state.otherUser !== undefined &&
+      Object.keys(state.otherUser).length > 0
+    ) {
       return true;
     } else {
       return false;
     }
-
-    // if (
-    //   path === "home" ||
-    //   path === "search" ||
-    //   path === "profile" ||
-    //   window.location.pathname.substring(1, 5) === "post" ||
-    //   (path === "user" && Object.keys(state.otherUser).length > 0)
-    // ) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   };
 
   return (

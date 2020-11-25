@@ -1,20 +1,35 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// store
+// Store
 import { store } from "../../utils/store";
-// faunaDB
+// FaunaDB
 import { q, adminClient } from "../../utils/faunaDB";
-// svgs
+// SVGs
 import bellTransparent from "../../img/svgs/new/bell-transparent.svg";
 import bellYellow from "../../img/svgs/new/bell-yellow.svg";
 import arrow from "../../img/svgs/arrow.svg";
 import remove from "../../img/svgs/remove.svg";
+// Styled components
+import styled from "styled-components";
+
+const StyledTransparentBell = styled(bellTransparent)``;
+const StyledYellowBell = styled(bellYellow)``;
+const StyledArrow = styled(arrow)`
+  border: none;
+  &:focus {
+    outline: 1px dashed black;
+  }
+`;
+const StyledRemove = styled(remove)`
+  cursor: pointer;
+`;
 
 function Notifications() {
   const { state, dispatch } = useContext(store);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [totalNotifications, setTotalNotifications] = useState();
+  const [loading, setLoading] = useState(false);
 
   // Number of notifications
   const size = 5;
@@ -170,8 +185,10 @@ function Notifications() {
   // Count user's notifications, get user's notifications.
   useEffect(() => {
     const dealWithNotifications = async () => {
+      setLoading(true);
       await countNotifications();
       await getUserNotifications();
+      setLoading(false);
     };
 
     dealWithNotifications();
@@ -197,25 +214,38 @@ function Notifications() {
 
   return (
     <>
-      {totalNotifications && !isError && (
+      {loading && <p id="notifications_loading_msg">loading...</p>}
+      {!isError && !loading && (
         <>
-          <input
-            title="notifications"
-            type="image"
-            id="notifications_bell"
-            src={totalNotifications === 0 ? bellTransparent : bellYellow}
-            onClick={() => {
-              if (totalNotifications > 0) {
-                if (notificationsOpen === false) {
-                  setNotificationsOpen(true);
-                } else {
-                  setNotificationsOpen(false);
+          {totalNotifications === 0 ? (
+            <StyledTransparentBell
+              id="notifications_bell"
+              onClick={() => {
+                if (totalNotifications > 0) {
+                  if (notificationsOpen === false) {
+                    setNotificationsOpen(true);
+                  } else {
+                    setNotificationsOpen(false);
+                  }
                 }
-              }
-            }}
-          />
-          {totalNotifications > 0 && (
-            <p id="total_notifications">{totalNotifications}</p>
+              }}
+            />
+          ) : (
+            <>
+              <StyledYellowBell
+                id="notifications_bell"
+                onClick={() => {
+                  if (totalNotifications > 0) {
+                    if (notificationsOpen === false) {
+                      setNotificationsOpen(true);
+                    } else {
+                      setNotificationsOpen(false);
+                    }
+                  }
+                }}
+              />
+              <p id="total_notifications">{totalNotifications}</p>
+            </>
           )}
 
           {notificationsOpen &&
@@ -235,19 +265,17 @@ function Notifications() {
                       your post
                     </Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button
-                      title="remove notification"
+                    <StyledRemove
                       className="remove_notification_button"
                       data-dont-detect-click="true"
+                      tabIndex="0"
                       onClick={() => {
                         removeNotification(
                           notification.ref,
                           notification.data.id
                         );
                       }}
-                    >
-                      <img src={remove} data-dont-detect-click="true" />
-                    </button>
+                    />
                   </li>
                 ))}
 
@@ -269,18 +297,14 @@ function Notifications() {
                 </div>
 
                 <div id="navigation_container" data-dont-detect-click="true">
-                  <input
-                    type="image"
-                    title="go to previous page"
-                    tabIndex="0"
-                    src={arrow}
-                    data-dont-detect-click="true"
+                  <StyledArrow
                     tabIndex={
                       !state.user.notifications.before ||
                       totalNotifications <= 0
                         ? "-1"
                         : "0"
                     }
+                    data-dont-detect-click="true"
                     id="prev_notifications"
                     onClick={() => {
                       changePage("back");
@@ -293,12 +317,8 @@ function Notifications() {
                     }
                   />
                   &nbsp;
-                  <input
-                    type="image"
-                    title="go to next page"
-                    tabIndex="0"
+                  <StyledArrow
                     data-dont-detect-click="true"
-                    src={arrow}
                     tabIndex={
                       !state.user.notifications.after || totalNotifications <= 0
                         ? "-1"

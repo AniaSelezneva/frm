@@ -46,32 +46,6 @@ $post_background: rgba(253, 202, 172, 1);
   object-fit: cover;
 }
 
-// Like buttons
-#red_heart,
-#blue_heart {
-  border: none;
-  width: 90%;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:focus {
-    outline: none;
-    transform: scale(1.08);
-  }
-}
-
-.inactive_like {
-  scale: 1 !important;
-}
-
-#blue_heart {
-  &:hover {
-    scale: 1.08;
-  }
-}
-
 .likes {
   display: flex;
   align-items: flex-end;

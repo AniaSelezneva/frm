@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 // SVG
 import search from "../../img/svgs/search.svg";
+// Styled components
+import styled from "styled-components";
+
+const StyledSearch = styled(search)`
+  width: 38px;
+  transition-duration: 0.2s;
+  &:focus,
+  &:hover {
+    transform: scale(1.08);
+    transition-duration: 0.2s;
+  }
+`;
 
 function Search() {
   const [tooShort, setTooShort] = useState(false);
@@ -148,10 +160,7 @@ function Search() {
           setTooShort(false);
         }}
       />
-      <input
-        type="image"
-        src={search}
-        id="search_button"
+      <StyledSearch
         onClick={() => {
           const isQueryTooShort = isTooShort();
           if (!isQueryTooShort) {
@@ -163,8 +172,10 @@ function Search() {
               const errorMsg = document.getElementById(
                 "query_too_short_message"
               );
-              errorMsg.style.animationDuration = "0.6s";
-              errorMsg.style.animationName = "slideupsearcherror";
+              if (errorMsg) {
+                errorMsg.style.animationDuration = "0.6s";
+                errorMsg.style.animationName = "slideupsearcherror";
+              }
 
               setTimeout(() => {
                 setTooShort(false);

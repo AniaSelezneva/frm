@@ -87,47 +87,6 @@ img {
   @return nth($elements, random(length($elements)));
 }
 
-// Loading image
-#loading_image {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 500;
-  transform: translate(-50%, -50%);
-  animation: rotate 2s infinite;
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
-  }
-}
-
-// #loading_message {
-//   position: absolute;
-//   background: hsla(0, 0%, 100%, 0.5);
-
-//   border: 15px solid random_element(green, yellow, blue, orange, red, purple);
-//   border-radius: 0.2rem;
-//   padding: 1rem;
-
-//   left: 50%;
-//   top: 30%;
-//   transform: translate(-50%);
-//   z-index: 100;
-
-//   font-family: "Oleo Script Swash Caps", cursive, Arial, sans-serif;
-//   font-size: 2rem;
-
-//   & > span {
-//     color: black;
-//   }
-// }
-
 p {
   word-break: break-all;
 }
@@ -214,16 +173,6 @@ p {
       }
       &:invalid {
         box-shadow: none;
-      }
-    }
-
-    // Search button
-    #search_button {
-      transition-duration: 0.2s;
-      &:focus,
-      &:hover {
-        transform: scale(1.08);
-        transition-duration: 0.2s;
       }
     }
 
@@ -372,6 +321,12 @@ p {
   position: relative;
   animation: 1s ease-out 0s 1 opacityChange;
 
+  // Notifications loading message
+  #notifications_loading_msg {
+    font-size: 70%;
+    word-break: keep-all;
+  }
+
   &:focus-within > #notifications_bell {
     transform: scale(1.08);
     transition-duration: 0.3s;
@@ -447,15 +402,6 @@ p {
       outline: 1px dashed black;
     }
 
-    // Notifications navigations buttons (arrows)
-    #prev_notifications,
-    #next_notifications {
-      border: none;
-      &:focus {
-        outline: 1px dashed black;
-      }
-    }
-
     & > li {
       cursor: initial;
       width: 100%;
@@ -493,7 +439,8 @@ p {
       gap: 0.5rem;
       cursor: auto;
 
-      :first-child {
+      #prev_notifications {
+        transform-origin: center;
         transform: rotate(180deg);
       }
       .inactive {
@@ -640,10 +587,8 @@ span {
 
 // FOOTER
 .footer {
-  height: 6rem;
+  height: 6.5rem;
   margin-top: 1rem;
-  background: url(../img/svgs/kitty_ball_1.svg);
-  background-repeat: no-repeat;
   position: relative;
   left: -1rem;
 }

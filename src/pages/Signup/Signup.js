@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import auth from "../../utils/auth";
 // HOCs
 import WithLoader from "../../HOCs/WithLoader";
-
 // Styles
 import signupStyles from "./styles/Signup.module.scss";
 // Layout
 import Layout from "../../HOCs/Layout";
+// Helpers
+import removeSpaces from "./utils/removeSpaces";
 
 function Signup({ setIsLoading }) {
   const [email, setEmail] = useState();
@@ -46,7 +47,7 @@ function Signup({ setIsLoading }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          handle,
+          handle: removeSpaces(handle),
           email,
         }),
       });

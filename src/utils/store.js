@@ -12,7 +12,7 @@ const initialState = {
     likes: [],
     totalNotifications: null,
   },
-  otherUser: {},
+  otherUser: undefined,
   posts: {},
   post: null,
   showLoginPrompt: false,

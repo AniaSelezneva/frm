@@ -11,6 +11,8 @@ import WithLoader from "../../HOCs/WithLoader";
 import signupStyles from "./styles/Signup.module.scss";
 // Layout
 import Layout from "../../HOCs/Layout";
+// Helpers
+import removeSpaces from "./utils/removeSpaces";
 
 function Signup({ setIsLoading }) {
   const { dispatch } = useContext(store);
@@ -42,7 +44,7 @@ function Signup({ setIsLoading }) {
         const res = await adminClient.query(
           q.Create(q.Collection("users"), {
             data: {
-              handle: q.LowerCase(handle),
+              handle: q.LowerCase(removeSpaces(handle)),
               email: q.LowerCase(email),
               imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.REACT_APP_BUCKET}/o/dandelion.jpg?alt=media`,
             },
