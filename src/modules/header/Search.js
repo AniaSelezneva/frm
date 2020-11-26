@@ -1,18 +1,4 @@
 import React, { useEffect, useState } from "react";
-// SVG
-import search from "../../img/svgs/search.svg";
-// Styled components
-import styled from "styled-components";
-
-const StyledSearch = styled(search)`
-  width: 38px;
-  transition-duration: 0.2s;
-  &:focus,
-  &:hover {
-    transform: scale(1.08);
-    transition-duration: 0.2s;
-  }
-`;
 
 function Search() {
   const [tooShort, setTooShort] = useState(false);
@@ -160,7 +146,10 @@ function Search() {
           setTooShort(false);
         }}
       />
-      <StyledSearch
+      <input
+        type="image"
+        id="search_icon"
+        src="/img/header/search.svg"
         onClick={() => {
           const isQueryTooShort = isTooShort();
           if (!isQueryTooShort) {

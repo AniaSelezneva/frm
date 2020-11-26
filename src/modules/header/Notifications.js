@@ -4,25 +4,6 @@ import { Link } from "react-router-dom";
 import { store } from "../../utils/store";
 // FaunaDB
 import { q, adminClient } from "../../utils/faunaDB";
-// SVGs
-import bellTransparent from "../../img/svgs/new/bell-transparent.svg";
-import bellYellow from "../../img/svgs/new/bell-yellow.svg";
-import arrow from "../../img/svgs/arrow.svg";
-import remove from "../../img/svgs/remove.svg";
-// Styled components
-import styled from "styled-components";
-
-const StyledTransparentBell = styled(bellTransparent)``;
-const StyledYellowBell = styled(bellYellow)``;
-const StyledArrow = styled(arrow)`
-  border: none;
-  &:focus {
-    outline: 1px dashed black;
-  }
-`;
-const StyledRemove = styled(remove)`
-  cursor: pointer;
-`;
 
 function Notifications() {
   const { state, dispatch } = useContext(store);
@@ -218,8 +199,10 @@ function Notifications() {
       {!isError && !loading && (
         <>
           {totalNotifications === 0 ? (
-            <StyledTransparentBell
+            <input
+              type="image"
               id="notifications_bell"
+              src="/img/header/bell-transparent.svg"
               onClick={() => {
                 if (totalNotifications > 0) {
                   if (notificationsOpen === false) {
@@ -232,7 +215,9 @@ function Notifications() {
             />
           ) : (
             <>
-              <StyledYellowBell
+              <input
+                type="image"
+                src="/img/header/bell-yellow.svg"
                 id="notifications_bell"
                 onClick={() => {
                   if (totalNotifications > 0) {
@@ -244,6 +229,7 @@ function Notifications() {
                   }
                 }}
               />
+
               <p id="total_notifications">{totalNotifications}</p>
             </>
           )}
@@ -265,7 +251,10 @@ function Notifications() {
                       your post
                     </Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <StyledRemove
+                    <input
+                      id="remove_notification"
+                      type="image"
+                      src="/img/header/remove.svg"
                       className="remove_notification_button"
                       data-dont-detect-click="true"
                       tabIndex="0"
@@ -297,13 +286,18 @@ function Notifications() {
                 </div>
 
                 <div id="navigation_container" data-dont-detect-click="true">
-                  <StyledArrow
+                  <input
+                    type="image"
+                    src="/img/header/arrow.svg"
                     tabIndex={
                       !state.user.notifications.before ||
                       totalNotifications <= 0
                         ? "-1"
                         : "0"
                     }
+                    className={`notifications_arrow ${
+                      !state.user.notifications.before && "inactive"
+                    }`}
                     data-dont-detect-click="true"
                     id="prev_notifications"
                     onClick={() => {
@@ -317,7 +311,10 @@ function Notifications() {
                     }
                   />
                   &nbsp;
-                  <StyledArrow
+                  <input
+                    type="image"
+                    src="/img/header/arrow.svg"
+                    className="notifications_arrow"
                     data-dont-detect-click="true"
                     tabIndex={
                       !state.user.notifications.after || totalNotifications <= 0

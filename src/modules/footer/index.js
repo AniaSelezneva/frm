@@ -1,36 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // SVG
-import KittyBall from "../../img/svgs/kb.svg";
-// Styled components
-import styled, { keyframes } from "styled-components";
-
-const blink = keyframes`
-  0% {
-      ry: 3.5;
-      rx: 3.4;
-    }
-
-  100% {
-    ry: 0.4;
-    rx: 5;
-  }
-`;
-
-const showTongue = keyframes`
-  to {
-    transform: translateY(5%);
-  }
-`;
-
-const StyledKitty = styled(KittyBall)`
-  /* Eyes */
-  ellipse {
-    animation: ${blink} 1s ease-out forwards;
-  }
-  .kb_svg__tongue {
-    animation: ${showTongue} 1s ease-out forwards;
-  }
-`;
+import FooterKitty from "./img/footer_kitty.js";
 
 function Footer() {
   const [footer, setFooter] = useState();
@@ -69,9 +39,41 @@ function Footer() {
     };
   }, [footer]);
 
+  // Animate the cat svg only when it's visible.
+  useEffect(() => {
+    const cat = document.getElementById("footer_kitty");
+
+    const moveOrStop = (shouldMove) => {
+      const tongue = cat.getElementById("tongue");
+      const eyes = cat.getElementsByTagName("ellipse");
+
+      if (shouldMove) {
+        tongue.style.animation = "showTongue 1s ease-out forwards";
+        for (let i = 0; i < eyes.length; i++) {
+          eyes[i].style.animation = "closeEyes 1s ease-out forwards";
+        }
+      } else {
+        tongue.style.animation = "none";
+        for (let i = 0; i < eyes.length; i++) {
+          eyes[i].style.animation = "none";
+        }
+      }
+    };
+
+    if (cat) {
+      moveOrStop(move);
+    }
+
+    // Hide tongue on hover.
+    cat.onmouseover = () => {
+      const tongue = cat.getElementById("tongue");
+      tongue.style.animation = "hideTongue 1s ease-out forwards";
+    };
+  }, [move]);
+
   return (
     <div className="footer" ref={setFooter}>
-      {move ? <StyledKitty /> : <KittyBall />}
+      <FooterKitty />
     </div>
   );
 }

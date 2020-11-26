@@ -15,5 +15,13 @@ module.exports = function override(config, env) {
   // });
 
   config = rewireSvgReactLoader(config, env);
+
+  // config.plugins.push(new MiniCssExtractPlugin());
+
+  // config.module.rules.push({
+  //   test: /\.css$/i,
+  //   use: [MiniCssExtractPlugin.loader, "css-loader"],
+  // });
+
   return config;
 };

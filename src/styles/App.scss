@@ -321,6 +321,56 @@ p {
   position: relative;
   animation: 1s ease-out 0s 1 opacityChange;
 
+  // SVG inputs
+  input {
+    border: none;
+  }
+
+  // SVGs
+  #search_icon {
+    width: 38px;
+    transition-duration: 0.2s;
+    &:focus,
+    &:hover {
+      transform: scale(1.08);
+      transition-duration: 0.2s;
+    }
+  }
+
+  #notifications_bell {
+    display: flex;
+    justify-content: center;
+    border: none;
+    width: 35px;
+    transition-duration: 0.2s;
+
+    &:focus {
+      transform: scale(1.08);
+      transition-duration: 0.3s;
+    }
+  }
+
+  .notifications_arrow {
+    border: none;
+    &:focus {
+      outline: 1px dashed black;
+    }
+  }
+
+  #prev_notifications {
+    transform-origin: center;
+    transform: rotate(180deg);
+  }
+
+  .inactive {
+    cursor: default !important;
+    filter: opacity(0.2);
+  }
+
+  #remove_notification {
+    cursor: pointer;
+  }
+
   // Notifications loading message
   #notifications_loading_msg {
     font-size: 70%;
@@ -330,29 +380,6 @@ p {
   &:focus-within > #notifications_bell {
     transform: scale(1.08);
     transition-duration: 0.3s;
-  }
-
-  // Bell
-  & > #notifications_bell {
-    display: flex;
-    justify-content: center;
-    border: none;
-    width: 35px;
-    transition-duration: 0.2s;
-
-    @keyframes opacityChange {
-      0% {
-        opacity: 0.3;
-      }
-      100% {
-        opacity: 0.9;
-      }
-    }
-
-    &:focus {
-      transform: scale(1.08);
-      transition-duration: 0.3s;
-    }
   }
 
   // Total number of notifications
@@ -438,15 +465,6 @@ p {
       display: flex;
       gap: 0.5rem;
       cursor: auto;
-
-      #prev_notifications {
-        transform-origin: center;
-        transform: rotate(180deg);
-      }
-      .inactive {
-        cursor: default !important;
-        filter: opacity(0.2);
-      }
     }
 
     #close_notifications {
@@ -629,5 +647,14 @@ a {
 
   to {
     transform: translateX(100%) translateY(-50%) rotate(-90deg);
+  }
+}
+
+@keyframes opacityChange {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.9;
   }
 }

@@ -1,0 +1,28 @@
+#footer_kitty {
+  @keyframes closeEyes {
+    from {
+      ry: 3.5;
+      rx: 3.4;
+    }
+
+    to {
+      ry: 0.4;
+      rx: 5;
+    }
+  }
+
+  @keyframes showTongue {
+    to {
+      transform: translateY(5%);
+    }
+  }
+
+  @keyframes hideTongue {
+    from {
+      transform: translateY(5%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
