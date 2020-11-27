@@ -7,7 +7,6 @@ import NewComment from "./NewComment";
 import Comment from "./Comment";
 // faunaDB
 import { q, adminClient } from "../../../utils/faunaDB";
-
 // store
 import { store } from "../../../utils/store";
 

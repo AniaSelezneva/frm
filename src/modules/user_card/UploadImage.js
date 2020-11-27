@@ -165,7 +165,7 @@ function UploadImage({ setIsLoading, setIsError }) {
   // Loading = false when page is loaded.
   useEffect(() => {
     setIsLoading(false);
-  }, []);
+  }, [setIsLoading]);
 
   return (
     <>

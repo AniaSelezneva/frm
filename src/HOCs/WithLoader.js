@@ -8,7 +8,7 @@ const WithLoader = (ComponentToWrap) => {
       <>
         {isLoading && (
           <img
-            src="./img/loading/loading_kitty.svg"
+            src="/img/loading/loading_kitty.svg"
             alt="loading"
             id="loading_kitty"
           />

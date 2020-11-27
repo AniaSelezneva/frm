@@ -50,5 +50,6 @@
     "netlify-lambda": "^2.0.1",
     "react-app-rewire-svg-react-loader": "github:codebandits/react-app-rewire-svg-react-loader"
   },
-  "proxy": "http://localhost:8888"
+  "proxy": "http://localhost:8888/"
 }
+

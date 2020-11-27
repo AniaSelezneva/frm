@@ -199,7 +199,7 @@ function PostInfo({ post }) {
                 isLiked ? (
                   <input
                     type="image"
-                    src="./img/post_info/red-heart.svg"
+                    src="/img/post_info/red-heart.svg"
                     tabIndex="0"
                     id={postsInfoStyles.red_heart}
                     onClick={async () => {
@@ -225,7 +225,7 @@ function PostInfo({ post }) {
                 post.data.likeCount === 0 || zeroLikes ? (
                   <input
                     type="image"
-                    src="./img/post_info/transparent-heart.svg"
+                    src="/img/post_info/transparent-heart.svg"
                     tabIndex="0"
                     id={postsInfoStyles.blue_heart}
                     onClick={onClick}
@@ -233,7 +233,7 @@ function PostInfo({ post }) {
                 ) : (
                   <input
                     type="image"
-                    src="./img/post_info/blue-heart.svg"
+                    src="/img/post_info/blue-heart.svg"
                     tabIndex="0"
                     id={postsInfoStyles.blue_heart}
                     onClick={onClick}

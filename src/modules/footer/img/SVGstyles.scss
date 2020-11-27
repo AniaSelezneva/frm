@@ -1,25 +1,37 @@
 #footer_kitty {
+  // Eyes animation (open and close).
   @keyframes closeEyes {
     from {
-      ry: 3.5;
-      rx: 3.4;
+      ry: 3.5px;
+      rx: 3.4px;
     }
 
     to {
-      ry: 0.4;
-      rx: 5;
+      ry: 0.4px;
+      rx: 5px;
+    }
+  }
+  @keyframes openEyes {
+    from {
+      ry: 0.4px;
+      rx: 5px;
+    }
+
+    to {
+      ry: 3.5px;
+      rx: 3.4px;
     }
   }
 
+  // Tongue animation (show and hide).
   @keyframes showTongue {
     to {
-      transform: translateY(5%);
+      transform: translateY(10%);
     }
   }
-
   @keyframes hideTongue {
     from {
-      transform: translateY(5%);
+      transform: translateY(10%);
     }
     to {
       transform: translateY(0);

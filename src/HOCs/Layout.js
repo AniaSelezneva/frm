@@ -54,7 +54,7 @@ function Layout(props) {
       <input
         alt="arrow pointing up"
         type="image"
-        src="./img/up-arrow.svg"
+        src="/img/up-arrow.svg"
         tabIndex="0"
         className="up_arrow"
         id="up_arrow"

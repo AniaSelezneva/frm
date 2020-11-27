@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import close from "../img/svgs/remove.svg";
 
 const WithError = (ComponentToWrap) => {
   return function ComponentWithError(props) {
@@ -27,9 +26,7 @@ const WithError = (ComponentToWrap) => {
           <div className="with_error">
             <p>{errorMessage}</p>
 
-            <button onClick={closeError}>
-              <img src={close} />
-            </button>
+            <button onClick={closeError}>x</button>
           </div>
         )}
         <ComponentToWrap {...props} setIsError={setIsError} />

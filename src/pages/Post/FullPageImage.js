@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from "react";
 // Styles
 import postStyles from "./styles/Post.module.scss";
-// SVG
-import closeButton from "./../../img/svgs/new/close-button.svg";
 
 function FullPageImage({ url, toggleShow }) {
   const imageRef = useRef(null);
   const closeButtonRef = useRef(null);
 
+  // Toggle show/hide full page image.
   useEffect(() => {
     const overlay = document.getElementById("image_full_page_overlay");
     if (overlay) {
@@ -45,7 +44,7 @@ function FullPageImage({ url, toggleShow }) {
         ref={closeButtonRef}
         type="image"
         id={postStyles.close_button}
-        src={closeButton}
+        src="/img/close-button.svg"
       />
     </div>
   );
