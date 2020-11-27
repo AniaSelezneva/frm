@@ -56,3 +56,23 @@ $post_background: rgba(253, 202, 172, 1);
     width: 100%;
   }
 }
+
+#red_heart,
+#blue_heart,
+#transparent_heart {
+  max-width: 25px;
+  min-width: 25px;
+  border: none;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+    transform: scale(1.08);
+  }
+}
+
+#blue_heart,
+#transparent_heart {
+  &:hover {
+    scale: 1.08;
+  }
+}

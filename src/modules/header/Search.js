@@ -150,6 +150,7 @@ function Search() {
         type="image"
         id="search_icon"
         src="/img/header/search.svg"
+        alt="search icon"
         onClick={() => {
           const isQueryTooShort = isTooShort();
           if (!isQueryTooShort) {

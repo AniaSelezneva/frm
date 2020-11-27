@@ -3,16 +3,9 @@ import React, { useRef, useContext } from "react";
 import Header from "../modules/header/";
 import Footer from "../modules/footer/";
 import LoginPromptImage from "../modules/login_prompt/LoginPromptImage";
-// Svg
-import upArrow from "../img/svgs/new/up-arrow.svg";
+
 // Store
 import { store } from "../utils/store";
-// Styled Components
-import styled from "styled-components";
-
-const StyledUpArrow = styled(upArrow)`
-  display: none;
-`;
 
 function Layout(props) {
   const wait = useRef(false);
@@ -58,10 +51,14 @@ function Layout(props) {
         <Header />
         {props.children}
       </div>
-      <StyledUpArrow
+      <input
+        alt="arrow pointing up"
+        type="image"
+        src="./img/up-arrow.svg"
         tabIndex="0"
         className="up_arrow"
         id="up_arrow"
+        style={{ display: "none" }}
         onClick={() => window.scrollTo(0, 0)}
       />
 

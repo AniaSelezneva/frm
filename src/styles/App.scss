@@ -541,6 +541,7 @@ p {
   bottom: 0;
   align-self: flex-end;
   cursor: pointer;
+  border: none;
 
   &:focus {
     outline: none;
@@ -657,4 +658,25 @@ a {
   100% {
     opacity: 0.9;
   }
+}
+
+// Rotate kitty on withLoader hoc
+@keyframes rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+// Loading rotating kitty
+#loading_kitty {
+  position: absolute;
+  left: 40%;
+  top: 50%;
+  z-index: 500;
+  scale: 0.6;
+  animation: rotate 2s infinite;
+  background: transparent;
 }

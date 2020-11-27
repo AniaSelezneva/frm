@@ -1,27 +1,4 @@
 import React, { useState } from "react";
-// SVG
-import Cat from "../img/svgs/kitty_ball_2.svg";
-// Styled components
-import styled, { keyframes } from "styled-components";
-
-const rotate = keyframes`
-from {
-  transform: translate(-50%, -50%) rotate(0);
-}
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-`;
-
-const StyledCat = styled(Cat)`
-  position: absolute;
-  left: 40%;
-  top: 50%;
-  z-index: 500;
-  scale: 0.6;
-  animation: ${rotate} 2s infinite;
-  background: transparent;
-`;
 
 const WithLoader = (ComponentToWrap) => {
   return function ComponentWithLoader(props) {
@@ -29,7 +6,13 @@ const WithLoader = (ComponentToWrap) => {
 
     return (
       <>
-        {isLoading && <StyledCat />}
+        {isLoading && (
+          <img
+            src="./img/loading/loading_kitty.svg"
+            alt="loading"
+            id="loading_kitty"
+          />
+        )}
         <ComponentToWrap {...props} setIsLoading={setIsLoading} />
       </>
     );

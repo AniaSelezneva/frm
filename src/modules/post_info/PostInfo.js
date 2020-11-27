@@ -7,51 +7,8 @@ import postsInfoStyles from "./styles/Post_info.module.scss";
 // Day.js
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-// Svgs
-import redHeart from "../../img/svgs/new/red-heart.svg";
-import blueHeart from "../../img/svgs/new/blue-heart.svg";
-import transparentHeart from "../../img/svgs/new/transparent-heart.svg";
 // Components
 import LoginPromptTrigger from "../login_prompt/LoginPromptTrigger";
-// Styled components
-import styled from "styled-components";
-
-const StyledRedHeart = styled(redHeart)`
-  max-width: 25px;
-  min-width: 25px;
-  border: none;
-  cursor: pointer;
-  &:focus {
-    outline: none;
-    transform: scale(1.08);
-  }
-`;
-const StyledBlueHeart = styled(blueHeart)`
-  max-width: 25px;
-  min-width: 25px;
-  border: none;
-  cursor: pointer;
-  &:focus {
-    outline: none;
-    transform: scale(1.08);
-  }
-  &:hover {
-    scale: 1.08;
-  }
-`;
-const StyledTransparentHeart = styled(transparentHeart)`
-  max-width: 25px;
-  min-width: 25px;
-  border: none;
-  cursor: pointer;
-  &:focus {
-    outline: none;
-    transform: scale(1.08);
-  }
-  &:hover {
-    scale: 1.08;
-  }
-`;
 
 dayjs.extend(relativeTime);
 
@@ -240,7 +197,9 @@ function PostInfo({ post }) {
               {
                 // If is liked by the user
                 isLiked ? (
-                  <StyledRedHeart
+                  <input
+                    type="image"
+                    src="./img/post_info/red-heart.svg"
                     tabIndex="0"
                     id={postsInfoStyles.red_heart}
                     onClick={async () => {
@@ -264,13 +223,17 @@ function PostInfo({ post }) {
                   />
                 ) : // If not liked by the user
                 post.data.likeCount === 0 || zeroLikes ? (
-                  <StyledTransparentHeart
+                  <input
+                    type="image"
+                    src="./img/post_info/transparent-heart.svg"
                     tabIndex="0"
                     id={postsInfoStyles.blue_heart}
                     onClick={onClick}
                   />
                 ) : (
-                  <StyledBlueHeart
+                  <input
+                    type="image"
+                    src="./img/post_info/blue-heart.svg"
                     tabIndex="0"
                     id={postsInfoStyles.blue_heart}
                     onClick={onClick}
