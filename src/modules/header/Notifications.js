@@ -203,15 +203,6 @@ function Notifications() {
               type="image"
               id="notifications_bell"
               src="/img/header/bell-transparent.svg"
-              onClick={() => {
-                if (totalNotifications > 0) {
-                  if (notificationsOpen === false) {
-                    setNotificationsOpen(true);
-                  } else {
-                    setNotificationsOpen(false);
-                  }
-                }
-              }}
             />
           ) : (
             <>
@@ -219,9 +210,10 @@ function Notifications() {
                 type="image"
                 src="/img/header/bell-yellow.svg"
                 id="notifications_bell"
+                data-dont-detect-click="true"
                 onClick={() => {
                   if (totalNotifications > 0) {
-                    if (notificationsOpen === false) {
+                    if (!notificationsOpen) {
                       setNotificationsOpen(true);
                     } else {
                       setNotificationsOpen(false);

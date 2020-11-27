@@ -1,0 +1,27 @@
+.heart {
+  border: none;
+  min-width: 25px;
+  max-width: 25px;
+  scale: 1 !important;
+  cursor: pointer;
+}
+
+#sliding_kitty {
+  border: none;
+  position: fixed;
+  top: 50%;
+  right: -7.4rem;
+  z-index: 100;
+  cursor: pointer;
+  animation: slideleft 2s forwards;
+
+  @keyframes slideleft {
+    from {
+      transform: translateX(100%) translateY(-50%) rotate(-90deg);
+    }
+
+    to {
+      transform: translateX(0) translateY(-50%) rotate(-90deg);
+    }
+  }
+}

@@ -1,27 +1,8 @@
 import React, { useContext, useEffect } from "react";
 // Store
 import { store } from "../../utils/store";
-// SVG
-import blueHeart from "../../img/svgs/new/blue-heart.svg";
-import transparentHeart from "../../img/svgs/new/transparent-heart.svg";
-// Styled components
-import styled from "styled-components";
-
-const StyledBlueHeart = styled(blueHeart)`
-  border: none;
-  min-width: 25px;
-  max-width: 25px;
-  scale: 1 !important;
-  cursor: pointer;
-`;
-
-const StyledTransparentHeart = styled(transparentHeart)`
-  border: none;
-  min-width: 25px;
-  max-width: 25px;
-  scale: 1 !important;
-  cursor: pointer;
-`;
+// Style
+import "./svgStyle.scss";
 
 function LoginPromptTrigger({ likeCount }) {
   const { state, dispatch } = useContext(store);
@@ -100,7 +81,10 @@ function LoginPromptTrigger({ likeCount }) {
     <>
       {/* Heart image (transparent or blue depending on amount of likes) */}
       {likeCount <= 0 ? (
-        <StyledTransparentHeart
+        <input
+          className="heart"
+          type="image"
+          src="/img/post_info/transparent-heart.svg"
           onClick={async () => {
             // If not logged in and...
             if (!state.loggedIn) {
@@ -109,7 +93,10 @@ function LoginPromptTrigger({ likeCount }) {
           }}
         />
       ) : (
-        <StyledBlueHeart
+        <input
+          type="image"
+          className="heart"
+          src="/img/post_info/blue-heart.svg"
           onClick={async () => {
             // If not logged in and...
             if (!state.loggedIn) {
