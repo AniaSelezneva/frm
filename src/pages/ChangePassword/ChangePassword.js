@@ -48,6 +48,11 @@ function ChangePassword({ setIsLoading }) {
     setIsLoading(false);
   }, []);
 
+  // OverflowX = hidden on body (otherwise the page jumps on animation - buttom scroll appears and disappears)
+  useEffect(() => {
+    document.body.style.overflowX = "hidden";
+  }, []);
+
   // Check if password and confirmPassword match.
   const doPasswordsMatch = () => {
     if (password === confirmPassword) {

@@ -10,7 +10,7 @@ import postStyles from "./styles/Post.module.scss";
 import Layout from "../../HOCs/Layout";
 import User from "../../modules/user_card/index";
 import Comments from "./comments_container";
-import FullPageImage from "./FullPageImage";
+import FullScreenImage from "./FullScreenImage";
 import DeletePostModal from "./DeletePostModal";
 import PostInfo from "../../modules/post_info/PostInfo";
 // Store
@@ -159,7 +159,7 @@ function Post(props) {
 
       {/* Full Page Image */}
       {showFullPageImage && state.post.data.imageUrl ? (
-        <FullPageImage
+        <FullScreenImage
           url={state.post.data.imageUrl}
           toggleShow={setShowFullPageImage}
         />

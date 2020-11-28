@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from "react";
 // Styles
 import postStyles from "./styles/Post.module.scss";
 
-function FullPageImage({ url, toggleShow }) {
+function FullScreenImage({ url, toggleShow }) {
   const imageRef = useRef(null);
   const closeButtonRef = useRef(null);
 
   // Toggle show/hide full page image.
   useEffect(() => {
-    const overlay = document.getElementById("image_full_page_overlay");
+    const overlay = document.getElementById("image_full_screen_overlay");
     if (overlay) {
       overlay.onclick = () => {
         toggleShow(false);
@@ -21,6 +21,13 @@ function FullPageImage({ url, toggleShow }) {
 
       closeButtonRef.current.onclick = () => {
         toggleShow(false);
+      };
+
+      // Exit full screen mode when 'Escape' is clicked.
+      document.onkeydown = (e) => {
+        if (e.key === `Escape`) {
+          toggleShow(false);
+        }
       };
     }
   }, []);
@@ -35,19 +42,23 @@ function FullPageImage({ url, toggleShow }) {
   }, []);
 
   return (
+    // Container
     <div
-      className={postStyles.image_full_page_overlay}
-      id="image_full_page_overlay"
+      id="image_full_screen_overlay"
+      className={postStyles.image_full_screen_overlay}
     >
-      <img ref={imageRef} src={url} id={postStyles.full_page_image} />
+      {/* Image itself */}
+      <img src={url} id={postStyles.full_screen_image} ref={imageRef} />
+      {/* Exit full screen */}
       <input
-        ref={closeButtonRef}
         type="image"
-        id={postStyles.close_button}
         src="/img/close-button.svg"
+        alt="exit full screen"
+        id={postStyles.close_button}
+        ref={closeButtonRef}
       />
     </div>
   );
 }
 
-export default FullPageImage;
+export default FullScreenImage;

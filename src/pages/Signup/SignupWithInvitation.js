@@ -158,6 +158,11 @@ function Signup({ setIsLoading }) {
     }
   }, [handleUnique]);
 
+  // OverflowX = hidden on body (otherwise the page jumps on animation - buttom scroll appears and disappears)
+  useEffect(() => {
+    document.body.style.overflowX = "hidden";
+  }, []);
+
   // // Change color of email label and input if there is error.
   // useEffect(() => {
   //   const input = document.getElementsByName("email")[0];

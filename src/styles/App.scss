@@ -660,6 +660,20 @@ a {
   }
 }
 
+// Loading rotating kitty
+#loading_kitty {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 500;
+  scale: 0.6;
+  animation: rotate 2s infinite;
+  background: transparent;
+}
+
+// ANIMATION
 // Rotate kitty on withLoader hoc
 @keyframes rotate {
   from {
@@ -668,15 +682,4 @@ a {
   to {
     transform: translate(-50%, -50%) rotate(360deg);
   }
-}
-
-// Loading rotating kitty
-#loading_kitty {
-  position: absolute;
-  left: 40%;
-  top: 50%;
-  z-index: 500;
-  scale: 0.6;
-  animation: rotate 2s infinite;
-  background: transparent;
 }

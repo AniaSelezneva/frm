@@ -13,7 +13,7 @@ function LoginPromptImage() {
       {state.showLoginPrompt && (
         <input
           type="image"
-          src="./img/login_prompt/sliding_kitty.svg"
+          src="/img/login_prompt/sliding_kitty.svg"
           alt="cat prompting to login"
           id="sliding_kitty"
           className="image_ask_to_login"

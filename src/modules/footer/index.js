@@ -3,21 +3,25 @@ import React, { useEffect, useRef, useState } from "react";
 import FooterKitty from "./img/footer_kitty.js";
 
 function Footer() {
-  const [footer, setFooter] = useState();
+  const footer = useRef();
   const [eyesClosed, setEyesClosed] = useState(false);
   const [shouldWait, setShouldWait] = useState(false);
-
+  let subscribed = true;
   let timeoutId;
 
-  // Activate movement 1 second after the svg is detected by InsersectonObserver.
+  // Set the observer to activate movement
+  // 1 second after the svg is detected by InsersectonObserver.
   const observer = useRef(
     new IntersectionObserver((entries) => {
       const bottomElement = entries[0];
       // If footer is visible...
       if (bottomElement.isIntersecting) {
+        subscribed = true;
         // ... start moving the SVG.
         timeoutId = setTimeout(() => {
-          setEyesClosed(true);
+          if (subscribed) {
+            setEyesClosed(true);
+          }
         }, 1000);
       } else {
         setEyesClosed(false);
@@ -28,27 +32,28 @@ function Footer() {
     })
   );
 
+  // Start observing.
   useEffect(() => {
     const currentObserver = observer.current;
-    if (footer) {
-      currentObserver.observe(footer);
+    if (footer.current) {
+      currentObserver.observe(footer.current);
     }
 
     return () => {
-      if (footer) {
-        currentObserver.unobserve(footer);
+      if (footer.current) {
+        currentObserver.unobserve(footer.current);
       }
     };
   }, [footer]);
 
-  // Animate the cat svg only when it's visible.
+  // Animate the cat svg only when it's visible and when it's clicked or hovered.
   useEffect(() => {
     const cat = document.getElementById("footer_kitty");
+    const tongue = cat.getElementById("tongue");
+    const eyes = cat.getElementsByTagName("ellipse");
 
-    // Function factory, returns show_tongue or hide_tongue function depending on the argument (string 'show' or 'hide').
+    // Show tongue or hide tongue depending on the argument (string 'show' or 'hide').
     const tongueAction = (action) => {
-      const tongue = cat.getElementById("tongue");
-
       // Show tongue.
       if (action === "show") {
         tongue.style.animation = "showTongue 1s ease-out forwards";
@@ -59,20 +64,18 @@ function Footer() {
       }
     };
 
-    // Function factory, returns close_eyes or open_eyes function depending on the argument (string 'open' or 'close').
+    // Close eyes or open eyes  depending on the argument (string 'open' or 'close').
     const eyesAction = (action) => {
-      const eyes = cat.getElementsByTagName("ellipse");
-
       // Close eyes.
       if (action === "close") {
         for (let i = 0; i < eyes.length; i++) {
-          eyes[i].style.animation = "closeEyes 1s ease-out forwards";
+          eyes[i].style.animation = "closeEyes 0.5s ease-out forwards";
         }
       }
       // Open eyes.
       else if (action === "open") {
         for (let i = 0; i < eyes.length; i++) {
-          eyes[i].style.animation = "openEyes 1s ease-out forwards";
+          eyes[i].style.animation = "openEyes 0.5s ease-out forwards";
         }
       }
     };
@@ -82,18 +85,19 @@ function Footer() {
       tongueAction("show");
       eyesAction("close");
       setShouldWait(true);
+
       setTimeout(() => {
-        setShouldWait(false);
+        if (subscribed) setShouldWait(false);
       }, 1000);
     }
     // Open eyes, hide tongue.
     else {
-      tongueAction("hide");
-      eyesAction("open");
-      setShouldWait(true);
-      setTimeout(() => {
-        setShouldWait(false);
-      }, 1000);
+      tongue.style.animation = "none";
+      for (let i = 0; i < eyes.length; i++) {
+        eyes[i].style.animation = "none";
+        eyes[i].style.animation = "none";
+      }
+      if (subscribed) setShouldWait(false);
     }
 
     const handler = () => {
@@ -103,16 +107,20 @@ function Footer() {
           eyesAction("open");
           setShouldWait(true);
           setTimeout(() => {
-            setShouldWait(false);
-            setEyesClosed(false);
+            if (subscribed) {
+              setShouldWait(false);
+              setEyesClosed(false);
+            }
           }, 1000);
         } else if (!eyesClosed) {
           tongueAction("show");
           eyesAction("close");
           setShouldWait(true);
           setTimeout(() => {
-            setShouldWait(false);
-            setEyesClosed(true);
+            if (subscribed) {
+              setShouldWait(false);
+              setEyesClosed(true);
+            }
           }, 1000);
         }
       }
@@ -125,10 +133,21 @@ function Footer() {
     cat.onclick = () => {
       handler();
     };
+
+    return () => {
+      subscribed = false;
+    };
   }, [eyesClosed]);
 
+  // Unsubscribe.
+  useEffect(() => {
+    return () => {
+      subscribed = false;
+    };
+  }, []);
+
   return (
-    <div className="footer" ref={setFooter}>
+    <div className="footer" ref={footer}>
       <FooterKitty />
     </div>
   );
