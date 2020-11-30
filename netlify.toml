@@ -16,7 +16,7 @@
   [headers.values]
         Content-Security-Policy = """
         font-src https://fonts.gstatic.com/;
-        manifest-src https://pinkrabbits.netlify.app/;
+        manifest-src https://petshow.netlify.app/;
         connect-src https://db.fauna.com/ 'self' https://firebasestorage.googleapis.com;
         img-src 'self' https://firebasestorage.googleapis.com/;
         style-src 'self' https://fonts.googleapis.com/;

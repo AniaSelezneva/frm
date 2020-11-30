@@ -230,11 +230,17 @@ function Home(props) {
             ))}
 
           {/* Search path */}
-          {path === "search" && (
-            <p className={homeStyles.posts_header}>
-              Search results for: {query}
-            </p>
-          )}
+          {path === "search" &&
+            Object.keys(state.posts).length > 0 &&
+            // Nothing was found
+            (state.posts.data && state.posts.data.length === 0 ? (
+              <p className={homeStyles.posts_header}>Nothing was found</p>
+            ) : (
+              // Something was found
+              <p className={homeStyles.posts_header}>
+                Search results for: {query}
+              </p>
+            ))}
 
           {/* Profile path */}
           {path === "profile" && state.loggedIn && state.posts.data && (
