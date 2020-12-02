@@ -51,6 +51,11 @@ function RestorePassword({ setIsLoading }) {
     }
   }, [emailCorrect]);
 
+  // OverflowX = hidden on body (otherwise the page jumps on animation - buttom scroll appears and disappears)
+  useEffect(() => {
+    document.body.style.overflowX = "hidden";
+  }, []);
+
   return (
     <Layout>
       <form

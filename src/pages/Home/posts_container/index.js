@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState } from "react";
 // Components
 import Post from "./Post";
 // FaunaDB
@@ -8,14 +8,11 @@ import { store } from "../../../utils/store";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";
 
-function PostsContainer() {
+function PostsContainer({ size }) {
   const { state, dispatch } = useContext(store);
   const [loading, setLoading] = useState(false);
-  const container = useRef(null);
 
-  // Number of posts per page.
-  const size = 5;
-
+  // ************ FUNCTION ********************
   // Load more posts.
   const loadMore = async () => {
     setLoading(true);
@@ -61,16 +58,19 @@ function PostsContainer() {
         )
       );
     }
+    // Add posts to existing posts in the state.
     dispatch({ type: "ADD_POSTS", payload: res });
     setLoading(false);
   };
 
+  // ************* RETURN *********************
   return (
-    <div className={postsContainerStyles.posts} ref={container}>
-      {state.posts.data &&
+    <div className={postsContainerStyles.posts}>
+      {state.posts &&
+        state.posts.data &&
         state.posts.data.map((post, index) => <Post key={index} post={post} />)}
 
-      {state.posts.after && (
+      {state.posts && state.posts.after && (
         <div className={postsContainerStyles.load_more}>
           {loading ? (
             <p className={postsContainerStyles.loading_message}>Loading...</p>

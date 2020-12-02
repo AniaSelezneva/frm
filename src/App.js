@@ -13,7 +13,7 @@ import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/index";
 import Post from "./pages/Post/index";
 import RestorePassword from "./pages/RestorePassword/RestorePassword";
-import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import PageNotFound from "./pages/404/PageNotFound";
 // Store
 import { store } from "./utils/store";
@@ -53,7 +53,7 @@ function App() {
           {state.loggedIn && <Redirect to="/" />}
         </Route>
 
-        <Route exact path="/resetpassword" component={ChangePassword}>
+        <Route exact path="/resetpassword" component={ResetPassword}>
           {state.loggedIn && <Redirect to="/" />}
         </Route>
 

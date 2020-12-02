@@ -104,6 +104,14 @@ p {
     margin-top: 0.5rem;
   }
 
+  // Bell with zero notifications
+  .inactive_bell {
+    &:focus,
+    &:hover {
+      transform: none !important;
+    }
+  }
+
   & > ul > li > a {
     &:focus,
     &:hover {

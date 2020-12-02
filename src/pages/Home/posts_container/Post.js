@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // Styles
 import postsContainerStyles from "../styles/Posts_container.module.scss";
@@ -21,7 +21,7 @@ function Post({ post }) {
   return (
     <div className={postsContainerStyles.post}>
       <div className={postsContainerStyles.post_main_body}>
-        {post.data.imageUrl !== undefined && (
+        {post.data.imageUrl && (
           <Link
             to={`/post/${post.data.postId}`}
             className={postsContainerStyles.image_link}

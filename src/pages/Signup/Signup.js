@@ -52,16 +52,19 @@ function Signup({ setIsLoading }) {
         }),
       });
 
-      doPasswordsMatch();
+      const passwordsMatch = doPasswordsMatch();
+      setPasswordsMatch(passwordsMatch);
 
-      const response = await res.json();
-      if (response === "Email already in use") {
-        setEmailUnique(false);
-      } else if (response === "Handle already taken") {
-        setHandleUnique(false);
-      } else if (response === "User is added to database") {
-        await auth.signup(email, password);
-        setConfirmationSent(true);
+      if (passwordsMatch) {
+        const response = await res.json();
+        if (response === "Email already in use") {
+          setEmailUnique(false);
+        } else if (response === "Handle already taken") {
+          setHandleUnique(false);
+        } else if (response === "User is added to database") {
+          await auth.signup(email, password);
+          setConfirmationSent(true);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -158,7 +161,7 @@ function Signup({ setIsLoading }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            signup(e);
+            signup();
           }}
           method="post"
           id={signupStyles.form}

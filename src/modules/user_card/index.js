@@ -127,7 +127,6 @@ function User() {
         button.style.display = "none";
         setIsCardOpen(true);
       } else if (path === "user") {
-        button.style.display = "none";
         setIsCardOpen(true);
       }
     }
@@ -181,8 +180,9 @@ function User() {
               toggleOpenCard();
             }}
           >
-            {state.path === "user" ? state.otherUser.handle : state.user.handle}
+            {path === "user" ? state.otherUser.handle : state.user.handle}
           </button>
+
           <div className={userCardStyles.user} id="user_card">
             {/* Add info */}
             {isAddInfoOpen && <AddInfo setIsAddInfoOpen={setIsAddInfoOpen} />}

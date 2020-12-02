@@ -23,7 +23,7 @@ function NewPost({ setIsLoading }) {
   // DOM elements
   const form = useRef(null);
 
-  // Loading = false on component load
+  // Loading = false on component load.
   useEffect(() => {
     setIsLoading(false);
   }, []);

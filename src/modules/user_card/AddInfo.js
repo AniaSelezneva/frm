@@ -95,7 +95,15 @@ function AddInfo({ setIsAddInfoOpen, setIsError }) {
   }, []);
 
   return (
-    <form className={userCardStyles.form}>
+    <form
+      className={userCardStyles.form}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          addInfoToDb();
+        }
+      }}
+    >
       <label htmlFor="location">Location: </label>
       <div className={userCardStyles.input}>
         <input
@@ -166,15 +174,7 @@ function AddInfo({ setIsAddInfoOpen, setIsError }) {
       </div>
 
       <span className={userCardStyles.buttons_container}>
-        <button
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            addInfoToDb();
-          }}
-        >
-          submit
-        </button>
+        <button type="submit">submit</button>
         <button onClick={() => setIsAddInfoOpen(false)}>close</button>
       </span>
     </form>

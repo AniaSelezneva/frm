@@ -203,6 +203,8 @@ function Notifications() {
               type="image"
               id="notifications_bell"
               src="/img/header/bell-transparent.svg"
+              tabIndex="-1"
+              className="inactive_bell"
             />
           ) : (
             <>

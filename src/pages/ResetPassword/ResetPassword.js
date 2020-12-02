@@ -10,17 +10,17 @@ import Layout from "../../HOCs/Layout";
 // Styles
 import loginStyles from "../Login/styles/Login.module.scss";
 
-function ChangePassword({ setIsLoading }) {
+function ResetPassword({ setIsLoading }) {
   const { dispatch } = useContext(store);
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
-  const [passwordsMatch, setPasswordsMatch] = useState();
+  const [passwordsMatch, setPasswordsMatch] = useState(undefined);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
 
   const [error, setError] = useState(undefined);
-  const [userNotFound, setUserNotFound] = useState(false);
+  const [userNotFound, setUserNotFound] = useState(undefined);
 
   // Recover and set user's email.
   useEffect(() => {
@@ -91,22 +91,24 @@ function ChangePassword({ setIsLoading }) {
 
   // Change color of passwords label and input if there is error.
   useEffect(() => {
-    const password = document.getElementsByName("password")[0];
-    const confirmPassword = document.getElementsByName("confirmPassword")[0];
-    const passwordLabel = document.getElementById("password_label");
-    const confirmPasswordLabel = document.getElementById(
-      "confirm_password_label"
-    );
-    if (passwordsMatch || passwordsMatch === undefined) {
-      password.style.border = "1px solid black";
-      confirmPassword.style.border = "1px solid black";
-      passwordLabel.style.color = "black";
-      confirmPasswordLabel.style.color = "black";
-    } else if (!passwordsMatch) {
-      password.style.border = "1px solid rgba(211, 56, 49, 1)";
-      confirmPassword.style.border = "1px solid rgba(211, 56, 49, 1)";
-      passwordLabel.style.color = "rgba(211, 56, 49, 1)";
-      confirmPasswordLabel.style.color = "rgba(211, 56, 49, 1)";
+    if (userNotFound !== undefined) {
+      const password = document.getElementsByName("password")[0];
+      const confirmPassword = document.getElementsByName("confirmPassword")[0];
+      const passwordLabel = document.getElementById("password_label");
+      const confirmPasswordLabel = document.getElementById(
+        "confirm_password_label"
+      );
+      if (passwordsMatch || passwordsMatch === undefined) {
+        password.style.border = "1px solid black";
+        confirmPassword.style.border = "1px solid black";
+        passwordLabel.style.color = "black";
+        confirmPasswordLabel.style.color = "black";
+      } else if (!passwordsMatch) {
+        password.style.border = "1px solid rgba(211, 56, 49, 1)";
+        confirmPassword.style.border = "1px solid rgba(211, 56, 49, 1)";
+        passwordLabel.style.color = "rgba(211, 56, 49, 1)";
+        confirmPasswordLabel.style.color = "rgba(211, 56, 49, 1)";
+      }
     }
   }, [passwordsMatch]);
 
@@ -123,7 +125,9 @@ function ChangePassword({ setIsLoading }) {
         setPasswordUpdated(true);
 
         await auth.login(email, password, true);
-        dispatch({ type: "LOG_IN" });
+        setTimeout(() => {
+          dispatch({ type: "LOG_IN" });
+        }, 1500);
       } catch (error) {
         console.log(error);
         setError("Something went wrong, please try again later");
@@ -132,6 +136,11 @@ function ChangePassword({ setIsLoading }) {
 
     setIsLoading(false);
   };
+
+  // OverflowX = hidden on body (otherwise the page jumps on animation - buttom scroll appears and disappears)
+  useEffect(() => {
+    document.body.style.overflowX = "hidden";
+  }, []);
 
   return (
     <Layout>
@@ -143,57 +152,57 @@ function ChangePassword({ setIsLoading }) {
         method="post"
         id={loginStyles.form}
       >
-        {userNotFound ? (
-          <p>Password reset link is invalid</p>
-        ) : (
-          <>
-            {" "}
-            <label htmlFor="email" id="email_label">
-              Email:
-            </label>
-            <input value={email} disabled></input>
-            <label htmlFor="password" id="password_label">
-              Password:
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setError(undefined);
-                setPasswordsMatch(true);
-              }}
-              required="required"
-            ></input>
-            <label htmlFor="confirmPassword" id="confirm_password_label">
-              Confirm password:
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              id="confirmPassword"
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                setError(undefined);
-                setPasswordsMatch(true);
-              }}
-              required="required"
-            ></input>
-            {passwordsMatch === false ? <p>Passwords don't match</p> : null}
-            {error !== undefined && <p>{error}</p>}
-            {!passwordUpdated ? (
-              <button type="submit">Reset password</button>
-            ) : (
-              <p id={loginStyles.restore_password_message}>
-                Password had been reset
-              </p>
-            )}
-          </>
-        )}
+        {userNotFound !== undefined &&
+          (userNotFound ? (
+            <p>Password reset link is invalid</p>
+          ) : (
+            <>
+              <label htmlFor="email" id="email_label">
+                Email:
+              </label>
+              <input value={email} disabled></input>
+              <label htmlFor="password" id="password_label">
+                Password:
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError(undefined);
+                  setPasswordsMatch(true);
+                }}
+                required="required"
+              ></input>
+              <label htmlFor="confirmPassword" id="confirm_password_label">
+                Confirm password:
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  setError(undefined);
+                  setPasswordsMatch(true);
+                }}
+                required="required"
+              ></input>
+              {passwordsMatch === false ? <p>Passwords don't match</p> : null}
+              {error !== undefined && <p>{error}</p>}
+              {!passwordUpdated ? (
+                <button type="submit">Reset password</button>
+              ) : (
+                <p id={loginStyles.restore_password_message}>
+                  Password had been reset
+                </p>
+              )}
+            </>
+          ))}
       </form>
     </Layout>
   );
 }
 
-export default WithLoader(ChangePassword, "wait");
+export default WithLoader(ResetPassword);

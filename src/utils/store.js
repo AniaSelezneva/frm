@@ -1,5 +1,4 @@
 import React, { createContext, useReducer } from "react";
-import { act } from "react-dom/test-utils";
 
 const initialState = {
   loggedIn: false,
@@ -26,7 +25,7 @@ const store = createContext(initialState);
 const { Provider } = store;
 
 const StateProvider = ({ children }) => {
-  const reducer = (state = initialState, action) => {
+  const reducer = (state, action) => {
     switch (action.type) {
       case "LOG_IN":
         return { ...state, loggedIn: true };
