@@ -16,7 +16,7 @@ function Login({ setIsLoading }) {
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [credentialsCorrect, setCredentialsCorrect] = useState();
+  const [credentialsCorrect, setCredentialsCorrect] = useState(undefined);
   const [error, setError] = useState(undefined);
 
   // Login
@@ -66,7 +66,7 @@ function Login({ setIsLoading }) {
     }
   }, [credentialsCorrect]);
 
-  // OverflowX = hidden on body (otherwise the page jumps on animation - buttom scroll appears and disappears)
+  // OverflowX = hidden on body (otherwise the page jumps on animation - bottom scroll appears and disappears)
   useEffect(() => {
     document.body.style.overflowX = "hidden";
   }, []);
@@ -109,7 +109,7 @@ function Login({ setIsLoading }) {
           }}
           required="required"
         ></input>
-        {credentialsCorrect && (
+        {credentialsCorrect !== undefined && !credentialsCorrect && (
           <p>No user found with that email, or password invalid</p>
         )}
         {error && <p>{error}</p>}

@@ -103,6 +103,7 @@ $shadow: 5px 5px 5px grey;
 // 'Loading...' message at the bottom
 .loading_message {
   padding: 1rem;
+  font-size: 1.5rem;
   font-family: "Alegreya SC", serif, Arial, sans-serif;
 }
 
@@ -112,6 +113,8 @@ $shadow: 5px 5px 5px grey;
   padding-right: 2rem;
   padding-left: 2rem;
   background: #d2d7d9ff;
+  font-size: 130%;
+  margin-top: 1rem;
 
   &:active,
   &:focus {
