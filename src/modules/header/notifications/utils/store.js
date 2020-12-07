@@ -4,7 +4,7 @@ const context = createContext(undefined);
 const { Provider } = context;
 
 const initialState = {
-  size: 3,
+  size: 5,
   notifications: { data: [], before: undefined, after: undefined },
   total: undefined,
   totalCurrentPage: undefined,
@@ -24,18 +24,17 @@ function StateProvider({ children }) {
           notifications: { ...state.notifications, data: action.payload },
         };
 
-        case "SET_AFTER":
-          return {
-            ...state,
-            notifications: { ...state.notifications, after: action.payload },
-          };
+      case "SET_AFTER":
+        return {
+          ...state,
+          notifications: { ...state.notifications, after: action.payload },
+        };
 
-          
-        case "SET_BEFORE":
-          return {
-            ...state,
-            notifications: { ...state.notifications, before: action.payload },
-          };
+      case "SET_BEFORE":
+        return {
+          ...state,
+          notifications: { ...state.notifications, before: action.payload },
+        };
 
       case "REMOVE_NOTIFICATION":
         const id = action.payload;
