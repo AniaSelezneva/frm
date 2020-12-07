@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 // Store
 import { store } from "../../utils/store";
 // Components
-import Notifications from "./Notifications";
+import Notifications from "./notifications/index";
 import Search from "./Search";
 
 function Header() {
@@ -47,7 +47,7 @@ function Header() {
           {state.loggedIn ? (
             <>
               <li>
-                {/* 1. Link to profile (own posts)... */}
+                {/* 1. Link to profile (user's own posts)... */}
                 <Link
                   to="/profile"
                   // 2. Add style to 'active' header link (add underline)...

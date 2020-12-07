@@ -7,9 +7,7 @@ const initialState = {
     handle: null,
     imageUrl: null,
     userDbRef: null,
-    notifications: [],
     likes: [],
-    totalNotifications: null,
   },
   otherUser: undefined,
   posts: {},
@@ -125,13 +123,6 @@ const StateProvider = ({ children }) => {
       case "SET_LIKES": {
         return { ...state, user: { ...state.user, likes: action.payload } };
       }
-      case "SET_NOTIFICATIONS": {
-        return {
-          ...state,
-          user: { ...state.user, notifications: action.payload },
-        };
-      }
-
       case "CHANGE_LIKE_COUNT": {
         const { newLikeCount, postId } = action.payload;
 
@@ -238,36 +229,6 @@ const StateProvider = ({ children }) => {
         };
       }
 
-      case "REMOVE_NOTIFICATION": {
-        const notifications = state.user.notifications.data;
-
-        const index = notifications.findIndex(
-          (notification) => notification.data.id === action.payload
-        );
-
-        if (index >= 0) {
-          notifications.splice(index, 1);
-        }
-
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            notifications: { ...state.user.notifications, data: notifications },
-          },
-        };
-      }
-      case "REMOVE_ALL_NOTIFICATIONS": {
-        return {
-          ...state,
-          user: {
-            ...state.user,
-            totalNotifications: 0,
-            notifications: { data: [] },
-          },
-        };
-      }
-
       case "SET_COMMENTS": {
         return {
           ...state,
@@ -330,8 +291,6 @@ const StateProvider = ({ children }) => {
             handle: null,
             imageUrl: null,
             userDbRef: null,
-            notifications: [],
-            totalNotifications: null,
           },
         };
       }

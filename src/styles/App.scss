@@ -360,19 +360,34 @@ p {
 
   .notifications_arrow {
     border: none;
+
+    transition-duration: 0.3s;
+
     &:focus {
-      outline: 1px dashed black;
+      transform: scale(1.3);
+      transition-duration: 0.3s;
     }
   }
 
   #prev_notifications {
     transform-origin: center;
     transform: rotate(180deg);
+
+    transition-duration: 0.3s;
+
+    &:focus {
+      transform: scale(1.3) rotate(180deg);
+      transition-duration: 0.3s;
+    }
   }
 
   .inactive {
     cursor: default !important;
     filter: opacity(0.2);
+
+    &:focus {
+      transform: scale(1);
+    }
   }
 
   #remove_notification {
@@ -521,15 +536,6 @@ p {
     & > button:disabled {
       text-decoration: none;
     }
-  }
-}
-
-// Arrow to go to next notifications page
-#next_notifications {
-  transition-duration: 0.3s;
-  &:focus {
-    transform: scale(1.3);
-    transition-duration: 0.3s;
   }
 }
 
