@@ -30,6 +30,10 @@ $shadow: 5px 5px 5px grey;
     background: $new_post_background;
     padding: $margin / 2;
 
+    span {
+      cursor: pointer;
+    }
+
     & > textarea {
       border-radius: 0.2rem;
       z-index: 1;

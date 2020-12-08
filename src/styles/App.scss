@@ -86,15 +86,15 @@ p {
   word-break: break-all;
 }
 
-// // Error message
-// .error_message {
-//   color: #e92d3aff;
-//   font-family: "Alegreya SC", serif, Arial, sans-serif;
-//   text-align: center;
-//   animation-duration: 0.5s;
-//   animation-name: slidein;
-//   z-index: 0;
-// }
+// Error message
+.error_message {
+  color: #e92d3aff;
+  font-family: "Alegreya SC", serif, Arial, sans-serif;
+  text-align: center;
+  animation-duration: 0.5s;
+  animation-name: slidein;
+  z-index: 0;
+}
 
 // Up arrow (bottom right corner)
 .up_arrow {

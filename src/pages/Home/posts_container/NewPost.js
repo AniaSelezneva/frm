@@ -106,10 +106,19 @@ function NewPost({ setIsLoading }) {
   // Submit post event handler
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (body.trim().length > 0) {
+    // If there is no image chosen...
+    if (!image) {
+      // post body must not be empty.
+      if (body.trim().length > 0) {
+        submitPost(e);
+      } else {
+        setError("Must not be empty");
+      }
+    }
+    // If there is an image...
+    else {
+      // post body can be empty.
       submitPost(e);
-    } else {
-      setError("Must not be empty");
     }
   };
 
@@ -131,6 +140,18 @@ function NewPost({ setIsLoading }) {
       document.getElementById("post_body").style.border = "2px solid red";
     }
   }, [error]);
+
+  // Text is not required if there is an image.
+  useEffect(() => {
+    const postBody = document.getElementById("post_body");
+    if (image) {
+      postBody.removeAttribute("required");
+    } else {
+      postBody.setAttribute("required", "true");
+    }
+  }, [image]);
+
+  // **************** RETURN *********************
 
   return (
     <form
