@@ -2,7 +2,7 @@
 import GoTrue from "gotrue-js";
 
 const auth = new GoTrue({
-  APIUrl: "https://petshow.netlify.app/.netlify/identity",
+  APIUrl: "https://p6b.netlify.app/.netlify/identity",
   audience: "",
   setCookie: false,
 });
