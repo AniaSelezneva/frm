@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42.179" height="59.706" viewBox="0 0 11.16 15.797">
+  <defs>
+    <radialGradient gradientUnits="userSpaceOnUse" gradientTransform="matrix(.00424 -.93056 1.08497 .00495 -36.34 105.585)" r="5.58" fy="69.59" fx="39.33" cy="69.59" cx="39.33" id="b" xlink:href="#a"/>
+    <linearGradient id="a">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#ff0"/>
+    </linearGradient>
+  </defs>
+  <g fill-rule="evenodd" paint-order="fill markers stroke">
+    <path d="M41.38 66.848c-.018 0-.036.003-.055.003v0c-2.987.075-3.707 4.826-4.217 8.037-.07.44-1.296 1.134-1 1.73.717 1.44 2.986 1.814 5.217 1.807v.001h.11v0c2.232.006 4.501-.369 5.218-1.808.296-.596-.93-1.29-1-1.73-.51-3.21-1.23-7.962-4.217-8.037v0c-.019 0-.037-.003-.055-.003z" fill="url(#b)" stroke="#000" stroke-width=".529" stroke-linecap="round" transform="translate(-35.8 -64.618)"/>
+    <path d="M4.045 14.273a1.38 1.31 0 00-.02.215 1.38 1.31 0 001.38 1.31 1.38 1.31 0 001.38-1.31 1.38 1.31 0 00-.015-.193c-.382.026-.77.042-1.158.04v.001h-.11c-.49.001-.98-.02-1.457-.063z"/>
+    <path style="line-height:normal;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;text-orientation:mixed;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;isolation:auto;mix-blend-mode:normal;solid-color:#000;solid-opacity:1" d="M5.547.265c-.368 0-.682.248-.892.603-.211.355-.335.828-.335 1.348 0 .062.008.12.011.181.103-.056.21-.106.322-.148l-.003-.033c0-.467.114-.888.288-1.18.173-.292.39-.443.609-.443.218 0 .436.151.61.443.173.292.287.713.287 1.18l-.003.033c.11.042.217.092.32.148.003-.06.01-.12.01-.181 0-.52-.123-.993-.334-1.348-.21-.355-.522-.603-.89-.603z" color="#000" font-weight="400" font-family="sans-serif" overflow="visible" stroke="#000" stroke-width=".529" stroke-linecap="round"/>
+  </g>
+</svg>
