@@ -97,11 +97,9 @@ function AddInfo({ setIsAddInfoOpen, setIsError }) {
   return (
     <form
       className={userCardStyles.form}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          addInfoToDb();
-        }
+      onSubmit={(e) => {
+        e.preventDefault();
+        addInfoToDb();
       }}
     >
       <label htmlFor="location">Location: </label>
