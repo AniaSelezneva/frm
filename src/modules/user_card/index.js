@@ -22,6 +22,7 @@ function User() {
   const { state, dispatch } = useContext(store);
   const [isAddInfoOpen, setIsAddInfoOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const path = state.path;
 
   let handle = window.location.pathname.split("/").pop().split("%20").join(" ");
@@ -33,8 +34,10 @@ function User() {
         q.Get(q.Match(q.Index("users_by_email"), q.Casefold(email)))
       );
       dispatch({ type: "SET_USER", payload: { data: res.data, ref: res.ref } });
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -66,8 +69,10 @@ function User() {
       );
 
       dispatch({ type: "SET_OTHER_USER", payload: res.data });
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -89,6 +94,7 @@ function User() {
 
   // Get user's info.
   useEffect(() => {
+    setIsLoading(true);
     // If path is 'user'...
     if (path === "user") {
       getUserInfo();
@@ -180,7 +186,13 @@ function User() {
               toggleOpenCard();
             }}
           >
-            {path === "user" ? state.otherUser.handle : state.user.handle}
+            {isLoading ? (
+              <p>loading...</p>
+            ) : path === "user" ? (
+              state.otherUser.handle
+            ) : (
+              state.user.handle
+            )}
           </button>
 
           <div className={userCardStyles.user} id="user_card">
