@@ -1,7 +1,6 @@
 @import url(//fonts.googleapis.com/css2?family=Indie+Flower&family=Nerko+One&family=Jacques+Francois&family=Fruktur&family=Oleo+Script+Swash+Caps&family=Alegreya+SC&display=swap&family=Pompiere&display=swap:wght@700&display=swap);
 @use "sass:math";
 
-$header_height: 100px;
 $background: #cfe1c6ff;
 $root_background: #edd3cdff;
 $notifications_background: #48c2d9ff;
@@ -64,7 +63,7 @@ input {
   border: 1px solid black;
 }
 
-label {
+label[for="avatar"] {
   cursor: pointer;
 }
 
@@ -72,7 +71,7 @@ img {
   border-radius: 0.2rem;
 }
 
-// header + main body
+// content = header + main body
 // needed to keep footer at the bottom
 .content {
   flex-grow: 1;
@@ -83,492 +82,19 @@ img {
   }
 }
 
-@function random_element($elements...) {
-  @return nth($elements, random(length($elements)));
-}
-
 p {
   word-break: break-all;
 }
 
-// HEADER
-.header {
-  min-height: $header_height;
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-
-  @media (max-width: 800px) {
-    margin-top: 0.5rem;
-  }
-
-  // Bell with zero notifications
-  .inactive_bell {
-    &:focus,
-    &:hover {
-      transform: none !important;
-    }
-  }
-
-  & > ul > li > a {
-    &:focus,
-    &:hover {
-      outline: none;
-      text-decoration: underline;
-      text-decoration-color: $notifications_background;
-    }
-  }
-
-  & > li {
-    max-width: 100vw;
-  }
-
-  // Search li
-  & > :first-child {
-    margin-left: auto;
-
-    @media (max-width: 800px) {
-      margin-left: 0;
-    }
-  }
-
-  @media (max-width: 800px) {
-    gap: 0;
-    padding-top: 1rem;
-  }
-
-  // Search
-  & > li > form {
-    display: flex;
-    position: relative;
-    max-width: 300px;
-    top: 2px;
-    border-bottom: 3.6px solid black;
-
-    @media (max-width: 800px) {
-      margin-right: 1rem;
-      margin-left: 1rem;
-      margin-top: 0.2rem;
-    }
-
-    & > label {
-      position: absolute;
-      top: -1.2rem;
-      font-family: "Pompiere", cursive, Arial, sans-serif;
-    }
-
-    input {
-      border: none;
-    }
-
-    // Text input
-    #query {
-      width: 300px;
-      height: 2rem;
-
-      font-family: "Jacques Francois", serif;
-      font-size: 120%;
-
-      &:hover {
-        cursor: text;
-      }
-
-      // For Firefox (red outline)
-      &:required {
-        box-shadow: none;
-      }
-      &:invalid {
-        box-shadow: none;
-      }
-    }
-
-    button {
-      font-family: "Indie Flower", cursive, Arial, sans-serif;
-      font-size: 150%;
-      align-self: flex-end;
-      transition-duration: 0.2s;
-      position: relative;
-      top: 8px;
-
-      &:focus {
-        outline: none;
-        color: $notifications_background;
-        transform: scale(1.08);
-        transition-duration: 0.2s;
-      }
-    }
-
-    @media (max-width: 370px) {
-      max-width: 100vw;
-      transition-duration: 0.2s;
-    }
-
-    @media (max-width: 360px) {
-      margin-right: 2rem;
-      margin-left: 2rem;
-    }
-
-    // Error (query too short) message
-    & > p {
-      position: absolute;
-      top: 2rem;
-      font-family: "Alegreya SC", serif, Arial, sans-serif;
-      font-size: 90%;
-      color: #ee276a;
-
-      animation-duration: 0.5s;
-      animation-name: slideinsearcherror;
-
-      @keyframes slideinsearcherror {
-        from {
-          transform: translateY(-5px);
-          opacity: 0;
-        }
-
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      @keyframes slideupsearcherror {
-        from {
-          transform: translateY(0);
-          opacity: 1;
-        }
-
-        to {
-          transform: translateY(-5px);
-          opacity: 0;
-        }
-      }
-    }
-  }
-
-  // Everything except search
-  #header_links_container {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-right: 2rem;
-
-    @media (max-width: 800px) {
-      width: 100vw;
-      margin-right: 0;
-      gap: 0;
-      justify-content: space-evenly;
-      transition-duration: 0.2s;
-    }
-
-    // Li containing links in the header
-    & > li {
-      cursor: pointer;
-      margin-top: 1rem;
-      transition-duration: 0.2s;
-
-      font-family: "Indie Flower", cursive, Arial, sans-serif;
-      font-size: 1.5rem;
-    }
-
-    & > :nth-child(3) {
-      width: 48px;
-    }
-  }
-
-  .active {
-    text-decoration: underline;
-  }
-}
-
-// Colorful stripe at the bottom of the header.
-#header_bottom_border {
-  background: linear-gradient(to right, transparent 10%, $background 90%);
-  box-shadow: 5px 5px 5px grey;
-  height: 10px;
-  width: 50vw;
-  position: relative;
-  right: -50%;
-
-  border: 0.5px solid black;
-  border-left: none;
-  border-right: none;
-
-  animation: 1s ease-out 0s 1 appear;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: -2px;
-    right: 0;
-    bottom: -2rem;
-    left: 0;
-    z-index: 100;
-    background: linear-gradient(
-      to right,
-      $root_background 10%,
-      transparent 20%
-    );
-  }
-
-  @keyframes appear {
-    0% {
-      //filter: opacity(0.3);
-      box-shadow: 1px 1px 1px grey;
-    }
-    100% {
-      //filter: opacity(1);
-      box-shadow: 5px 5px 5px grey;
-    }
-  }
-}
-
-// Dropdown (notifications)
-#with_dropdown {
-  position: relative;
-  animation: 1s ease-out 0s 1 opacityChange;
-
-  // SVG inputs
-  input {
-    border: none;
-  }
-
-  // SVGs
-  #search_icon {
-    width: 38px;
-    transition-duration: 0.2s;
-    &:focus,
-    &:hover {
-      transform: scale(1.08);
-      transition-duration: 0.2s;
-    }
-  }
-
-  #notifications_bell {
-    display: flex;
-    justify-content: center;
-    border: none;
-    width: 35px;
-    transition-duration: 0.2s;
-
-    &:focus {
-      transform: scale(1.08);
-      transition-duration: 0.3s;
-    }
-  }
-
-  .notifications_arrow {
-    border: none;
-
-    transition-duration: 0.3s;
-
-    &:focus {
-      transform: scale(1.3);
-      transition-duration: 0.3s;
-    }
-  }
-
-  #prev_notifications {
-    transform-origin: center;
-    transform: rotate(180deg);
-
-    transition-duration: 0.3s;
-
-    &:focus {
-      transform: scale(1.3) rotate(180deg);
-      transition-duration: 0.3s;
-    }
-  }
-
-  .inactive {
-    cursor: default !important;
-    filter: opacity(0.2);
-
-    &:focus {
-      transform: scale(1);
-    }
-  }
-
-  #remove_notification {
-    cursor: pointer;
-  }
-
-  // Notifications loading message
-  #notifications_loading_msg {
-    font-size: 70%;
-    word-break: keep-all;
-  }
-
-  &:focus-within > #notifications_bell {
-    transform: scale(1.08);
-    transition-duration: 0.3s;
-  }
-
-  // Total number of notifications
-  #total_notifications {
-    position: absolute;
-    top: -0.5rem;
-    right: 0;
-
-    border-radius: 50%;
-    text-align: center;
-    word-break: keep-all;
-    min-width: 20px;
-    height: min-content;
-    background: rgba(238, 39, 106, 1);
-
-    font-size: 70%;
-
-    animation: 1s ease-out 0s 1 opacityChange;
-  }
-
-  #notifications_container {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    cursor: initial;
-
-    top: 4rem;
-    width: 30rem;
-    max-width: 90vw;
-    word-break: break-all;
-    background: $notifications_background;
-    z-index: 20;
-    right: -50px;
-    padding: 1.5rem;
-
-    box-shadow: 0 0 0 15px rgba(255, 225, 39, 0.42);
-
-    display: flex;
-    align-items: center;
-
-    @media (max-width: 460px) {
-      right: -40px;
-    }
-    @media (max-width: 450px) {
-      right: -30px;
-    }
-    @media (max-width: 400px) {
-      right: -20px;
-    }
-    @media (max-width: 350px) {
-      right: -10px;
-    }
-    @media (max-width: 330px) {
-      right: -5px;
-    }
-
-    a:hover,
-    a:focus {
-      text-decoration: underline;
-    }
-
-    & > li {
-      cursor: initial;
-      width: 100%;
-      word-break: keep-all;
-      font-size: 1.5rem;
-      border-bottom: 1px solid black;
-    }
-
-    // Little triangle
-    &::before {
-      content: "";
-      border-top: 15px solid $notifications_background;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-
-      position: absolute;
-      top: -13px;
-      right: 65px;
-      transform: rotate(180deg);
-    }
-
-    #mark_read_buttons_container {
-      padding-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      flex-direction: column;
-      align-items: center;
-
-      & > button {
-        font-family: "Alegreya SC", serif, Arial, sans-serif;
-      }
-    }
-
-    #navigation_container {
-      padding-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      cursor: auto;
-    }
-
-    #close_notifications {
-      align-self: flex-end;
-      position: relative;
-      left: 10px;
-      top: 10px;
-    }
-  }
-
-  // Remove notification button with image
-  .remove_notification_button {
-    position: relative;
-    top: 2px;
-
-    &:hover,
-    &:focus {
-      transform: scale(1.3);
-      transition-duration: 0.3s;
-    }
-
-    img {
-      border: none;
-      transition-duration: 0.3s;
-    }
-  }
-
-  // disabled 'mark all notifications read' button
-  .disabled {
-    color: white;
-
-    & > button:disabled {
-      text-decoration: none;
-    }
-  }
-}
-
-// Error message
-.error_message {
-  color: #e92d3aff;
-  font-family: "Alegreya SC", serif, Arial, sans-serif;
-  text-align: center;
-  animation-duration: 0.5s;
-  animation-name: slidein;
-  z-index: 0;
-
-  @keyframes slidein {
-    from {
-      transform: translateY(-15px);
-      opacity: 0;
-    }
-
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-}
-
-#mark_all_read,
-#close_notifications {
-  font-size: 1.5rem;
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
-}
+// // Error message
+// .error_message {
+//   color: #e92d3aff;
+//   font-family: "Alegreya SC", serif, Arial, sans-serif;
+//   text-align: center;
+//   animation-duration: 0.5s;
+//   animation-name: slidein;
+//   z-index: 0;
+// }
 
 // Up arrow (bottom right corner)
 .up_arrow {
@@ -613,39 +139,6 @@ span {
   & > button {
     align-self: center;
   }
-
-  @keyframes slidedown {
-    from {
-      transform: translateY(-50%);
-      opacity: 0;
-    }
-
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideup {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    to {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-  }
-}
-
-// FOOTER
-.footer {
-  height: 7rem;
-  margin-top: 1rem;
-  position: relative;
-  z-index: 100;
-  left: -1rem;
 }
 
 // Custom file upload lebels
@@ -656,49 +149,6 @@ a {
   &:focus {
     outline: none;
     text-decoration: underline;
-  }
-}
-
-// Page not found (404)
-.page_not_found {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
-
-  // Image
-  & > span {
-    margin-top: 10rem;
-    display: flex;
-    align-items: center;
-
-    // First "4"
-    :first-child {
-      margin-right: -20px;
-      z-index: 20;
-    }
-
-    // Both "4"s
-    & > p {
-      font-family: "Nerko One", cursive;
-      font-size: 1100%;
-      color: #f28ba3ff;
-    }
-    & > svg {
-      margin-right: -20px;
-      z-index: 10;
-    }
-  }
-
-  & > p {
-    font-size: 250%;
-    color: #15489f;
-  }
-
-  a {
-    position: relative;
-    top: 3rem;
-    font-size: 200%;
   }
 }
 
@@ -743,5 +193,43 @@ a {
   }
   to {
     transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+// Slide down (error message)
+@keyframes slidedown {
+  from {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Slide up (error message)
+@keyframes slideup {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slidein {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

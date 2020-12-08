@@ -20,7 +20,6 @@
         connect-src https://db.fauna.com/ 'self' https://firebasestorage.googleapis.com;
         img-src 'self' https://firebasestorage.googleapis.com/;
         style-src 'self' https://fonts.googleapis.com/;
-        script-src 'self';
         frame-ancestors 'none'; 
         default-src 'self';
         base-uri 'none';

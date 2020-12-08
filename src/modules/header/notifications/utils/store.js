@@ -4,7 +4,7 @@ const context = createContext(undefined);
 const { Provider } = context;
 
 const initialState = {
-  size: 5,
+  size: 3,
   notifications: { data: [], before: undefined, after: undefined },
   total: undefined,
   totalCurrentPage: undefined,

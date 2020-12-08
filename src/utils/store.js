@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 
 const initialState = {
+  size: 5,
   loggedIn: false,
   user: {
     email: null,

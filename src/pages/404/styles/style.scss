@@ -1,0 +1,42 @@
+// Page not found (404)
+.page_not_found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Baloo Chettan 2", cursive, Arial, sans-serif;
+
+  // Image
+  & > span {
+    margin-top: 10rem;
+    display: flex;
+    align-items: center;
+
+    // First "4"
+    :first-child {
+      margin-right: -20px;
+      z-index: 20;
+    }
+
+    // Both "4"s
+    & > p {
+      font-family: "Nerko One", cursive;
+      font-size: 1100%;
+      color: #f28ba3ff;
+    }
+    & > svg {
+      margin-right: -20px;
+      z-index: 10;
+    }
+  }
+
+  & > p {
+    font-size: 250%;
+    color: #15489f;
+  }
+
+  a {
+    position: relative;
+    top: 3rem;
+    font-size: 200%;
+  }
+}

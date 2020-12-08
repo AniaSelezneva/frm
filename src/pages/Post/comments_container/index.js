@@ -14,6 +14,10 @@ function Index() {
   const { state, dispatch } = useContext(store);
   const [loading, setLoading] = useState(false);
   const [element, setElement] = useState(null);
+  let acontroller = new AbortController();
+
+  // Number of comments per page.
+  const size = 10;
 
   const loadMore = async () => {
     setLoading(true);
@@ -39,9 +43,7 @@ function Index() {
   const loader = useRef(loadMore);
   const after = useRef([]);
 
-  // Number of posts per page.
-  const size = 2;
-
+  // Observer.
   const observer = useRef(
     new IntersectionObserver((entries) => {
       const bottomElement = entries[0];
@@ -57,7 +59,13 @@ function Index() {
   useEffect(() => {
     const currentElement = element;
     const currentObserver = observer.current;
-    if (currentElement && after.current && after.current.length > 0) {
+    if (
+      currentElement &&
+      after.current &&
+      after.current.length > 0 &&
+      state.post &&
+      state.post.comments
+    ) {
       currentObserver.observe(currentElement);
     }
 
@@ -85,6 +93,13 @@ function Index() {
   // Go to the top of the page in the beginning.
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  // Cancel async tasks on unmount.
+  useEffect(() => {
+    return () => {
+      acontroller.abort();
+    };
   }, []);
 
   return (

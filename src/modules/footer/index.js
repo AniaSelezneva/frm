@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 // SVG
 import FooterKitty from "./img/footer_kitty.js";
+// Style
+import "./styles/style.scss";
 
 function Footer() {
   const footer = useRef();

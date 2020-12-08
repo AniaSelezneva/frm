@@ -2,6 +2,8 @@ import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 // SVG
 import PageNotFoundImg from "./img/PageNotFoundImg";
+// Style
+import "./styles/style.scss";
 
 function PageNotFound() {
   // Ref to svg image.

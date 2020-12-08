@@ -14,17 +14,16 @@ dayjs.extend(relativeTime);
 
 function PostInfo({ post }) {
   const { state, dispatch } = useContext(store);
-  const [isLiked, setIsLiked] = useState(false);
 
+  const subscribed = useRef(true);
+
+  const [isLiked, setIsLiked] = useState(false);
   const [readyToLike, setReadyToLike] = useState(true);
   const [readyToUnlike, setReadyToUnlike] = useState(true);
-
   const [zeroLikes, setZeroLikes] = useState();
-
   const [time, setTime] = useState();
 
-  let isSubscribed = undefined;
-  const subscribed = useRef(true);
+  // ***************** FUNCTIONS *********************
 
   // Set time of the post submission.
   useEffect(() => {
@@ -32,24 +31,7 @@ function PostInfo({ post }) {
     setTime(d);
   }, [post]);
 
-  // Check if this post is liked by the user.
-  useEffect(() => {
-    setIsLiked(false);
-    if (state.user.likes && state.user.likes.length !== 0) {
-      state.user.likes.forEach((like) => {
-        if (like.data.postId === post.data.postId) {
-          setIsLiked(true);
-        }
-      });
-    }
-  }, [
-    state.user.likes,
-    state.posts,
-    window.location.pathname,
-    post.data.postId,
-  ]);
-
-  // Like post
+  // Like post.
   const likePost = () => {
     dispatch({ type: "SET_PENDING_POST_LIKE", payload: post.data.postId });
     return new Promise(async (resolve, reject) => {
@@ -100,7 +82,7 @@ function PostInfo({ post }) {
     });
   };
 
-  // Unlike post
+  // Unlike post.
   const unlikePost = () => {
     if (post.data.likeCount === 1) {
       setZeroLikes(true);
@@ -145,23 +127,37 @@ function PostInfo({ post }) {
     });
   };
 
-  // Change subscribed Ref
-  useEffect(() => {
-    return () => {
-      subscribed.current = isSubscribed;
-    };
-  }, [isSubscribed]);
+  // ******************* EFFECTS *********************
 
-  // Unmount
+  // Check if this post is liked by the user.
+  useEffect(() => {
+    setIsLiked(false);
+    if (state.user.likes && state.user.likes.length !== 0) {
+      state.user.likes.forEach((like) => {
+        if (like.data.postId === post.data.postId) {
+          setIsLiked(true);
+        }
+      });
+    }
+  }, [
+    state.user.likes,
+    state.posts,
+    window.location.pathname,
+    post.data.postId,
+  ]);
+
+  // Subscribed.current = false on unmount.
   useEffect(() => {
     return () => {
-      isSubscribed = false;
+      subscribed.current = false;
     };
   }, []);
 
-  // Like post
-  const onClick = async () => {
-    isSubscribed = true;
+  // ****************** HANDLERS **********************
+
+  // Handle 'like' click.
+  const handleClickLike = async () => {
+    subscribed.current = true;
     if (readyToLike && state.pendingPostLike !== post.data.postId) {
       setReadyToUnlike(false);
       try {
@@ -173,6 +169,26 @@ function PostInfo({ post }) {
         }
       } catch (error) {
         if (subscribed.current) setReadyToUnlike(true);
+      }
+    }
+  };
+
+  // Handle 'unlike' click.
+  const handleClickUnlike = async () => {
+    subscribed.current = true;
+    if (
+      isLiked &&
+      readyToUnlike &&
+      state.pendingPostUnlike !== post.data.postId
+    ) {
+      setReadyToLike(false);
+      try {
+        setIsLiked(false);
+        await unlikePost();
+
+        if (subscribed.current) setReadyToLike(true);
+      } catch (error) {
+        if (subscribed.current) setReadyToLike(true);
       }
     }
   };
@@ -189,54 +205,34 @@ function PostInfo({ post }) {
       </Link>
       <p lang="en">{time}</p>
       <p>{post.data.commentCount} comments</p>
+      {/* LIKE OR UNLIKE */}
       <div className={postsInfoStyles.likes}>
         {
-          // If user is logged in
+          // If the user is logged in.
           state.loggedIn ? (
             <>
               {
-                // If is liked by the user
+                // If post is liked by the user.
                 isLiked ? (
                   <input
                     type="image"
                     src="/img/post_info/red-heart.svg"
                     tabIndex="0"
                     id={postsInfoStyles.red_heart}
-                    onClick={async () => {
-                      isSubscribed = true;
-                      if (
-                        isLiked &&
-                        readyToUnlike &&
-                        state.pendingPostUnlike !== post.data.postId
-                      ) {
-                        setReadyToLike(false);
-                        try {
-                          setIsLiked(false);
-                          await unlikePost();
-
-                          if (subscribed.current) setReadyToLike(true);
-                        } catch (error) {
-                          if (subscribed.current) setReadyToLike(true);
-                        }
-                      }
-                    }}
-                  />
-                ) : // If not liked by the user
-                post.data.likeCount === 0 || zeroLikes ? (
-                  <input
-                    type="image"
-                    src="/img/post_info/transparent-heart.svg"
-                    tabIndex="0"
-                    id={postsInfoStyles.blue_heart}
-                    onClick={onClick}
+                    onClick={handleClickUnlike}
                   />
                 ) : (
+                  // If not liked by the user, show blue or transparent heart (depending on the like count).
                   <input
                     type="image"
-                    src="/img/post_info/blue-heart.svg"
+                    src={`/img/post_info/${
+                      post.data.likeCount === 0 || zeroLikes
+                        ? "transparent-heart"
+                        : "blue-heart"
+                    }.svg`}
                     tabIndex="0"
                     id={postsInfoStyles.blue_heart}
-                    onClick={onClick}
+                    onClick={handleClickLike}
                   />
                 )
               }
@@ -244,7 +240,7 @@ function PostInfo({ post }) {
               {post.data.likeCount > 0 && <p>{post.data.likeCount}</p>}
             </>
           ) : (
-            // If not logged in
+            // If not logged in, 'like' triggers image prompt to be shown.
             <LoginPromptTrigger likeCount={post.data.likeCount} />
           )
         }

@@ -5,6 +5,8 @@ import { store } from "../../utils/store";
 // Components
 import Notifications from "./notifications/index";
 import Search from "./Search";
+// Style
+import "./styles/style.scss";
 
 function Header() {
   const { state } = useContext(store);
