@@ -21,7 +21,6 @@
         img-src 'self' https://firebasestorage.googleapis.com/;
         style-src 'self' https://fonts.googleapis.com/;
         frame-ancestors 'none'; 
-        default-src 'self';
         base-uri 'none';
         form-action 'self'; """
         Referrer-Policy = "no-referrer"
