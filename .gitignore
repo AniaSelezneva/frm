@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# build folder
+/build
+
 # google admin sdk
 watch-forum-firebase-adminsdk-f6jmj-9a9febe651.json
 
