@@ -76,6 +76,7 @@ function Home({ setIsLoading, setIsError }) {
       setPath("user");
     }
   };
+
   // Fetch posts depending on the path, set them in the store.
   const fetchPosts = async () => {
     try {
@@ -95,7 +96,7 @@ function Home({ setIsLoading, setIsError }) {
         res = await adminClient.query(
           q.Map(
             q.Paginate(
-              q.Reverse(q.Match(q.Index("posts_by_words7"), q.Casefold(query))),
+              q.Reverse(q.Match(q.Index("posts_by_words"), q.Casefold(query))),
               { size }
             ),
             q.Lambda("ref", q.Get(q.Var("ref")))
