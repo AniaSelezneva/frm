@@ -76,17 +76,26 @@ $shadow: 5px 5px 5px grey;
   }
 
   // Profile image
-  & > img {
-    align-self: center;
+  & > .image_wrapper {
+    position: relative;
+    height: 0;
+    padding-top: 100%;
 
-    width: 15rem;
-    min-height: 100px;
-    height: auto;
-    object-fit: cover;
+    & > img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      max-width: 100%;
 
-    border-radius: 0.2rem;
+      align-self: center;
+      width: 15rem;
+      height: auto;
+      object-fit: cover;
 
-    background: #edd3cdff;
+      border-radius: 0.2rem;
+
+      background: #edd3cdff;
+    }
   }
 
   & > form {

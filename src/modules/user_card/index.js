@@ -201,7 +201,9 @@ function User() {
             {/* Logged in user's card */}
             {path !== "user" && state.loggedIn && !isAddInfoOpen && (
               <>
-                <img src={state.user.imageUrl} alt="profile image" />
+                <div className={userCardStyles.image_wrapper}>
+                  <img src={state.user.imageUrl} alt="profile image" />
+                </div>
 
                 <p>{state.user.handle}</p>
                 <p>{state.user.email}</p>
