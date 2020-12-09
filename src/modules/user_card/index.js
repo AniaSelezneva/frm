@@ -202,33 +202,34 @@ function User() {
             {path !== "user" && state.loggedIn && !isAddInfoOpen && (
               <>
                 <img src={state.user.imageUrl} alt="profile image" />
-
-                <p>{state.user.handle}</p>
-                <p>{state.user.email}</p>
-                {state.user.location && (
-                  <p>
-                    <strong>Location:</strong> {state.user.location}
-                  </p>
-                )}
-                {state.user.hobbies && (
-                  <p>
-                    <strong>Hobbies:</strong> {state.user.hobbies}
-                  </p>
-                )}
-                {state.user.occupation && (
-                  <p>
-                    <strong>Occupation:</strong> {state.user.occupation}
-                  </p>
-                )}
-                <button
-                  onClick={() => {
-                    setIsAddInfoOpen(true);
-                  }}
-                >
-                  Change info
-                </button>
-                <UploadImage />
-                <Logout />
+                <div id={userCardStyles.info}>
+                  <p>{state.user.handle}</p>
+                  <p>{state.user.email}</p>
+                  {state.user.location && (
+                    <p>
+                      <strong>Location:</strong> {state.user.location}
+                    </p>
+                  )}
+                  {state.user.hobbies && (
+                    <p>
+                      <strong>Hobbies:</strong> {state.user.hobbies}
+                    </p>
+                  )}
+                  {state.user.occupation && (
+                    <p>
+                      <strong>Occupation:</strong> {state.user.occupation}
+                    </p>
+                  )}
+                  <button
+                    onClick={() => {
+                      setIsAddInfoOpen(true);
+                    }}
+                  >
+                    Change info
+                  </button>
+                  <UploadImage />
+                  <Logout />
+                </div>
               </>
             )}
 
