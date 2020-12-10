@@ -71,7 +71,10 @@ function User() {
       dispatch({ type: "SET_OTHER_USER", payload: res.data });
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
+      if (error.message === "instance not found") {
+        dispatch({ type: "SET_OTHER_USER", payload: {} });
+      }
       setIsLoading(false);
     }
   };

@@ -268,8 +268,9 @@ function Home({ setIsLoading, setIsError }) {
 
           {/* Other user's path */}
           {path === "user" &&
+            state.otherUser !== undefined &&
             // If not initial state of otherUser(undefined), which means it's not loaded yet...
-            (state.otherUser !== undefined ? (
+            (Object.keys(state.otherUser).length > 0 ? (
               <h2 className={homeStyles.posts_header}>
                 {state.posts.data && state.posts.data.length === 0
                   ? `${userName} hasn't posted yet`
