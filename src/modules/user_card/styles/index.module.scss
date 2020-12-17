@@ -120,17 +120,17 @@ $shadow: 5px 5px 5px grey;
     p {
       align-self: center;
     }
+  }
 
-    & > form {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      align-items: center;
-      padding-top: 1rem;
+  form {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: center;
+    padding-top: 1rem;
 
-      :first-child {
-        line-height: 90%;
-      }
+    :first-child {
+      line-height: 90%;
     }
   }
 
@@ -213,7 +213,6 @@ $shadow: 5px 5px 5px grey;
 // Change image button
 #change_image_button {
   margin-bottom: 0.6rem;
-  margin-top: 0.6rem;
 }
 
 a {
