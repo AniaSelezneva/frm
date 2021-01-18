@@ -13,7 +13,7 @@ function Layout(props) {
 
   const throttle = (callback, timeout) => {
     return () => {
-      // 3. Don't do anything if there is timoutId = waiting
+      // 3. Don't do anything if waiting.
       if (wait.current) {
         return;
       }
