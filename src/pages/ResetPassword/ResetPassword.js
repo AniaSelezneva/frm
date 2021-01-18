@@ -33,7 +33,6 @@ function ResetPassword({ setIsLoading }) {
       .recover(recoveryToken)
       .then((res) => {
         setEmail(res.email);
-        console.log(res);
         setUserNotFound(false);
       })
 
