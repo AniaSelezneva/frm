@@ -31,3 +31,8 @@
         X-XSS-Protection = "1; mode=block"
         Referer = "self"
         
+
+
+[build]
+  environment = { GOOGLE_APPLICATION_CREDENTIALS = "watch-forum-firebase-adminsdk-f6jmj-98ac4d4252.json" }
+
