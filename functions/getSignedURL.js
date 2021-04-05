@@ -1,7 +1,15 @@
+var admin = require("firebase-admin");
+var serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
 const { Storage } = require("@google-cloud/storage");
 
 exports.handler = async (event, context) => {
   const { filename } = JSON.parse(event.body);
+
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.REACT_APP_BUCKET,
+  });
 
   const storage = new Storage();
 
