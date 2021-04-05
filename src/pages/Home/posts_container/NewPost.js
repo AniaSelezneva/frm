@@ -42,17 +42,17 @@ function NewPost({ setIsLoading }) {
           }),
         });
 
-        console.log(res);
+        const signedURL = await res.json();
 
-        // firebase.initializeApp(config);
+        await fetch(signedURL, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "image/jpeg",
+          },
+          body: image,
+        });
 
-        // // Root reference
-        // var storageRef = firebase.storage().ref();
-        // // Reference to new file
-        // var imageRef = storageRef.child(imageDbName);
-
-        // await imageRef.put(image);
-        // resolve("success");
+        resolve("success");
       } catch (error) {
         console.log(error);
         setError("Something went wrong, please try again later");

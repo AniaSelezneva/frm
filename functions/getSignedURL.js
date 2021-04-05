@@ -1,19 +1,44 @@
-const config = {
-  apiKey: "AIzaSyCz5dNIi1LHfaxhb-g_FIS3wQ7Vla0ZBTs",
-  authDomain: "watch-forum.firebaseapp.com",
-  databaseURL: "https://watch-forum.firebaseio.com",
-  projectId: "watch-forum",
-  storageBucket: "watch-forum.appspot.com",
-  messagingSenderId: "27125407602",
-  appId: "1:27125407602:web:c74f43b62254ef6f7a47eb",
-  measurementId: "G-Y4G43N9LZ1",
-};
+const { Storage } = require("@google-cloud/storage");
 
 exports.handler = async (event, context) => {
   const { filename } = JSON.parse(event.body);
 
+  const storage = new Storage();
+
+  // CONFIGURE BUCKET CORS
+  const configureBucketCors = async () => {
+    await storage.bucket(process.env.REACT_APP_BUCKET).setCorsConfiguration([
+      {
+        maxAgeSeconds: 3600,
+        method: ["PUT"],
+        origin: [`http://localhost:8888/`, `https://p6b.netlify.app/`],
+        responseHeader: ["Content-Type", "Access-Control-Allow-Origin"],
+      },
+    ]);
+  };
+
+  await configureBucketCors();
+
+  const [url] = await storage
+    .bucket(process.env.REACT_APP_BUCKET)
+    .file(filename)
+    .getSignedUrl({
+      action: "write",
+      contentType: "image/jpeg",
+      expires: "01-01-2500",
+    });
+
+  // // Check current CORS of the bucket
+  // const [metadata] = await storage
+  //   .bucket(process.env.REACT_APP_BUCKET)
+  //   .getMetadata();
+
+  // for (const [key, value] of Object.entries(metadata)) {
+  //   console.log(`${key}: ${value}`);
+  // }
+
   return {
     statusCode: 200,
-    body: JSON.stringify(filename),
+    body: JSON.stringify(url),
   };
 };
