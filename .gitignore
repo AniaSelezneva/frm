@@ -12,7 +12,7 @@
 /build
 
 # google admin sdk
-watch-forum-firebase-adminsdk-f6jmj-98ac4d4252.json
+serviceAccountKey.json
 
 # misc
 .DS_Store
@@ -28,3 +28,4 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+

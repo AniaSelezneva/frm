@@ -32,26 +32,14 @@ function NewPost({ setIsLoading }) {
   const uploadImage = () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await fetch("/api/getSignedURL", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            filename: imageDbName,
-          }),
-        });
+        firebase.initializeApp(config);
 
-        const signedURL = await res.json();
+        // Root reference
+        var storageRef = firebase.storage().ref();
+        // Reference to new file
+        var imageRef = storageRef.child(imageDbName);
 
-        await fetch(signedURL, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "image/jpeg",
-          },
-          body: image,
-        });
-
+        await imageRef.put(image);
         resolve("success");
       } catch (error) {
         console.log(error);

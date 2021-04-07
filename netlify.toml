@@ -1,6 +1,5 @@
 [build]
   functions = "functions/"
-  environment = { GOOGLE_APPLICATION_CREDENTIALS = "watch-forum-firebase-adminsdk-f6jmj-98ac4d4252.json" }
 
 [[redirects]]
   from = "/api/*"
